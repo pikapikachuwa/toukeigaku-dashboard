@@ -172,7 +172,7 @@ function buildMedals(){
     const s=sorted[i];
     const c=document.createElement('div');c.className='medal-card '+cls;
     c.innerHTML='<div class="medal-label">'+['🥇 1位','🥈 2位','🥉 3位'][i]+'</div>'
-      +'<div class="medal-name">'+s.name+'</div>'
+      +'<div class="medal-name">'+dn(s.name)+'</div>'
       +'<div class="medal-pts '+pc(s.totalPts)+'">'+ps(s.totalPts)+' pts</div>'
       +'<div class="medal-sub">Pts/G '+ps(f1(s.ptsPerGame))+' ／ Top率 '+pct(s.topRate)+' ／ '+s.games+'半荘</div>';
     grid.appendChild(c);
@@ -197,7 +197,7 @@ function switchBar(key,label,btn){
   const bc=vals.map(v=>key==='avgRank'?(v<=2.5?'rgba(26,158,92,0.75)':'rgba(214,58,58,0.75)'):(v>=0?'rgba(74,144,217,0.75)':'rgba(214,58,58,0.75)'));
   if(barChart)barChart.destroy();
   barChart=new Chart(document.getElementById('bar-chart').getContext('2d'),{
-    type:'bar',data:{labels:byVal.map(d=>d.name),datasets:[{data:vals,backgroundColor:bc,borderRadius:4,borderSkipped:false}]},
+    type:'bar',data:{labels:byVal.map(d=>dn(d.name)),datasets:[{data:vals,backgroundColor:bc,borderRadius:4,borderSkipped:false}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const v=ctx.raw;if(key==='avgRank')return f2(v);if(isRate)return f1(v)+'%';return ps(f1(v));}}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},callback:v=>isRate?v+'%':v}}}}
   });
 }

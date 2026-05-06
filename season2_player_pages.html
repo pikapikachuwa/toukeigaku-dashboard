@@ -70,6 +70,8 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 <div class="container" id="main-container"></div>
 
 <script>
+const _DN={'土岐':'TK_n','矢嶋':'YaJi','藤木':'FuJi','松林':'MaTsuB','鹿山':'KaYaM','岡崎':'OkaZ','大塚':'OtsuK','河井':'KaWa_i','本井':'MoTo_i'};
+function dn(n){return _DN[n]||n;}
 const N=9;
 function r2s(r){return Math.round((N-r)/(N-1)*100);}
 function ps(n){return n==null?'-':(n>0?'+':'')+n;}
@@ -88,8 +90,6 @@ function grade(avg){
 
 const DISPLAY_NAMES={'土岐':'TK_n','矢嶋':'YaJi','藤木':'FuJi','松林':'MaTsuB','鹿山':'KaYaM','岡崎':'OkaZ','大塚':'OtsuK','河井':'KaWa_i','本井':'MoTo_i'};
 function dn(n){return DISPLAY_NAMES[n]||n;}
-const _DN={'土岐':'TK_n','矢嶋':'YaJi','藤木':'FuJi','松林':'MaTsuB','鹿山':'KaYaM','岡崎':'OkaZ','大塚':'OtsuK','河井':'KaWa_i','本井':'MoTo_i'};
-function dn(n){return _DN[n]||n;}
 const ALL_MEMBERS=['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
 
 const DATA={

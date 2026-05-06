@@ -116,6 +116,8 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 </div><!-- /container -->
 
 <script>
+const _DN={'土岐':'TK_n','矢嶋':'YaJi','藤木':'FuJi','松林':'MaTsuB','鹿山':'KaYaM','岡崎':'OkaZ','大塚':'OtsuK','河井':'KaWa_i','本井':'MoTo_i'};
+function dn(n){return _DN[n]||n;}
 const MEMBER_ORDER = ['土岐','矢嶋','藤木','松林','鹿山','岡崎','大塚','河井','本井'];
 const DATA = [
   {name:'土岐',games:44,avgRank:2.25,topRate:31.8,renRate:61.4,avoidRate:81.8,lastRate:18.2,plusRate:61.4,stdDev:50.4,avgPts1st:78.0,avgPts4th:-50.2,totalPts:695,ptsPerGame:15.8,maxPts:133,minPts:-59,recent20AvgRank:2.75,r1:14,r2:13,r3:9,r4:8},

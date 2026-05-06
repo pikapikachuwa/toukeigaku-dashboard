@@ -62,20 +62,22 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 <div class="nav">
   <a href="mahjong_dashboard.html" class="nav-back">← ダッシュボードへ</a>
   <span class="nav-title">個人ページ：</span>
-  <a href="#" onclick="showPage('土岐')" id="nav-土岐">土岐</a>
-  <a href="#" onclick="showPage('藤木')" id="nav-藤木">藤木</a>
-  <a href="#" onclick="showPage('鹿山')" id="nav-鹿山">鹿山</a>
-  <a href="#" onclick="showPage('河井')" id="nav-河井">河井</a>
-  <a href="#" onclick="showPage('松林')" id="nav-松林">松林</a>
-  <a href="#" onclick="showPage('岡崎')" id="nav-岡崎">岡崎</a>
-  <a href="#" onclick="showPage('大塚')" id="nav-大塚">大塚</a>
-  <a href="#" onclick="showPage('矢嶋')" id="nav-矢嶋">矢嶋</a>
-  <a href="#" onclick="showPage('本井')" id="nav-本井">本井</a>
+  <a href="#" onclick="showPage('土岐')" id="nav-土岐">TK_n</a>
+  <a href="#" onclick="showPage('藤木')" id="nav-藤木">FuJi</a>
+  <a href="#" onclick="showPage('鹿山')" id="nav-鹿山">KaYaM</a>
+  <a href="#" onclick="showPage('河井')" id="nav-河井">KaWa_i</a>
+  <a href="#" onclick="showPage('松林')" id="nav-松林">MaTsuB</a>
+  <a href="#" onclick="showPage('岡崎')" id="nav-岡崎">OkaZ</a>
+  <a href="#" onclick="showPage('大塚')" id="nav-大塚">OtsuK</a>
+  <a href="#" onclick="showPage('矢嶋')" id="nav-矢嶋">YaJi</a>
+  <a href="#" onclick="showPage('本井')" id="nav-本井">MoTo_i</a>
 </div>
 
 <div class="container" id="main-container"></div>
 
 <script>
+const _DN={'土岐':'TK_n','矢嶋':'YaJi','藤木':'FuJi','松林':'MaTsuB','鹿山':'KaYaM','岡崎':'OkaZ','大塚':'OtsuK','河井':'KaWa_i','本井':'MoTo_i'};
+function dn(n){return _DN[n]||n;}
 const N = 9;
 function r2s(r){ return Math.round((N-r)/(N-1)*100); }
 function ps(n){ return n==null?'-':(n>0?'+':'')+n; }
