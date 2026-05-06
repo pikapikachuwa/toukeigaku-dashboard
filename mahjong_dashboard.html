@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統計学WG 戦績ダッシュボード</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f5f5f0;color:#222;min-height:100vh;padding:1.5rem;}
+.container{max-width:1100px;margin:0 auto;}
+.dash-header{display:flex;align-items:baseline;justify-content:space-between;padding:0 0 0.75rem;border-bottom:1px solid #ddd;margin-bottom:1.25rem;flex-wrap:wrap;gap:6px;}
+.dash-title{font-size:18px;font-weight:600;color:#111;}
+.dash-meta{font-size:12px;color:#888;margin-left:10px;}
+.medal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1rem;}
+@media(max-width:600px){.medal-grid{grid-template-columns:1fr;}}
+.medal-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem;}
+.medal-card.gold{border-color:#c9a84c;background:#fffdf5;}
+.medal-card.silver{border-color:#aaa;background:#fafafa;}
+.medal-card.bronze{border-color:#b87333;background:#fff9f5;}
+.medal-label{font-size:11px;color:#888;margin-bottom:2px;}
+.medal-name{font-size:17px;font-weight:600;margin-bottom:5px;}
+.medal-pts{font-size:24px;font-weight:700;}
+.medal-sub{font-size:11px;color:#888;margin-top:4px;}
+.pos{color:#1a9e5c;}.neg{color:#d63a3a;}
+.chart-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1.25rem;margin-bottom:1rem;}
+.chart-title{font-size:13px;font-weight:600;color:#555;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.tab-btns{display:flex;gap:4px;flex-wrap:wrap;}
+.tab-btn{font-size:11px;padding:3px 10px;border-radius:6px;background:transparent;border:1px solid #ccc;color:#666;cursor:pointer;transition:all 0.15s;}
+.tab-btn:hover{background:#f0f0f0;}
+.tab-btn.active{background:#333;color:#fff;border-color:#333;}
+.tbl-wrap{overflow-x:auto;}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.tbl th{padding:6px 9px;font-size:10px;color:#777;font-weight:600;white-space:nowrap;border-bottom:2px solid #eee;text-align:right;background:#fafafa;}
+.tbl th.left{text-align:left;}.tbl th.center{text-align:center;}
+.tbl td{padding:6px 9px;white-space:nowrap;border-bottom:1px solid #f0f0f0;text-align:right;}
+.tbl td.left{text-align:left;font-weight:600;}.tbl td.center{text-align:center;font-size:13px;}
+.tbl tr:hover td{background:#f9f9f9;}
+.sep{border-left:2px solid #eee;}
+.grp{font-size:9px;color:#aaa;text-align:center;padding:3px 4px;background:#f5f5f5;border-bottom:1px solid #eee;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="dash-header">
+  <div>
+    <span class="dash-title">🀄 統計学WG 戦績ダッシュボード</span>
+    <span class="dash-meta">53半荘 ／ 6活動日 ／ 最終更新 2026/04/22</span>
+  </div>
+</div>
+
+<div class="medal-grid" id="medal-grid"></div>
+
+<div class="chart-card">
+  <div class="chart-title"><span>累計ポイント推移</span></div>
+  <div style="height:280px;position:relative;"><canvas id="line-chart"></canvas></div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title">
+    <span id="bar-label">累計Pts比較</span>
+    <div class="tab-btns">
+      <button class="tab-btn active" onclick="switchBar('totalPts','累計Pts比較',this)">累計Pts</button>
+      <button class="tab-btn" onclick="switchBar('ptsPerGame','Pts/G比較',this)">Pts/G</button>
+      <button class="tab-btn" onclick="switchBar('avgRank','平均順位比較',this)">平均順位</button>
+      <button class="tab-btn" onclick="switchBar('topRate','Top率比較',this)">Top率</button>
+      <button class="tab-btn" onclick="switchBar('renRate','連帯率比較',this)">連帯率</button>
+      <button class="tab-btn" onclick="switchBar('avoidRate','4着回避率比較',this)">回避率</button>
+      <button class="tab-btn" onclick="switchBar('plusRate','プラス率比較',this)">プラス率</button>
+      <button class="tab-btn" onclick="switchBar('stdDev','標準偏差比較',this)">標準偏差</button>
+    </div>
+  </div>
+  <div style="height:220px;position:relative;"><canvas id="bar-chart"></canvas></div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title">
+    <span>詳細テーブル</span>
+    <div class="tab-btns">
+      <button class="tab-btn" onclick="renderTable('member',this)">メンバー順</button>
+      <button class="tab-btn active" onclick="renderTable('totalPts',this)">累計Pts順</button>
+      <button class="tab-btn" onclick="renderTable('ptsPerGame',this)">Pts/G順</button>
+      <button class="tab-btn" onclick="renderTable('avgRank',this)">平均順位順</button>
+      <button class="tab-btn" onclick="renderTable('topRate',this)">Top率順</button>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th class="grp center" colspan="2"></th>
+          <th class="grp center sep" colspan="2">基本</th>
+          <th class="grp center sep" colspan="5">順位系</th>
+          <th class="grp center sep" colspan="3">安定性</th>
+          <th class="grp center sep" colspan="1">直近20戦</th>
+          <th class="grp center sep" colspan="4">累計Pts</th>
+          <th class="grp center sep" colspan="4">着順回数</th>
+        </tr>
+        <tr>
+          <th class="center">順</th><th class="left">名前</th>
+          <th class="sep">半荘数</th><th>平均順位</th>
+          <th class="sep">Top率</th><th>連帯率</th><th>4着回避率</th><th>ラス率</th><th>プラス率</th>
+          <th class="sep">標準偏差</th><th>1着時Pts</th><th>4着時Pts</th>
+          <th class="sep">直近平均順位</th>
+          <th class="sep">累計Pts</th><th>Pts/G</th><th>MaxPts</th><th>MinPts</th>
+          <th class="sep">1st</th><th>2nd</th><th>3rd</th><th>4th</th>
+        </tr>
+      </thead>
+      <tbody id="detail-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+const MEMBER_ORDER = ['土岐','矢嶋','藤木','松林','鹿山','岡崎','大塚','河井','本井'];
+const DATA = [
+  {name:'土岐',games:44,avgRank:2.25,topRate:31.8,renRate:61.4,avoidRate:81.8,lastRate:18.2,plusRate:61.4,stdDev:50.4,avgPts1st:78.0,avgPts4th:-50.2,totalPts:695,ptsPerGame:15.8,maxPts:133,minPts:-59,recent20AvgRank:2.75,r1:14,r2:13,r3:9,r4:8},
+  {name:'藤木',games:3,avgRank:4.00,topRate:0.0,renRate:0.0,avoidRate:0.0,lastRate:100.0,plusRate:0.0,stdDev:31.5,avgPts1st:null,avgPts4th:-71.7,totalPts:-215,ptsPerGame:-71.7,maxPts:-53,minPts:-108,recent20AvgRank:4.00,r1:0,r2:0,r3:0,r4:3},
+  {name:'鹿山',games:10,avgRank:2.80,topRate:10.0,renRate:40.0,avoidRate:70.0,lastRate:30.0,plusRate:40.0,stdDev:41.1,avgPts1st:53.0,avgPts4th:-63.7,totalPts:-173,ptsPerGame:-17.3,maxPts:53,minPts:-79,recent20AvgRank:2.80,r1:1,r2:3,r3:3,r4:3},
+  {name:'河井',games:18,avgRank:2.78,topRate:22.2,renRate:33.3,avoidRate:66.7,lastRate:33.3,plusRate:33.3,stdDev:48.2,avgPts1st:56.2,avgPts4th:-64.3,totalPts:-328,ptsPerGame:-18.2,maxPts:65,minPts:-96,recent20AvgRank:2.78,r1:4,r2:2,r3:6,r4:6},
+  {name:'松林',games:35,avgRank:2.31,topRate:31.4,renRate:57.1,avoidRate:80.0,lastRate:20.0,plusRate:57.1,stdDev:49.9,avgPts1st:70.5,avgPts4th:-59.7,totalPts:285,ptsPerGame:8.1,maxPts:84,minPts:-66,recent20AvgRank:2.35,r1:11,r2:9,r3:8,r4:7},
+  {name:'岡崎',games:49,avgRank:2.53,topRate:20.4,renRate:51.0,avoidRate:75.5,lastRate:24.5,plusRate:46.9,stdDev:45.3,avgPts1st:69.9,avgPts4th:-56.8,totalPts:-158,ptsPerGame:-3.2,maxPts:102,minPts:-88,recent20AvgRank:2.55,r1:10,r2:15,r3:12,r4:12},
+  {name:'大塚',games:28,avgRank:2.50,topRate:32.1,renRate:46.4,avoidRate:71.4,lastRate:28.6,plusRate:46.4,stdDev:58.6,avgPts1st:73.7,avgPts4th:-64.0,totalPts:70,ptsPerGame:2.5,maxPts:143,minPts:-102,recent20AvgRank:2.55,r1:9,r2:4,r3:7,r4:8},
+  {name:'矢嶋',games:12,avgRank:2.67,topRate:16.7,renRate:50.0,avoidRate:66.7,lastRate:33.3,plusRate:50.0,stdDev:47.9,avgPts1st:58.5,avgPts4th:-59.8,totalPts:-91,ptsPerGame:-7.6,maxPts:66,minPts:-97,recent20AvgRank:2.67,r1:2,r2:4,r3:2,r4:4},
+  {name:'本井',games:13,avgRank:2.62,topRate:15.4,renRate:38.5,avoidRate:84.6,lastRate:15.4,plusRate:23.1,stdDev:41.3,avgPts1st:77.0,avgPts4th:-50.5,totalPts:-85,ptsPerGame:-6.5,maxPts:92,minPts:-56,recent20AvgRank:2.62,r1:2,r2:3,r3:6,r4:2}
+];
+const TREND = [
+  {date:'02/10',土岐:0,藤木:0,鹿山:0,河井:8,松林:0,岡崎:27,大塚:142,矢嶋:-177,本井:0},
+  {date:'02/20',土岐:-1,藤木:0,鹿山:0,河井:-91,松林:0,岡崎:131,大塚:138,矢嶋:-177,本井:0},
+  {date:'02/21',土岐:432,藤木:0,鹿山:0,河井:-328,松林:88,岡崎:-21,大塚:138,矢嶋:-177,本井:-132},
+  {date:'03/06',土岐:485,藤木:-215,鹿山:0,河井:-328,松林:88,岡崎:-21,大塚:138,矢嶋:-62,本井:-85},
+  {date:'03/07',土岐:778,藤木:-215,鹿山:0,河井:-328,松林:109,岡崎:-59,大塚:-138,矢嶋:-62,本井:-85},
+  {date:'04/02',土岐:656,藤木:-215,鹿山:0,河井:-328,松林:109,岡崎:-20,大塚:-26,矢嶋:-91,本井:-85},
+  {date:'04/06',土岐:692,藤木:-215,鹿山:-173,河井:-328,松林:224,岡崎:2,大塚:-26,矢嶋:-91,本井:-85},
+  {date:'04/22',土岐:695,藤木:-215,鹿山:-173,河井:-328,松林:285,岡崎:-158,大塚:70,矢嶋:-91,本井:-85}
+];
+const MEMBERS = ['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
+const COLORS  = ['#4a90d9','#e67e22','#aaaaaa','#e8c830','#9b59b6','#27ae60','#e74c3c','#c0392b','#f39c12'];
+
+const sorted = [...DATA].sort((a,b) => b.totalPts - a.totalPts);
+function pc(n){ return n > 0 ? 'pos' : n < 0 ? 'neg' : ''; }
+function ps(n){ return n == null ? '-' : (n > 0 ? '+' : '') + n; }
+function f1(n){ return n == null ? '-' : Number(n).toFixed(1); }
+function f2(n){ return n == null ? '-' : Number(n).toFixed(2); }
+function pct(n){ return n == null ? '-' : f1(n) + '%'; }
+
+function buildMedals(){
+  const grid = document.getElementById('medal-grid');
+  ['gold','silver','bronze'].forEach((cls, i) => {
+    const s = sorted[i];
+    const labels = ['🥇 1位','🥈 2位','🥉 3位'];
+    const c = document.createElement('div');
+    c.className = 'medal-card ' + cls;
+    c.innerHTML = '<div class="medal-label">' + labels[i] + '</div>'
+      + '<div class="medal-name">' + s.name + '</div>'
+      + '<div class="medal-pts ' + pc(s.totalPts) + '">' + ps(s.totalPts) + ' pts</div>'
+      + '<div class="medal-sub">Pts/G ' + ps(f1(s.ptsPerGame)) + ' ／ Top率 ' + pct(s.topRate) + ' ／ ' + s.games + '半荘</div>';
+    grid.appendChild(c);
+  });
+}
+
+function buildLineChart(){
+  const ctx = document.getElementById('line-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: TREND.map(d => d.date),
+      datasets: MEMBERS.map((m, i) => ({
+        label: m, data: TREND.map(d => d[m]),
+        borderColor: COLORS[i], backgroundColor: COLORS[i],
+        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.1
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 12, padding: 6 } },
+        tooltip: { mode: 'index', intersect: false }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+let barChart = null;
+function switchBar(key, label, btn){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('bar-label').textContent = label;
+  const byVal = [...DATA].sort((a,b) => key === 'avgRank' ? a[key]-b[key] : b[key]-a[key]);
+  const vals = byVal.map(d => d[key]);
+  const isRate = ['topRate','renRate','avoidRate','lastRate','plusRate'].includes(key);
+  const bc = vals.map(v => key === 'avgRank'
+    ? (v <= 2.5 ? 'rgba(26,158,92,0.75)' : 'rgba(214,58,58,0.75)')
+    : (v >= 0   ? 'rgba(74,144,217,0.75)' : 'rgba(214,58,58,0.75)'));
+  if(barChart) barChart.destroy();
+  barChart = new Chart(document.getElementById('bar-chart').getContext('2d'), {
+    type: 'bar',
+    data: { labels: byVal.map(d => d.name), datasets: [{ data: vals, backgroundColor: bc, borderRadius: 4, borderSkipped: false }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => {
+          const v = ctx.raw;
+          if(key === 'avgRank') return f2(v);
+          if(isRate) return f1(v) + '%';
+          return ps(f1(v));
+        }}}
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 10 }, callback: v => isRate ? v + '%' : v } }
+      }
+    }
+  });
+}
+
+function renderTable(sortKey, btn){
+  if(btn){
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  let s;
+  if(sortKey === 'member'){
+    s = MEMBER_ORDER.map(name => DATA.find(d => d.name === name)).filter(Boolean);
+  } else if(sortKey === 'avgRank'){
+    s = [...DATA].sort((a,b) => a[sortKey]-b[sortKey]);
+  } else {
+    s = [...DATA].sort((a,b) => b[sortKey]-a[sortKey]);
+  }
+  const tbody = document.getElementById('detail-tbody');
+  tbody.innerHTML = '';
+  s.forEach(d => {
+    const rank = sorted.findIndex(x => x.name === d.name) + 1;
+    const medal = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':String(rank);
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="center">' + medal + '</td>'
+      + '<td class="left">' + d.name + '</td>'
+      + '<td class="sep">' + d.games + '</td><td>' + f2(d.avgRank) + '</td>'
+      + '<td class="sep">' + pct(d.topRate) + '</td><td>' + pct(d.renRate) + '</td><td>' + pct(d.avoidRate) + '</td>'
+      + '<td class="' + pc(-d.lastRate) + '">' + pct(d.lastRate) + '</td>'
+      + '<td class="' + pc(d.plusRate-50) + '">' + pct(d.plusRate) + '</td>'
+      + '<td class="sep">' + f1(d.stdDev) + '</td>'
+      + '<td class="' + pc(d.avgPts1st) + '">' + ps(f1(d.avgPts1st)) + '</td>'
+      + '<td class="' + pc(d.avgPts4th) + '">' + ps(f1(d.avgPts4th)) + '</td>'
+      + '<td class="sep">' + f2(d.recent20AvgRank) + '</td>'
+      + '<td class="sep ' + pc(d.totalPts) + '" style="font-weight:700;">' + ps(d.totalPts) + '</td>'
+      + '<td class="' + pc(d.ptsPerGame) + '">' + ps(f1(d.ptsPerGame)) + '</td>'
+      + '<td class="' + pc(d.maxPts) + '">' + ps(d.maxPts) + '</td>'
+      + '<td class="' + pc(d.minPts) + '">' + ps(d.minPts) + '</td>'
+      + '<td class="sep">' + d.r1 + '</td><td>' + d.r2 + '</td><td>' + d.r3 + '</td><td>' + d.r4 + '</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+buildMedals();
+buildLineChart();
+renderTable('totalPts', null);
+switchBar('totalPts', '累計Pts比較', document.querySelector('.tab-btn.active'));
+</script>
+</body>
+</html>
