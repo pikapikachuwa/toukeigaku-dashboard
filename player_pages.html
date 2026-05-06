@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統計学WG 個人ページ</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f5f5f0;color:#222;min-height:100vh;}
+.nav{background:#fff;border-bottom:1px solid #e0e0e0;padding:0.75rem 1.5rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.nav-title{font-size:14px;font-weight:600;color:#555;margin-right:8px;white-space:nowrap;}
+.nav a{font-size:13px;color:#666;text-decoration:none;padding:4px 10px;border-radius:6px;border:1px solid #ddd;white-space:nowrap;}
+.nav a:hover{background:#f5f5f5;}
+.nav a.active{background:#333;color:#fff;border-color:#333;}
+.nav-back{font-size:13px;color:#4a90d9;text-decoration:none;margin-right:8px;}
+.container{max-width:960px;margin:0 auto;padding:1.5rem;}
+.page{display:none;}
+.page.active{display:block;}
+.hero{display:flex;align-items:center;gap:16px;padding:1.25rem;background:#fff;border:1px solid #e0e0e0;border-radius:12px;margin-bottom:1rem;}
+.avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;flex-shrink:0;}
+.hero-name{font-size:22px;font-weight:700;margin-bottom:4px;}
+.type-badge{display:inline-block;background:#fff8e1;color:#e65100;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #ffe082;}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem;}
+@media(max-width:600px){.metrics{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr!important;}}
+.metric{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:0.875rem 1rem;}
+.metric-label{font-size:11px;color:#888;margin-bottom:4px;}
+.metric-val{font-size:22px;font-weight:700;}
+.metric-rank{font-size:10px;color:#aaa;margin-top:2px;}
+.pos{color:#1a9e5c;}.neg{color:#d63a3a;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem 1.25rem;}
+.card-title{font-size:12px;font-weight:600;color:#777;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px;}
+.analysis-block{margin-bottom:0.75rem;}
+.analysis-label{font-size:11px;font-weight:600;color:#888;margin-bottom:4px;}
+.analysis-text{font-size:12px;color:#333;line-height:1.7;}
+.hitokoto{background:#fff;border:1px solid #e0e0e0;border-left:4px solid #f39c12;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.hitokoto-title{font-size:12px;font-weight:600;color:#e65100;margin-bottom:8px;}
+.hitokoto-text{font-size:13px;color:#333;line-height:1.8;}
+.radar-note{font-size:10px;color:#aaa;text-align:center;margin-top:6px;}
+.detail-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.detail-tbl td{padding:5px 0;border-bottom:1px solid #f5f5f5;}
+.detail-tbl td:last-child{text-align:right;font-size:10px;color:#aaa;padding-left:6px;}
+.detail-tbl td:nth-child(2){text-align:right;font-weight:600;}
+.matchup-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.mc{border-radius:8px;padding:0.6rem 0.5rem;text-align:center;}
+.mc-name{font-size:12px;font-weight:600;margin-bottom:2px;}
+.mc-grade{font-size:12px;font-weight:600;margin-bottom:2px;}
+.mc-detail{font-size:10px;opacity:0.8;}
+.gA{background:#e8f5e9;color:#1b5e20;}
+.gB{background:#e3f2fd;color:#0d47a1;}
+.gC{background:#f5f5f5;color:#777;}
+.gD{background:#fff3e0;color:#e65100;}
+.gE{background:#ffebee;color:#b71c1c;}
+.gN{background:#f5f5f5;color:#bbb;}
+.legend{display:flex;gap:8px;flex-wrap:wrap;}
+.legend span{font-size:10px;padding:2px 10px;border-radius:4px;}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <a href="mahjong_dashboard.html" class="nav-back">← ダッシュボードへ</a>
+  <span class="nav-title">個人ページ：</span>
+  <a href="#" onclick="showPage('土岐')" id="nav-土岐">土岐</a>
+  <a href="#" onclick="showPage('藤木')" id="nav-藤木">藤木</a>
+  <a href="#" onclick="showPage('鹿山')" id="nav-鹿山">鹿山</a>
+  <a href="#" onclick="showPage('河井')" id="nav-河井">河井</a>
+  <a href="#" onclick="showPage('松林')" id="nav-松林">松林</a>
+  <a href="#" onclick="showPage('岡崎')" id="nav-岡崎">岡崎</a>
+  <a href="#" onclick="showPage('大塚')" id="nav-大塚">大塚</a>
+  <a href="#" onclick="showPage('矢嶋')" id="nav-矢嶋">矢嶋</a>
+  <a href="#" onclick="showPage('本井')" id="nav-本井">本井</a>
+</div>
+
+<div class="container" id="main-container"></div>
+
+<script>
+const N = 9;
+function r2s(r){ return Math.round((N-r)/(N-1)*100); }
+function ps(n){ return n==null?'-':(n>0?'+':'')+n; }
+function f1(n){ return n==null?'-':Number(n).toFixed(1); }
+function f2(n){ return n==null?'-':Number(n).toFixed(2); }
+function pct(n){ return n==null?'-':f1(n)+'%'; }
+function pc(n){ return n>0?'pos':n<0?'neg':''; }
+
+function grade(avg){
+  if(avg==null) return null;
+  if(avg>=10)  return {label:'超得意！',cls:'gA'};
+  if(avg>=3)   return {label:'得意！',  cls:'gB'};
+  if(avg>=-3)  return {label:'普通～',  cls:'gC'};
+  if(avg>=-10) return {label:'苦手！',  cls:'gD'};
+  return              {label:'超苦手！',cls:'gE'};
+}
+
+const ALL_MEMBERS = ['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
+
+const DATA = {
+  '土岐':{games:44,avgRank:2.25,topRate:31.8,renRate:61.4,avoidRate:81.8,lastRate:18.2,plusRate:61.4,stdDev:50.4,avgPts1st:78.0,avgPts4th:-50.2,totalPts:695,ptsPerGame:15.8,maxPts:133,minPts:-59,recent20AvgRank:2.75,r1:14,r2:13,r3:9,r4:8},
+  '藤木':{games:3,avgRank:4.00,topRate:0.0,renRate:0.0,avoidRate:0.0,lastRate:100.0,plusRate:0.0,stdDev:31.5,avgPts1st:null,avgPts4th:-71.7,totalPts:-215,ptsPerGame:-71.7,maxPts:-53,minPts:-108,recent20AvgRank:4.00,r1:0,r2:0,r3:0,r4:3},
+  '鹿山':{games:10,avgRank:2.80,topRate:10.0,renRate:40.0,avoidRate:70.0,lastRate:30.0,plusRate:40.0,stdDev:41.1,avgPts1st:53.0,avgPts4th:-63.7,totalPts:-173,ptsPerGame:-17.3,maxPts:53,minPts:-79,recent20AvgRank:2.80,r1:1,r2:3,r3:3,r4:3},
+  '河井':{games:18,avgRank:2.78,topRate:22.2,renRate:33.3,avoidRate:66.7,lastRate:33.3,plusRate:33.3,stdDev:48.2,avgPts1st:56.2,avgPts4th:-64.3,totalPts:-328,ptsPerGame:-18.2,maxPts:65,minPts:-96,recent20AvgRank:2.78,r1:4,r2:2,r3:6,r4:6},
+  '松林':{games:35,avgRank:2.31,topRate:31.4,renRate:57.1,avoidRate:80.0,lastRate:20.0,plusRate:57.1,stdDev:49.9,avgPts1st:70.5,avgPts4th:-59.7,totalPts:285,ptsPerGame:8.1,maxPts:84,minPts:-66,recent20AvgRank:2.35,r1:11,r2:9,r3:8,r4:7},
+  '岡崎':{games:49,avgRank:2.53,topRate:20.4,renRate:51.0,avoidRate:75.5,lastRate:24.5,plusRate:46.9,stdDev:45.3,avgPts1st:69.9,avgPts4th:-56.8,totalPts:-158,ptsPerGame:-3.2,maxPts:102,minPts:-88,recent20AvgRank:2.55,r1:10,r2:15,r3:12,r4:12},
+  '大塚':{games:28,avgRank:2.50,topRate:32.1,renRate:46.4,avoidRate:71.4,lastRate:28.6,plusRate:46.4,stdDev:58.6,avgPts1st:73.7,avgPts4th:-64.0,totalPts:70,ptsPerGame:2.5,maxPts:143,minPts:-102,recent20AvgRank:2.55,r1:9,r2:4,r3:7,r4:8},
+  '矢嶋':{games:12,avgRank:2.67,topRate:16.7,renRate:50.0,avoidRate:66.7,lastRate:33.3,plusRate:50.0,stdDev:47.9,avgPts1st:58.5,avgPts4th:-59.8,totalPts:-91,ptsPerGame:-7.6,maxPts:66,minPts:-97,recent20AvgRank:2.67,r1:2,r2:4,r3:2,r4:4},
+  '本井':{games:13,avgRank:2.62,topRate:15.4,renRate:38.5,avoidRate:84.6,lastRate:15.4,plusRate:23.1,stdDev:41.3,avgPts1st:77.0,avgPts4th:-50.5,totalPts:-85,ptsPerGame:-6.5,maxPts:92,minPts:-56,recent20AvgRank:2.62,r1:2,r2:3,r3:6,r4:2},
+};
+
+const RADAR_RANKS = {
+  '土岐':[2,1,2,1,8,1],'藤木':[9,9,9,9,1,9],'鹿山':[8,6,6,6,2,8],
+  '河井':[4,8,7,7,6,7],'松林':[3,2,3,2,7,4],'岡崎':[5,3,4,4,4,5],
+  '大塚':[1,5,5,5,9,3],'矢嶋':[6,4,8,3,5,6],'本井':[7,7,1,8,3,2],
+};
+
+const DETAIL_RANKS = {
+  '土岐':{totalPts:1,ptsPerGame:1,topRate:2,renRate:1,avoidRate:2,plusRate:1,stdDev:8,avgPts1st:1,avgRank:1,games:2},
+  '藤木':{totalPts:8,ptsPerGame:9,topRate:9,renRate:9,avoidRate:9,plusRate:9,stdDev:1,avgPts1st:9,avgRank:9,games:9},
+  '鹿山':{totalPts:7,ptsPerGame:7,topRate:8,renRate:6,avoidRate:6,plusRate:6,stdDev:2,avgPts1st:8,avgRank:8,games:8},
+  '河井':{totalPts:9,ptsPerGame:8,topRate:4,renRate:8,avoidRate:7,plusRate:7,stdDev:6,avgPts1st:7,avgRank:7,games:5},
+  '松林':{totalPts:2,ptsPerGame:2,topRate:3,renRate:2,avoidRate:3,plusRate:2,stdDev:7,avgPts1st:4,avgRank:2,games:3},
+  '岡崎':{totalPts:6,ptsPerGame:4,topRate:5,renRate:3,avoidRate:4,plusRate:4,stdDev:4,avgPts1st:5,avgRank:4,games:1},
+  '大塚':{totalPts:3,ptsPerGame:3,topRate:1,renRate:5,avoidRate:5,plusRate:5,stdDev:9,avgPts1st:3,avgRank:3,games:4},
+  '矢嶋':{totalPts:5,ptsPerGame:6,topRate:6,renRate:4,avoidRate:8,plusRate:3,stdDev:5,avgPts1st:6,avgRank:6,games:7},
+  '本井':{totalPts:4,ptsPerGame:5,topRate:7,renRate:7,avoidRate:1,plusRate:8,stdDev:3,avgPts1st:2,avgRank:5,games:6},
+};
+
+const MATCHUP = {
+  '土岐':{'藤木':[3,65.8],'鹿山':[10,16.1],'河井':[9,25.9],'松林':[30,-13.1],'岡崎':[40,-2.9],'大塚':[24,0.6],'矢嶋':[8,-7.9],'本井':[8,-4.1]},
+  '藤木':{'土岐':[3,6.2],'矢嶋':[3,-14.4],'本井':[3,8.2]},
+  '鹿山':{'土岐':[10,2.2],'松林':[10,-5.7],'岡崎':[10,3.6]},
+  '河井':{'土岐':[9,-12.0],'松林':[8,-9.4],'岡崎':[17,-1.7],'大塚':[8,-13.5],'矢嶋':[4,43.6],'本井':[8,18.2]},
+  '松林':{'土岐':[30,-26.3],'鹿山':[10,13.5],'河井':[8,10.2],'岡崎':[34,11.0],'大塚':[15,10.2],'本井':[8,5.8]},
+  '岡崎':{'土岐':[40,-14.0],'鹿山':[10,16.6],'河井':[17,16.9],'松林':[34,-4.3],'大塚':[28,-2.2],'矢嶋':[9,20.4],'本井':[9,14.2]},
+  '大塚':{'土岐':[24,-6.2],'河井':[8,5.6],'松林':[15,-1.5],'岡崎':[28,0.2],'矢嶋':[9,13.5]},
+  '矢嶋':{'土岐':[8,5.0],'藤木':[3,58.9],'河井':[4,12.8],'岡崎':[9,0.3],'大塚':[9,-20.6],'本井':[3,-28.4]},
+  '本井':{'土岐':[8,-41.2],'藤木':[3,66.4],'河井':[8,22.0],'松林':[8,-8.3],'岡崎':[9,16.9],'矢嶋':[3,-43.6]},
+};
+
+const PROFILES = {
+  '土岐':{type:'👑 無敵の連帯エース',color:'#4a90d9',initials:'土',
+    strong:'連帯率61.4%はWG断トツ1位。累計+695もWG1位と、どの指標を見ても圧倒的な存在感。Pts/G+15.8は2位以下に大差をつけており、このWGの絶対王者として君臨している。',
+    weak:'直近20戦の平均順位が2.75と全体成績(2.25)から悪化している点が唯一の懸念材料。松林との補正差分が-13.1と、特定の相手に苦手意識が出ている。',
+    trend:'直近20戦の成績がやや落ちており、王座に陰りが見え始めている可能性も。引き続き要注目。',
+    hitokoto:'👑 このWGの絶対王者。データがすべてを物語っている。あえて弱点を挙げるとすれば「松林が隣にいるとき」だけ。全メンバーが日々対策を研究しているが、なかなか崩せない。直近20戦のわずかな陰りは本物の翳りか、はたまた嵐の前の静けさか。次の活動日が楽しみすぎる。'},
+  '藤木':{type:'🃏 伝説の3半荘男',color:'#e67e22',initials:'藤',
+    strong:'安定性（標準偏差）はWG1位。参加わずか3半荘ながら、その存在感は絶大。これは「毎回ほぼ同じように負ける」という驚くべき一貫性の結果。',
+    weak:'参加3半荘すべてで最下位という完璧な記録。Top率・連帯率・プラス率がすべて0%。累計-215はWG下位。',
+    trend:'サンプルが3半荘しかないため正確な評価は困難。次回以降の参戦でデータが積み上がることに期待。',
+    hitokoto:'🃏 わずか3半荘で統計学WGに衝撃を与えた男。全半荘ラス達成という驚異的な一貫性は、ある種の才能かもしれない。「安定性WG1位」という称号は誰も想定していない形で獲得された。次回の参戦で真の実力が明らかになるのか、それとも伝説に磨きをかけるのか。全員が固唾を呑んで見守っている。'},
+  '鹿山':{type:'🔍 データ蓄積中の未知数',color:'#aaaaaa',initials:'鹿',
+    strong:'安定性（標準偏差）はWG2位と、ブレが少ない堅実なスタイル。岡崎との同卓では「普通～」と安定した相性を発揮している。',
+    weak:'参加10半荘とサンプルが少なく全体評価が難しい。松林との補正差分が-5.7とやや苦戦。累計-173、Pts/G-17.3とマイナス圏。',
+    trend:'10半荘のデータではまだ判断材料が不足。真の実力は参加回数が増えるにつれ明らかになる。',
+    hitokoto:'🔍 10半荘というデータでは真の姿はまだ謎に包まれている。安定性の高さは本物のスタイルなのか、単なるサンプル不足なのか。WGメンバーが最も「読めない」と感じているのがこの人かもしれない。もっと参加してデータを積み上げてほしい。お待ちしています。'},
+  '河井':{type:'⚡ 矢嶋との相性に生きる男',color:'#e8c830',initials:'河',
+    strong:'矢嶋との補正差分+43.6は全組み合わせ中でもトップクラスの相性。本井との相性も+18.2と良好。特定の相手には圧倒的な強さを発揮できるポテンシャルを持つ。',
+    weak:'累計-328はWG最下位。土岐・松林・大塚には苦手で、多くの相手にマイナスの補正差分が出ている。Pts/G-18.2もWG下位圏。',
+    trend:'直近20戦も全体と変わらない成績が続いており、現状維持の状態。',
+    hitokoto:'⚡ データが語る現実は厳しい。累計-328というWG最下位の数字は直視せざるを得ない。しかし！矢嶋との同卓時だけは別人のように輝く謎の相性がある。矢嶋を隣に置き続けることが逆転への道筋かもしれない。諦めたらそこで試合終了ですよ。'},
+  '松林':{type:'🌊 土岐以外には強い安定型',color:'#9b59b6',initials:'松',
+    strong:'土岐以外のメンバーとの相性はすべて「得意！」以上。連帯率57.1%はWG2位。累計+285もWG2位と実力は折り紙付き。岡崎・鹿山・河井・大塚・本井と幅広く得意な相手を持つ。',
+    weak:'土岐との補正差分-26.3はWG内でも最大級の苦手相性で「超苦手！」評価。土岐と同卓した30半荘で大きく引きずられている。',
+    trend:'直近20戦の平均順位2.35は全体平均2.31とほぼ同水準で安定。',
+    hitokoto:'🌊 土岐さんさえいなければ、このWGの王者はこの人だったかもしれない。土岐との対戦時だけ、謎の別人モードに突入してしまうのが最大の課題。他のメンバーへの安定した強さは本物。土岐との心理的な壁を超えた日、統計学WGの勢力図が書き換えられる。'},
+  '岡崎':{type:'🥈 準優勝の申し子',color:'#27ae60',initials:'岡',
+    strong:'参加半荘数49はWGダントツ1位のフル参戦型。連帯率51.0%はWG3位と安定して上位に絡む。2位回数15回はWG全員の中で最多で、崩れない安定感が光る。',
+    weak:'Top率20.4%はWG6位と伸び悩み。試合数最多にもかかわらず累計-158・Pts/G-3.2というのがデータの核心で「勝ちきれない試合」が積み重なっている。',
+    trend:'直近20戦の平均順位2.55は全体とほぼ同水準で大きな変化なし。',
+    hitokoto:'🥈 2位が15回ってどういうこと？もはや2位のプロ。連帯率51%という数字はガチで強いのに、なぜかいつも誰かに美味しいところを持っていかれる。WG最多試合数という圧倒的経験値を持ちながら、なぜトップが遠いのか。それが岡崎の永遠のミステリー。そろそろ金メダルを首にかける番では？'},
+  '大塚':{type:'💥 爆発型トップハンター',color:'#e74c3c',initials:'大',
+    strong:'Top率32.1%はWG1位。MaxPts143もWG1位と、勝つときのスケールが別格。1着時の平均得点+73.7はWG3位と、勝ちゲームの質が非常に高い。累計+70でプラス圏を維持。',
+    weak:'標準偏差58.6はWG9位（最下位）で結果のブレ幅がダントツ。4着回避率・連帯率・プラス率はいずれもWG5位と中位圏。',
+    trend:'直近20戦の平均順位2.55は全体平均2.50からわずかに悪化。調整局面の可能性あり。',
+    hitokoto:'🎲 スコアの振れ幅、もはや天気予報レベル。晴れの日は最高だけど、荒れる日は本当に荒れる。でもそのジェットコースター感がなぜか憎めない。標準偏差をもう少し「統計学的」に管理できたら、このWGの台風の目になれる逸材。次の活動日、嵐を起こすか、自分が飲み込まれるか、全員が注目している。🌪️'},
+  '矢嶋':{type:'🎭 個性派の二面性プレイヤー',color:'#c0392b',initials:'矢',
+    strong:'藤木との補正差分+58.9はWG内でも最高クラスの相性。土岐・河井とも「得意！」評価で、得意な相手には圧倒的な強さを発揮できる。',
+    weak:'大塚との補正差分-20.6、本井との-28.4はいずれも「超苦手！」評価。得意・苦手の差が激しい。累計-91、Pts/G-7.6とマイナス圏。',
+    trend:'直近20戦のデータと全体がほぼ同水準で変化なし。',
+    hitokoto:'🎭 好き嫌いが激しすぎる個性派。藤木との相性は神がかり的(+58.9)なのに、大塚・本井には謎のほど苦手意識が強い。同じ卓に誰がいるかで、まるで別人のように成績が変わる。「今日の卓メン誰？」が最重要事項になっているはず。'},
+  '本井':{type:'🛡️ 守備の達人・土岐の前に散る',color:'#f39c12',initials:'本',
+    strong:'4着回避率84.6%はWG1位という驚異的な守備力。藤木との補正差分+66.4はWG全組み合わせ中で最高値。河井・岡崎とも「得意！」相性。',
+    weak:'土岐との補正差分-41.2、矢嶋との-43.6はいずれも「超苦手！」で、特定の相手に極端に弱い。累計-85、プラス率23.1%はWG最低水準。',
+    trend:'直近20戦も全体と同水準で大きな変化なし。',
+    hitokoto:'🛡️ 4着回避率WG1位という鉄壁の守りを誇るのに、なぜか累計マイナス。これは土岐・矢嶋という天敵2人の存在が大きい。この2人さえいなければ安定したプラス成績を積み上げられるはず。天敵との心理的な相性を克服することが、次のステージへの鍵。'},
+};
+
+const PTS_RANK = {'土岐':1,'松林':2,'大塚':3,'本井':4,'矢嶋':5,'岡崎':6,'鹿山':7,'藤木':8,'河井':9};
+
+let radarCharts = {};
+
+function buildPage(name){
+  const d = DATA[name];
+  const p = PROFILES[name];
+  const dr = DETAIL_RANKS[name];
+  const rr = RADAR_RANKS[name];
+  const mu = MATCHUP[name]||{};
+  const ptsRank = PTS_RANK[name];
+
+  const ptsVal = ps(d.totalPts);
+  const ppgVal = ps(f1(d.ptsPerGame));
+
+  let detailRows = [
+    ['連帯率',     pct(d.renRate),   'WG '+dr.renRate+'位'],
+    ['4着回避率',  pct(d.avoidRate), 'WG '+dr.avoidRate+'位'],
+    ['ラス率',     pct(d.lastRate),  'WG '+(10-dr.avoidRate)+'位'],
+    ['プラス率',   pct(d.plusRate),  'WG '+dr.plusRate+'位'],
+    ['標準偏差',   f1(d.stdDev),     'WG '+dr.stdDev+'位'],
+    ['1着時Pts',   d.avgPts1st!=null?ps(f1(d.avgPts1st)):'-', d.avgPts1st!=null?'WG '+dr.avgPts1st+'位':'－'],
+    ['4着時Pts',   ps(f1(d.avgPts4th)), ''],
+    ['MaxPts',     ps(d.maxPts),     ''],
+    ['直近20戦順位', f2(d.recent20AvgRank), d.recent20AvgRank>d.avgRank?'↓ やや低下':d.recent20AvgRank<d.avgRank?'↑ 上昇中':'→ 横ばい'],
+  ];
+
+  const detailHTML = detailRows.map(([label,val,rank])=>`
+    <tr><td style="color:#888;padding:5px 0;border-bottom:1px solid #f5f5f5;">${label}</td>
+    <td style="text-align:right;font-weight:600;padding:5px 0;border-bottom:1px solid #f5f5f5;">${val}</td>
+    <td style="text-align:right;font-size:10px;color:#aaa;padding:5px 0 5px 6px;border-bottom:1px solid #f5f5f5;">${rank}</td></tr>
+  `).join('');
+
+  const matchupOrder = ALL_MEMBERS.filter(m=>m!==name);
+  const matchupHTML = matchupOrder.map(opp=>{
+    const m = mu[opp];
+    const g = m ? grade(m[1]) : null;
+    return `<div class="mc ${g?g.cls:'gN'}">
+      <div class="mc-name">${opp}</div>
+      <div class="mc-grade">${g?g.label:'－'}</div>
+      <div class="mc-detail">${m?m[1].toFixed(1)+' / '+m[0]+'回':'同卓なし'}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="hero">
+    <div class="avatar" style="background:${p.color}22;color:${p.color};">${p.initials}</div>
+    <div style="flex:1;">
+      <div class="hero-name" style="color:${p.color};">${name}</div>
+      <div class="type-badge">${p.type}</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:11px;color:#aaa;">参加半荘数</div>
+      <div style="font-size:24px;font-weight:700;color:#333;">${d.games}</div>
+      <div style="font-size:10px;color:#aaa;">WG ${dr.games}位</div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">累計Pts</div>
+      <div class="metric-val ${pc(d.totalPts)}">${ptsVal}</div>
+      <div class="metric-rank">WG ${ptsRank}位</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Pts/G</div>
+      <div class="metric-val ${pc(d.ptsPerGame)}">${ppgVal}</div>
+      <div class="metric-rank">WG ${dr.ptsPerGame}位</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Top率</div>
+      <div class="metric-val">${pct(d.topRate)}</div>
+      <div class="metric-rank">WG ${dr.topRate}位</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">平均順位</div>
+      <div class="metric-val">${f2(d.avgRank)}</div>
+      <div class="metric-rank">WG ${dr.avgRank}位</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">📡 能力レーダー</div>
+      <div style="height:220px;position:relative;">
+        <canvas id="radar-${name}" role="img" aria-label="${name}の能力レーダーチャート">${name}の能力レーダー</canvas>
+      </div>
+      <div class="radar-note">※ WG内順位をスコア化（1位=100、9位=0）</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 詳細指標</div>
+      <table class="detail-tbl">${detailHTML}</table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem;">
+    <div class="card-title">🔍 データ分析</div>
+    <div class="analysis-block">
+      <div class="analysis-label">📈 強み</div>
+      <div class="analysis-text">${p.strong}</div>
+    </div>
+    <div class="analysis-block">
+      <div class="analysis-label">⚠️ 課題</div>
+      <div class="analysis-text">${p.weak}</div>
+    </div>
+    <div class="analysis-block" style="margin-bottom:0;">
+      <div class="analysis-label">📉 直近の傾向</div>
+      <div class="analysis-text">${p.trend}</div>
+    </div>
+  </div>
+
+  <div class="hitokoto">
+    <div class="hitokoto-title">🤖 AIからヒトコト</div>
+    <div class="hitokoto-text">${p.hitokoto}</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🀄 同卓分析</div>
+    <p style="font-size:11px;color:#aaa;margin-bottom:12px;">各メンバーと同卓した半荘での補正済み平均差分をもとに相性を評価（全体的な強さの影響を除外）</p>
+    <div class="matchup-grid">${matchupHTML}</div>
+    <div class="legend">
+      <span class="gA">超得意！（+10以上）</span>
+      <span class="gB">得意！（+3〜+10）</span>
+      <span class="gC">普通～（-3〜+3）</span>
+      <span class="gD">苦手！（-10〜-3）</span>
+      <span class="gE">超苦手！（-10未満）</span>
+    </div>
+  </div>`;
+}
+
+function buildRadar(name){
+  if(radarCharts[name]){ radarCharts[name].destroy(); }
+  const rr = RADAR_RANKS[name];
+  const p = PROFILES[name];
+  const avgScore = r2s(5);
+  const ctx = document.getElementById('radar-'+name);
+  if(!ctx) return;
+  radarCharts[name] = new Chart(ctx.getContext('2d'),{
+    type:'radar',
+    data:{
+      labels:['Top率','連帯率','4着回避率','プラス率','安定性','得点力'],
+      datasets:[
+        {label:name,data:rr.map(r=>r2s(r)),borderColor:p.color,backgroundColor:p.color+'26',borderWidth:2,pointBackgroundColor:p.color,pointRadius:4},
+        {label:'WG平均',data:[avgScore,avgScore,avgScore,avgScore,avgScore,avgScore],borderColor:'#ccc',backgroundColor:'rgba(200,200,200,0.08)',borderWidth:1.5,pointBackgroundColor:'#ccc',pointRadius:3,borderDash:[4,3]}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}},
+        tooltip:{callbacks:{label:ctx=>{const r=Math.round(N-ctx.raw*(N-1)/100);return ctx.dataset.label+': WG '+r+'位相当';}}}},
+      scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:9},color:'#bbb',backdropColor:'transparent',callback:v=>v===0?'9位':v===50?'5位':v===100?'1位':''},grid:{color:'rgba(0,0,0,0.06)'},pointLabels:{font:{size:11}}}}
+    }
+  });
+}
+
+let currentPage = '';
+function showPage(name){
+  if(currentPage === name) return;
+  currentPage = name;
+  document.querySelectorAll('.nav a[id^="nav-"]').forEach(a=>a.classList.remove('active'));
+  const navEl = document.getElementById('nav-'+name);
+  if(navEl) navEl.classList.add('active');
+  const container = document.getElementById('main-container');
+  container.innerHTML = buildPage(name);
+  setTimeout(()=>buildRadar(name), 100);
+}
+
+showPage('土岐');
+</script>
+</body>
+</html>
