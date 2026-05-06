@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統計学WG Season2 ダッシュボード</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f5f5f0;color:#222;min-height:100vh;padding:1.5rem;}
+.container{max-width:1100px;margin:0 auto;}
+.dash-header{display:flex;align-items:center;justify-content:space-between;padding:0 0 0.75rem;border-bottom:1px solid #ddd;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px;}
+.dash-title{font-size:18px;font-weight:600;color:#111;}
+.dash-meta{font-size:12px;color:#888;margin-left:10px;}
+.dash-badge{display:inline-block;background:#6c3483;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;margin-left:8px;}
+.link-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;background:#333;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;}
+.medal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1rem;}
+@media(max-width:600px){.medal-grid{grid-template-columns:1fr;}}
+.medal-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem;}
+.medal-card.gold{border-color:#c9a84c;background:#fffdf5;}
+.medal-card.silver{border-color:#aaa;background:#fafafa;}
+.medal-card.bronze{border-color:#b87333;background:#fff9f5;}
+.medal-label{font-size:11px;color:#888;margin-bottom:2px;}
+.medal-name{font-size:17px;font-weight:600;margin-bottom:5px;}
+.medal-pts{font-size:24px;font-weight:700;}
+.medal-sub{font-size:11px;color:#888;margin-top:4px;}
+.pos{color:#1a9e5c;}.neg{color:#d63a3a;}
+.chart-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1.25rem;margin-bottom:1rem;}
+.chart-title{font-size:13px;font-weight:600;color:#555;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.tab-btns{display:flex;gap:4px;flex-wrap:wrap;}
+.tab-btn{font-size:11px;padding:3px 10px;border-radius:6px;background:transparent;border:1px solid #ccc;color:#666;cursor:pointer;}
+.tab-btn:hover{background:#f0f0f0;}
+.tab-btn.active{background:#333;color:#fff;border-color:#333;}
+.tbl-wrap{overflow-x:auto;}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.tbl th{padding:6px 9px;font-size:10px;color:#777;font-weight:600;white-space:nowrap;border-bottom:2px solid #eee;text-align:right;background:#fafafa;}
+.tbl th.left{text-align:left;}.tbl th.center{text-align:center;}
+.tbl td{padding:6px 9px;white-space:nowrap;border-bottom:1px solid #f0f0f0;text-align:right;}
+.tbl td.left{text-align:left;font-weight:600;}.tbl td.center{text-align:center;font-size:13px;}
+.tbl tr:hover td{background:#f9f9f9;}
+.sep{border-left:2px solid #eee;}
+.grp{font-size:9px;color:#aaa;text-align:center;padding:3px 4px;background:#f5f5f5;border-bottom:1px solid #eee;}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="dash-header">
+  <div>
+    <span class="dash-title">🀄 統計学WG ダッシュボード</span>
+    <span class="dash-badge">Season 2</span>
+    <span class="dash-meta">206半荘 ／ 32活動日 ／ 2025年2月〜2026年1月</span>
+  </div>
+  <a href="season2_player_pages.html" class="link-btn">個人・同卓分析はこちら →</a>
+</div>
+
+<div class="medal-grid" id="medal-grid"></div>
+
+<div class="chart-card">
+  <div class="chart-title"><span>累計ポイント推移</span></div>
+  <div style="height:300px;position:relative;"><canvas id="line-chart" role="img" aria-label="累計ポイント推移">累計ポイント推移</canvas></div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title">
+    <span id="bar-label">累計Pts比較</span>
+    <div class="tab-btns">
+      <button class="tab-btn active" onclick="switchBar('totalPts','累計Pts比較',this)">累計Pts</button>
+      <button class="tab-btn" onclick="switchBar('ptsPerGame','Pts/G比較',this)">Pts/G</button>
+      <button class="tab-btn" onclick="switchBar('avgRank','平均順位比較',this)">平均順位</button>
+      <button class="tab-btn" onclick="switchBar('topRate','Top率比較',this)">Top率</button>
+      <button class="tab-btn" onclick="switchBar('renRate','連帯率比較',this)">連帯率</button>
+      <button class="tab-btn" onclick="switchBar('avoidRate','4着回避率比較',this)">回避率</button>
+      <button class="tab-btn" onclick="switchBar('plusRate','プラス率比較',this)">プラス率</button>
+      <button class="tab-btn" onclick="switchBar('stdDev','標準偏差比較',this)">標準偏差</button>
+    </div>
+  </div>
+  <div style="height:220px;position:relative;"><canvas id="bar-chart" role="img" aria-label="指標比較">指標比較</canvas></div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title">
+    <span>詳細テーブル</span>
+    <div class="tab-btns">
+      <button class="tab-btn" onclick="renderTable('member',this)">メンバー順</button>
+      <button class="tab-btn active" onclick="renderTable('totalPts',this)">累計Pts順</button>
+      <button class="tab-btn" onclick="renderTable('ptsPerGame',this)">Pts/G順</button>
+      <button class="tab-btn" onclick="renderTable('avgRank',this)">平均順位順</button>
+      <button class="tab-btn" onclick="renderTable('topRate',this)">Top率順</button>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th class="grp center" colspan="2"></th>
+          <th class="grp center sep" colspan="2">基本</th>
+          <th class="grp center sep" colspan="5">順位系</th>
+          <th class="grp center sep" colspan="3">安定性</th>
+          <th class="grp center sep">直近20戦</th>
+          <th class="grp center sep" colspan="4">累計Pts</th>
+          <th class="grp center sep" colspan="4">着順回数</th>
+        </tr>
+        <tr>
+          <th class="center">順</th><th class="left">名前</th>
+          <th class="sep">半荘数</th><th>平均順位</th>
+          <th class="sep">Top率</th><th>連帯率</th><th>4着回避率</th><th>ラス率</th><th>プラス率</th>
+          <th class="sep">標準偏差</th><th>1着時Pts</th><th>4着時Pts</th>
+          <th class="sep">直近平均順位</th>
+          <th class="sep">累計Pts</th><th>Pts/G</th><th>MaxPts</th><th>MinPts</th>
+          <th class="sep">1st</th><th>2nd</th><th>3rd</th><th>4th</th>
+        </tr>
+      </thead>
+      <tbody id="detail-tbody"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<script>
+const DISPLAY_NAMES={'土岐':'TK_n','矢嶋':'YaJi','藤木':'FuJi','松林':'MaTsuB','鹿山':'KaYaM','岡崎':'OkaZ','大塚':'OtsuK','河井':'KaWa_i','本井':'MoTo_i'};
+function dn(n){return DISPLAY_NAMES[n]||n;}
+const MEMBER_ORDER=['土岐','矢嶋','藤木','松林','鹿山','岡崎','大塚','河井','本井'];
+const DATA=[
+  {name:'土岐',games:111,avgRank:2.24,topRate:37.8,renRate:59.5,avoidRate:78.4,lastRate:21.6,plusRate:58.6,stdDev:49.5,avgPts1st:65.9,avgPts4th:-55.1,totalPts:1145,ptsPerGame:10.3,maxPts:111,minPts:-82,recent20AvgRank:1.80,r1:42,r2:24,r3:21,r4:24},
+  {name:'藤木',games:27,avgRank:2.48,topRate:29.6,renRate:48.1,avoidRate:74.1,lastRate:25.9,plusRate:48.1,stdDev:50.1,avgPts1st:73.0,avgPts4th:-51.4,totalPts:133,ptsPerGame:4.9,maxPts:89,minPts:-62,recent20AvgRank:2.50,r1:8,r2:5,r3:7,r4:7},
+  {name:'鹿山',games:80,avgRank:2.26,topRate:27.5,renRate:58.8,avoidRate:87.5,lastRate:12.5,plusRate:56.2,stdDev:41.7,avgPts1st:66.6,avgPts4th:-53.1,totalPts:776,ptsPerGame:9.7,maxPts:120,minPts:-67,recent20AvgRank:2.35,r1:22,r2:25,r3:23,r4:10},
+  {name:'河井',games:101,avgRank:2.75,topRate:18.8,renRate:37.6,avoidRate:68.3,lastRate:31.7,plusRate:37.6,stdDev:45.0,avgPts1st:65.1,avgPts4th:-58.2,totalPts:-987,ptsPerGame:-9.8,maxPts:97,minPts:-88,recent20AvgRank:3.15,r1:19,r2:19,r3:31,r4:32},
+  {name:'松林',games:82,avgRank:2.39,topRate:25.6,renRate:56.1,avoidRate:79.3,lastRate:20.7,plusRate:50.0,stdDev:44.3,avgPts1st:67.5,avgPts4th:-53.1,totalPts:304,ptsPerGame:3.7,maxPts:101,minPts:-78,recent20AvgRank:2.50,r1:21,r2:25,r3:19,r4:17},
+  {name:'岡崎',games:136,avgRank:2.41,topRate:28.7,renRate:54.4,avoidRate:75.7,lastRate:24.3,plusRate:52.9,stdDev:46.0,avgPts1st:65.2,avgPts4th:-54.3,totalPts:494,ptsPerGame:3.6,maxPts:98,minPts:-78,recent20AvgRank:2.35,r1:39,r2:35,r3:29,r4:33},
+  {name:'大塚',games:141,avgRank:2.72,topRate:16.3,renRate:41.1,avoidRate:70.2,lastRate:29.8,plusRate:39.7,stdDev:42.8,avgPts1st:66.7,avgPts4th:-56.0,totalPts:-1362,ptsPerGame:-9.7,maxPts:88,minPts:-87,recent20AvgRank:3.05,r1:23,r2:35,r3:41,r4:42},
+  {name:'矢嶋',games:120,avgRank:2.58,topRate:21.7,renRate:47.5,avoidRate:73.3,lastRate:26.7,plusRate:47.5,stdDev:43.1,avgPts1st:62.5,avgPts4th:-53.8,totalPts:-418,ptsPerGame:-3.5,maxPts:92,minPts:-69,recent20AvgRank:2.45,r1:26,r2:31,r3:31,r4:32},
+  {name:'本井',games:26,avgRank:2.62,topRate:23.1,renRate:50.0,avoidRate:65.4,lastRate:34.6,plusRate:46.2,stdDev:46.8,avgPts1st:66.8,avgPts4th:-53.0,totalPts:-85,ptsPerGame:-3.3,maxPts:88,minPts:-57,recent20AvgRank:2.55,r1:6,r2:7,r3:4,r4:9},
+];
+const TREND=[
+  {date:'02/07',土岐:0,藤木:0,鹿山:0,河井:0,松林:3,岡崎:94,大塚:-307,矢嶋:127,本井:-119},
+  {date:'02/13',土岐:0,藤木:0,鹿山:0,河井:-332,松林:3,岡崎:58,大塚:-253,矢嶋:212,本井:-119},
+  {date:'02/18',土岐:0,藤木:0,鹿山:0,河井:-358,松林:3,岡崎:195,大塚:-365,矢嶋:213,本井:-119},
+  {date:'03/01',土岐:0,藤木:0,鹿山:149,河井:-358,松林:163,岡崎:195,大塚:-604,矢嶋:150,本井:-119},
+  {date:'03/07',土岐:362,藤木:0,鹿山:149,河井:-358,松林:163,岡崎:55,大塚:-583,矢嶋:150,本井:-137},
+  {date:'03/20',土岐:403,藤木:0,鹿山:227,河井:-348,松林:105,岡崎:-16,大塚:-583,矢嶋:150,本井:-137},
+  {date:'03/29',土岐:414,藤木:0,鹿山:227,河井:-677,松林:-72,岡崎:197,大塚:-312,矢嶋:161,本井:-137},
+  {date:'04/17',土岐:414,藤木:0,鹿山:227,河井:-462,松林:-72,岡崎:217,大塚:-382,矢嶋:-4,本井:-137},
+  {date:'04/28',土岐:476,藤木:272,鹿山:227,河井:-440,松林:-72,岡崎:233,大塚:-537,矢嶋:-22,本井:-137},
+  {date:'04/29',土岐:377,藤木:272,鹿山:363,河井:-440,松林:-41,岡崎:233,大塚:-535,矢嶋:-92,本井:-137},
+  {date:'05/04',土岐:532,藤木:272,鹿山:363,河井:-440,松林:35,岡崎:231,大塚:-816,矢嶋:-92,本井:-85},
+  {date:'05/09',土岐:787,藤木:272,鹿山:363,河井:-440,松林:35,岡崎:212,大塚:-1004,矢嶋:-140,本井:-85},
+  {date:'05/15',土岐:872,藤木:272,鹿山:363,河井:-530,松林:35,岡崎:212,大塚:-829,矢嶋:-310,本井:-85},
+  {date:'06/05',土岐:796,藤木:346,鹿山:363,河井:-537,松林:54,岡崎:183,大塚:-952,矢嶋:-168,本井:-85},
+  {date:'06/07',土岐:788,藤木:346,鹿山:529,河井:-537,松林:88,岡崎:177,大塚:-1138,矢嶋:-168,本井:-85},
+  {date:'06/19',土岐:1003,藤木:346,鹿山:669,河井:-602,松林:198,岡崎:138,大塚:-1292,矢嶋:-375,本井:-85},
+  {date:'07/03',土岐:1009,藤木:346,鹿山:669,河井:-621,松林:198,岡崎:167,大塚:-1308,矢嶋:-375,本井:-85},
+  {date:'07/19',土岐:1009,藤木:346,鹿山:607,河井:-907,松林:198,岡崎:321,大塚:-1173,矢嶋:-316,本井:-85},
+  {date:'09/21',土岐:955,藤木:346,鹿山:651,河井:-907,松林:208,岡崎:385,大塚:-1173,矢嶋:-380,本井:-85},
+  {date:'10/10',土岐:830,藤木:346,鹿山:651,河井:-907,松林:304,岡崎:385,大塚:-1152,矢嶋:-372,本井:-85},
+  {date:'11/01',土岐:1047,藤木:133,鹿山:776,河井:-907,松林:304,岡崎:466,大塚:-1362,矢嶋:-372,本井:-85},
+  {date:'11/12',土岐:1145,藤木:133,鹿山:776,河井:-987,松林:304,岡崎:494,大塚:-1362,矢嶋:-418,本井:-85},
+];
+const MEMBERS=['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
+const COLORS=['#4a90d9','#e67e22','#aaaaaa','#e8c830','#9b59b6','#27ae60','#e74c3c','#c0392b','#f39c12'];
+const PTS_RANK={土岐:1,鹿山:2,岡崎:3,松林:4,藤木:5,本井:6,矢嶋:7,河井:8,大塚:9};
+
+const sorted=[...DATA].sort((a,b)=>b.totalPts-a.totalPts);
+function pc(n){return n>0?'pos':n<0?'neg':'';}
+function ps(n){return n==null?'-':(n>0?'+':'')+n;}
+function f1(n){return n==null?'-':Number(n).toFixed(1);}
+function f2(n){return n==null?'-':Number(n).toFixed(2);}
+function pct(n){return n==null?'-':f1(n)+'%';}
+
+function buildMedals(){
+  const grid=document.getElementById('medal-grid');
+  ['gold','silver','bronze'].forEach((cls,i)=>{
+    const s=sorted[i];
+    const c=document.createElement('div');c.className='medal-card '+cls;
+    c.innerHTML='<div class="medal-label">'+['🥇 1位','🥈 2位','🥉 3位'][i]+'</div>'
+      +'<div class="medal-name">'+s.name+'</div>'
+      +'<div class="medal-pts '+pc(s.totalPts)+'">'+ps(s.totalPts)+' pts</div>'
+      +'<div class="medal-sub">Pts/G '+ps(f1(s.ptsPerGame))+' ／ Top率 '+pct(s.topRate)+' ／ '+s.games+'半荘</div>';
+    grid.appendChild(c);
+  });
+}
+
+function buildLineChart(){
+  new Chart(document.getElementById('line-chart').getContext('2d'),{
+    type:'line',
+    data:{labels:TREND.map(d=>d.date),datasets:MEMBERS.map((m,i)=>({label:dn(m),data:TREND.map(d=>d[m]),borderColor:COLORS[i],backgroundColor:COLORS[i],borderWidth:2,pointRadius:2,pointHoverRadius:5,tension:0.1}))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12,padding:6}},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10}}}}}
+  });
+}
+
+let barChart=null;
+function switchBar(key,label,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.getElementById('bar-label').textContent=label;
+  const byVal=[...DATA].sort((a,b)=>key==='avgRank'?a[key]-b[key]:b[key]-a[key]);
+  const vals=byVal.map(d=>d[key]);
+  const isRate=['topRate','renRate','avoidRate','lastRate','plusRate'].includes(key);
+  const bc=vals.map(v=>key==='avgRank'?(v<=2.5?'rgba(26,158,92,0.75)':'rgba(214,58,58,0.75)'):(v>=0?'rgba(74,144,217,0.75)':'rgba(214,58,58,0.75)'));
+  if(barChart)barChart.destroy();
+  barChart=new Chart(document.getElementById('bar-chart').getContext('2d'),{
+    type:'bar',data:{labels:byVal.map(d=>d.name),datasets:[{data:vals,backgroundColor:bc,borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const v=ctx.raw;if(key==='avgRank')return f2(v);if(isRate)return f1(v)+'%';return ps(f1(v));}}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},callback:v=>isRate?v+'%':v}}}}
+  });
+}
+
+function renderTable(sortKey,btn){
+  if(btn){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  let s;
+  if(sortKey==='member') s=MEMBER_ORDER.map(name=>DATA.find(d=>d.name===name)).filter(Boolean);
+  else if(sortKey==='avgRank') s=[...DATA].sort((a,b)=>a[sortKey]-b[sortKey]);
+  else s=[...DATA].sort((a,b)=>b[sortKey]-a[sortKey]);
+  const tbody=document.getElementById('detail-tbody');tbody.innerHTML='';
+  s.forEach(d=>{
+    const rank=sorted.findIndex(x=>x.name===d.name)+1;
+    const medal=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':String(rank);
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td class="center">'+medal+'</td><td class="left">'+d.name+'</td>'
+      +'<td class="sep">'+d.games+'</td><td>'+f2(d.avgRank)+'</td>'
+      +'<td class="sep">'+pct(d.topRate)+'</td><td>'+pct(d.renRate)+'</td><td>'+pct(d.avoidRate)+'</td>'
+      +'<td class="'+pc(-d.lastRate)+'">'+pct(d.lastRate)+'</td>'
+      +'<td class="'+pc(d.plusRate-50)+'">'+pct(d.plusRate)+'</td>'
+      +'<td class="sep">'+f1(d.stdDev)+'</td>'
+      +'<td class="'+pc(d.avgPts1st)+'">'+ps(f1(d.avgPts1st))+'</td>'
+      +'<td class="'+pc(d.avgPts4th)+'">'+ps(f1(d.avgPts4th))+'</td>'
+      +'<td class="sep">'+f2(d.recent20AvgRank)+'</td>'
+      +'<td class="sep '+pc(d.totalPts)+'" style="font-weight:700;">'+ps(d.totalPts)+'</td>'
+      +'<td class="'+pc(d.ptsPerGame)+'">'+ps(f1(d.ptsPerGame))+'</td>'
+      +'<td class="'+pc(d.maxPts)+'">'+ps(d.maxPts)+'</td>'
+      +'<td class="'+pc(d.minPts)+'">'+ps(d.minPts)+'</td>'
+      +'<td class="sep">'+d.r1+'</td><td>'+d.r2+'</td><td>'+d.r3+'</td><td>'+d.r4+'</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+buildMedals();
+buildLineChart();
+renderTable('totalPts',null);
+switchBar('totalPts','累計Pts比較',document.querySelector('.tab-btn.active'));
+</script>
+</body>
+</html>

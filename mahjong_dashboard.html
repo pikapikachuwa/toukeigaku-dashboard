@@ -156,7 +156,7 @@ function buildMedals(){
     const c = document.createElement('div');
     c.className = 'medal-card ' + cls;
     c.innerHTML = '<div class="medal-label">' + labels[i] + '</div>'
-      + '<div class="medal-name">' + s.name + '</div>'
+      + '<div class="medal-name">' + dn(s.name) + '</div>'
       + '<div class="medal-pts ' + pc(s.totalPts) + '">' + ps(s.totalPts) + ' pts</div>'
       + '<div class="medal-sub">Pts/G ' + ps(f1(s.ptsPerGame)) + ' ／ Top率 ' + pct(s.topRate) + ' ／ ' + s.games + '半荘</div>';
     grid.appendChild(c);
@@ -170,7 +170,7 @@ function buildLineChart(){
     data: {
       labels: TREND.map(d => d.date),
       datasets: MEMBERS.map((m, i) => ({
-        label: m, data: TREND.map(d => d[m]),
+        label:dn(m),data:TREND.map(d => d[m]),
         borderColor: COLORS[i], backgroundColor: COLORS[i],
         borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.1
       }))
@@ -203,7 +203,7 @@ function switchBar(key, label, btn){
   if(barChart) barChart.destroy();
   barChart = new Chart(document.getElementById('bar-chart').getContext('2d'), {
     type: 'bar',
-    data: { labels: byVal.map(d => d.name), datasets: [{ data: vals, backgroundColor: bc, borderRadius: 4, borderSkipped: false }] },
+    data: { labels: byVal.map(d => dn(d.name)), datasets: [{ data: vals, backgroundColor: bc, borderRadius: 4, borderSkipped: false }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
@@ -244,7 +244,7 @@ function renderTable(sortKey, btn){
     const tr = document.createElement('tr');
     tr.innerHTML =
       '<td class="center">' + medal + '</td>'
-      + '<td class="left">' + d.name + '</td>'
+      + '<td class="left">' + dn(d.name) + '</td>'
       + '<td class="sep">' + d.games + '</td><td>' + f2(d.avgRank) + '</td>'
       + '<td class="sep">' + pct(d.topRate) + '</td><td>' + pct(d.renRate) + '</td><td>' + pct(d.avoidRate) + '</td>'
       + '<td class="' + pc(-d.lastRate) + '">' + pct(d.lastRate) + '</td>'
