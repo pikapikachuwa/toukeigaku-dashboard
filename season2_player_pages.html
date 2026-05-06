@@ -211,7 +211,7 @@ function buildPage(name){
   const matchupHTML=matchupOrder.map(opp=>{
     const m=mu[opp];const g=m?grade(m[1]):null;
     return`<div class="mc ${g?g.cls:'gN'}">
-      <div class="mc-name">${opp}</div>
+      <div class="mc-name">${dn(opp)}</div>
       <div class="mc-grade">${g?g.label:'－'}</div>
       <div class="mc-detail">${m?m[1].toFixed(1)+' / '+m[0]+'回':'同卓なし'}</div>
     </div>`;
@@ -221,7 +221,7 @@ function buildPage(name){
   <div class="hero">
     <div class="avatar" style="background:${p.color}22;color:${p.color};">${p.initials}</div>
     <div style="flex:1;">
-      <div class="hero-name" style="color:${p.color};">${name}</div>
+      <div class="hero-name" style="color:${p.color};">${dn(name)}</div>
       <div class="type-badge">${p.type}</div>
     </div>
     <div style="text-align:right;">
