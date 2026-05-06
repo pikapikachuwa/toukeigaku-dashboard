@@ -116,29 +116,29 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 </div><!-- /container -->
 
 <script>
-const MEMBER_ORDER = ['土岐','矢嶋','藤木','松林','鹿山','岡崎','大塚','河井','本井'];
+const MEMBER_ORDER = [__KEY_TK_n__,__KEY_YaJi__,__KEY_FuJi__,__KEY_MaTsuB__,__KEY_KaYaM__,__KEY_OkaZ__,__KEY_OtsuK__,__KEY_KaWa_i__,__KEY_MoTo_i__];
 const DATA = [
-  {name:'土岐',games:44,avgRank:2.25,topRate:31.8,renRate:61.4,avoidRate:81.8,lastRate:18.2,plusRate:61.4,stdDev:50.4,avgPts1st:78.0,avgPts4th:-50.2,totalPts:695,ptsPerGame:15.8,maxPts:133,minPts:-59,recent20AvgRank:2.75,r1:14,r2:13,r3:9,r4:8},
-  {name:'藤木',games:3,avgRank:4.00,topRate:0.0,renRate:0.0,avoidRate:0.0,lastRate:100.0,plusRate:0.0,stdDev:31.5,avgPts1st:null,avgPts4th:-71.7,totalPts:-215,ptsPerGame:-71.7,maxPts:-53,minPts:-108,recent20AvgRank:4.00,r1:0,r2:0,r3:0,r4:3},
-  {name:'鹿山',games:10,avgRank:2.80,topRate:10.0,renRate:40.0,avoidRate:70.0,lastRate:30.0,plusRate:40.0,stdDev:41.1,avgPts1st:53.0,avgPts4th:-63.7,totalPts:-173,ptsPerGame:-17.3,maxPts:53,minPts:-79,recent20AvgRank:2.80,r1:1,r2:3,r3:3,r4:3},
-  {name:'河井',games:18,avgRank:2.78,topRate:22.2,renRate:33.3,avoidRate:66.7,lastRate:33.3,plusRate:33.3,stdDev:48.2,avgPts1st:56.2,avgPts4th:-64.3,totalPts:-328,ptsPerGame:-18.2,maxPts:65,minPts:-96,recent20AvgRank:2.78,r1:4,r2:2,r3:6,r4:6},
-  {name:'松林',games:35,avgRank:2.31,topRate:31.4,renRate:57.1,avoidRate:80.0,lastRate:20.0,plusRate:57.1,stdDev:49.9,avgPts1st:70.5,avgPts4th:-59.7,totalPts:285,ptsPerGame:8.1,maxPts:84,minPts:-66,recent20AvgRank:2.35,r1:11,r2:9,r3:8,r4:7},
-  {name:'岡崎',games:49,avgRank:2.53,topRate:20.4,renRate:51.0,avoidRate:75.5,lastRate:24.5,plusRate:46.9,stdDev:45.3,avgPts1st:69.9,avgPts4th:-56.8,totalPts:-158,ptsPerGame:-3.2,maxPts:102,minPts:-88,recent20AvgRank:2.55,r1:10,r2:15,r3:12,r4:12},
-  {name:'大塚',games:28,avgRank:2.50,topRate:32.1,renRate:46.4,avoidRate:71.4,lastRate:28.6,plusRate:46.4,stdDev:58.6,avgPts1st:73.7,avgPts4th:-64.0,totalPts:70,ptsPerGame:2.5,maxPts:143,minPts:-102,recent20AvgRank:2.55,r1:9,r2:4,r3:7,r4:8},
-  {name:'矢嶋',games:12,avgRank:2.67,topRate:16.7,renRate:50.0,avoidRate:66.7,lastRate:33.3,plusRate:50.0,stdDev:47.9,avgPts1st:58.5,avgPts4th:-59.8,totalPts:-91,ptsPerGame:-7.6,maxPts:66,minPts:-97,recent20AvgRank:2.67,r1:2,r2:4,r3:2,r4:4},
-  {name:'本井',games:13,avgRank:2.62,topRate:15.4,renRate:38.5,avoidRate:84.6,lastRate:15.4,plusRate:23.1,stdDev:41.3,avgPts1st:77.0,avgPts4th:-50.5,totalPts:-85,ptsPerGame:-6.5,maxPts:92,minPts:-56,recent20AvgRank:2.62,r1:2,r2:3,r3:6,r4:2}
+  {name:__KEY_TK_n__,games:44,avgRank:2.25,topRate:31.8,renRate:61.4,avoidRate:81.8,lastRate:18.2,plusRate:61.4,stdDev:50.4,avgPts1st:78.0,avgPts4th:-50.2,totalPts:695,ptsPerGame:15.8,maxPts:133,minPts:-59,recent20AvgRank:2.75,r1:14,r2:13,r3:9,r4:8},
+  {name:__KEY_FuJi__,games:3,avgRank:4.00,topRate:0.0,renRate:0.0,avoidRate:0.0,lastRate:100.0,plusRate:0.0,stdDev:31.5,avgPts1st:null,avgPts4th:-71.7,totalPts:-215,ptsPerGame:-71.7,maxPts:-53,minPts:-108,recent20AvgRank:4.00,r1:0,r2:0,r3:0,r4:3},
+  {name:__KEY_KaYaM__,games:10,avgRank:2.80,topRate:10.0,renRate:40.0,avoidRate:70.0,lastRate:30.0,plusRate:40.0,stdDev:41.1,avgPts1st:53.0,avgPts4th:-63.7,totalPts:-173,ptsPerGame:-17.3,maxPts:53,minPts:-79,recent20AvgRank:2.80,r1:1,r2:3,r3:3,r4:3},
+  {name:__KEY_KaWa_i__,games:18,avgRank:2.78,topRate:22.2,renRate:33.3,avoidRate:66.7,lastRate:33.3,plusRate:33.3,stdDev:48.2,avgPts1st:56.2,avgPts4th:-64.3,totalPts:-328,ptsPerGame:-18.2,maxPts:65,minPts:-96,recent20AvgRank:2.78,r1:4,r2:2,r3:6,r4:6},
+  {name:__KEY_MaTsuB__,games:35,avgRank:2.31,topRate:31.4,renRate:57.1,avoidRate:80.0,lastRate:20.0,plusRate:57.1,stdDev:49.9,avgPts1st:70.5,avgPts4th:-59.7,totalPts:285,ptsPerGame:8.1,maxPts:84,minPts:-66,recent20AvgRank:2.35,r1:11,r2:9,r3:8,r4:7},
+  {name:__KEY_OkaZ__,games:49,avgRank:2.53,topRate:20.4,renRate:51.0,avoidRate:75.5,lastRate:24.5,plusRate:46.9,stdDev:45.3,avgPts1st:69.9,avgPts4th:-56.8,totalPts:-158,ptsPerGame:-3.2,maxPts:102,minPts:-88,recent20AvgRank:2.55,r1:10,r2:15,r3:12,r4:12},
+  {name:__KEY_OtsuK__,games:28,avgRank:2.50,topRate:32.1,renRate:46.4,avoidRate:71.4,lastRate:28.6,plusRate:46.4,stdDev:58.6,avgPts1st:73.7,avgPts4th:-64.0,totalPts:70,ptsPerGame:2.5,maxPts:143,minPts:-102,recent20AvgRank:2.55,r1:9,r2:4,r3:7,r4:8},
+  {name:__KEY_YaJi__,games:12,avgRank:2.67,topRate:16.7,renRate:50.0,avoidRate:66.7,lastRate:33.3,plusRate:50.0,stdDev:47.9,avgPts1st:58.5,avgPts4th:-59.8,totalPts:-91,ptsPerGame:-7.6,maxPts:66,minPts:-97,recent20AvgRank:2.67,r1:2,r2:4,r3:2,r4:4},
+  {name:__KEY_MoTo_i__,games:13,avgRank:2.62,topRate:15.4,renRate:38.5,avoidRate:84.6,lastRate:15.4,plusRate:23.1,stdDev:41.3,avgPts1st:77.0,avgPts4th:-50.5,totalPts:-85,ptsPerGame:-6.5,maxPts:92,minPts:-56,recent20AvgRank:2.62,r1:2,r2:3,r3:6,r4:2}
 ];
 const TREND = [
-  {date:'02/10',土岐:0,藤木:0,鹿山:0,河井:8,松林:0,岡崎:27,大塚:142,矢嶋:-177,本井:0},
-  {date:'02/20',土岐:-1,藤木:0,鹿山:0,河井:-91,松林:0,岡崎:131,大塚:138,矢嶋:-177,本井:0},
-  {date:'02/21',土岐:432,藤木:0,鹿山:0,河井:-328,松林:88,岡崎:-21,大塚:138,矢嶋:-177,本井:-132},
-  {date:'03/06',土岐:485,藤木:-215,鹿山:0,河井:-328,松林:88,岡崎:-21,大塚:138,矢嶋:-62,本井:-85},
-  {date:'03/07',土岐:778,藤木:-215,鹿山:0,河井:-328,松林:109,岡崎:-59,大塚:-138,矢嶋:-62,本井:-85},
-  {date:'04/02',土岐:656,藤木:-215,鹿山:0,河井:-328,松林:109,岡崎:-20,大塚:-26,矢嶋:-91,本井:-85},
-  {date:'04/06',土岐:692,藤木:-215,鹿山:-173,河井:-328,松林:224,岡崎:2,大塚:-26,矢嶋:-91,本井:-85},
-  {date:'04/22',土岐:695,藤木:-215,鹿山:-173,河井:-328,松林:285,岡崎:-158,大塚:70,矢嶋:-91,本井:-85}
+  {date:'02/10',__OKEY_TK_n__:0,__OKEY_FuJi__:0,__OKEY_KaYaM__:0,__OKEY_KaWa_i__:8,__OKEY_MaTsuB__:0,__OKEY_OkaZ__:27,__OKEY_OtsuK__:142,__OKEY_YaJi__:-177,__OKEY_MoTo_i__:0},
+  {date:'02/20',__OKEY_TK_n__:-1,__OKEY_FuJi__:0,__OKEY_KaYaM__:0,__OKEY_KaWa_i__:-91,__OKEY_MaTsuB__:0,__OKEY_OkaZ__:131,__OKEY_OtsuK__:138,__OKEY_YaJi__:-177,__OKEY_MoTo_i__:0},
+  {date:'02/21',__OKEY_TK_n__:432,__OKEY_FuJi__:0,__OKEY_KaYaM__:0,__OKEY_KaWa_i__:-328,__OKEY_MaTsuB__:88,__OKEY_OkaZ__:-21,__OKEY_OtsuK__:138,__OKEY_YaJi__:-177,__OKEY_MoTo_i__:-132},
+  {date:'03/06',__OKEY_TK_n__:485,__OKEY_FuJi__:-215,__OKEY_KaYaM__:0,__OKEY_KaWa_i__:-328,__OKEY_MaTsuB__:88,__OKEY_OkaZ__:-21,__OKEY_OtsuK__:138,__OKEY_YaJi__:-62,__OKEY_MoTo_i__:-85},
+  {date:'03/07',__OKEY_TK_n__:778,__OKEY_FuJi__:-215,__OKEY_KaYaM__:0,__OKEY_KaWa_i__:-328,__OKEY_MaTsuB__:109,__OKEY_OkaZ__:-59,__OKEY_OtsuK__:-138,__OKEY_YaJi__:-62,__OKEY_MoTo_i__:-85},
+  {date:'04/02',__OKEY_TK_n__:656,__OKEY_FuJi__:-215,__OKEY_KaYaM__:0,__OKEY_KaWa_i__:-328,__OKEY_MaTsuB__:109,__OKEY_OkaZ__:-20,__OKEY_OtsuK__:-26,__OKEY_YaJi__:-91,__OKEY_MoTo_i__:-85},
+  {date:'04/06',__OKEY_TK_n__:692,__OKEY_FuJi__:-215,__OKEY_KaYaM__:-173,__OKEY_KaWa_i__:-328,__OKEY_MaTsuB__:224,__OKEY_OkaZ__:2,__OKEY_OtsuK__:-26,__OKEY_YaJi__:-91,__OKEY_MoTo_i__:-85},
+  {date:'04/22',__OKEY_TK_n__:695,__OKEY_FuJi__:-215,__OKEY_KaYaM__:-173,__OKEY_KaWa_i__:-328,__OKEY_MaTsuB__:285,__OKEY_OkaZ__:-158,__OKEY_OtsuK__:70,__OKEY_YaJi__:-91,__OKEY_MoTo_i__:-85}
 ];
-const MEMBERS = ['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
+const MEMBERS = [__KEY_TK_n__,__KEY_FuJi__,__KEY_KaYaM__,__KEY_KaWa_i__,__KEY_MaTsuB__,__KEY_OkaZ__,__KEY_OtsuK__,__KEY_YaJi__,__KEY_MoTo_i__];
 const COLORS  = ['#4a90d9','#e67e22','#aaaaaa','#e8c830','#9b59b6','#27ae60','#e74c3c','#c0392b','#f39c12'];
 
 const sorted = [...DATA].sort((a,b) => b.totalPts - a.totalPts);
