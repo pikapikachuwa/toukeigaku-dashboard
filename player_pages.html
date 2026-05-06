@@ -62,15 +62,15 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 <div class="nav">
   <a href="mahjong_dashboard.html" class="nav-back">← ダッシュボードへ</a>
   <span class="nav-title">個人ページ：</span>
-  <a href="#" onclick="showPage('土岐')" id="nav-土岐">TK_n</a>
-  <a href="#" onclick="showPage('藤木')" id="nav-藤木">FuJi</a>
-  <a href="#" onclick="showPage('鹿山')" id="nav-鹿山">KaYaM</a>
-  <a href="#" onclick="showPage('河井')" id="nav-河井">KaWa_i</a>
-  <a href="#" onclick="showPage('松林')" id="nav-松林">MaTsuB</a>
-  <a href="#" onclick="showPage('岡崎')" id="nav-岡崎">OkaZ</a>
-  <a href="#" onclick="showPage('大塚')" id="nav-大塚">OtsuK</a>
-  <a href="#" onclick="showPage('矢嶋')" id="nav-矢嶋">YaJi</a>
-  <a href="#" onclick="showPage('本井')" id="nav-本井">MoTo_i</a>
+  <a href="#" onclick="showPage('TK_n')" id="nav-TK_n">TK_n</a>
+  <a href="#" onclick="showPage('FuJi')" id="nav-FuJi">FuJi</a>
+  <a href="#" onclick="showPage('KaYaM')" id="nav-KaYaM">KaYaM</a>
+  <a href="#" onclick="showPage('KaWa_i')" id="nav-KaWa_i">KaWa_i</a>
+  <a href="#" onclick="showPage('MaTsuB')" id="nav-MaTsuB">MaTsuB</a>
+  <a href="#" onclick="showPage('OkaZ')" id="nav-OkaZ">OkaZ</a>
+  <a href="#" onclick="showPage('OtsuK')" id="nav-OtsuK">OtsuK</a>
+  <a href="#" onclick="showPage('YaJi')" id="nav-YaJi">YaJi</a>
+  <a href="#" onclick="showPage('MoTo_i')" id="nav-MoTo_i">MoTo_i</a>
 </div>
 
 <div class="container" id="main-container"></div>
@@ -93,99 +93,99 @@ function grade(avg){
   return              {label:'超苦手！',cls:'gE'};
 }
 
-const ALL_MEMBERS = ['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
+const ALL_MEMBERS = [__KEY_TK_n__,__KEY_FuJi__,__KEY_KaYaM__,__KEY_KaWa_i__,__KEY_MaTsuB__,__KEY_OkaZ__,__KEY_OtsuK__,__KEY_YaJi__,__KEY_MoTo_i__];
 
 const DATA = {
-  '土岐':{games:44,avgRank:2.25,topRate:31.8,renRate:61.4,avoidRate:81.8,lastRate:18.2,plusRate:61.4,stdDev:50.4,avgPts1st:78.0,avgPts4th:-50.2,totalPts:695,ptsPerGame:15.8,maxPts:133,minPts:-59,recent20AvgRank:2.75,r1:14,r2:13,r3:9,r4:8},
-  '藤木':{games:3,avgRank:4.00,topRate:0.0,renRate:0.0,avoidRate:0.0,lastRate:100.0,plusRate:0.0,stdDev:31.5,avgPts1st:null,avgPts4th:-71.7,totalPts:-215,ptsPerGame:-71.7,maxPts:-53,minPts:-108,recent20AvgRank:4.00,r1:0,r2:0,r3:0,r4:3},
-  '鹿山':{games:10,avgRank:2.80,topRate:10.0,renRate:40.0,avoidRate:70.0,lastRate:30.0,plusRate:40.0,stdDev:41.1,avgPts1st:53.0,avgPts4th:-63.7,totalPts:-173,ptsPerGame:-17.3,maxPts:53,minPts:-79,recent20AvgRank:2.80,r1:1,r2:3,r3:3,r4:3},
-  '河井':{games:18,avgRank:2.78,topRate:22.2,renRate:33.3,avoidRate:66.7,lastRate:33.3,plusRate:33.3,stdDev:48.2,avgPts1st:56.2,avgPts4th:-64.3,totalPts:-328,ptsPerGame:-18.2,maxPts:65,minPts:-96,recent20AvgRank:2.78,r1:4,r2:2,r3:6,r4:6},
-  '松林':{games:35,avgRank:2.31,topRate:31.4,renRate:57.1,avoidRate:80.0,lastRate:20.0,plusRate:57.1,stdDev:49.9,avgPts1st:70.5,avgPts4th:-59.7,totalPts:285,ptsPerGame:8.1,maxPts:84,minPts:-66,recent20AvgRank:2.35,r1:11,r2:9,r3:8,r4:7},
-  '岡崎':{games:49,avgRank:2.53,topRate:20.4,renRate:51.0,avoidRate:75.5,lastRate:24.5,plusRate:46.9,stdDev:45.3,avgPts1st:69.9,avgPts4th:-56.8,totalPts:-158,ptsPerGame:-3.2,maxPts:102,minPts:-88,recent20AvgRank:2.55,r1:10,r2:15,r3:12,r4:12},
-  '大塚':{games:28,avgRank:2.50,topRate:32.1,renRate:46.4,avoidRate:71.4,lastRate:28.6,plusRate:46.4,stdDev:58.6,avgPts1st:73.7,avgPts4th:-64.0,totalPts:70,ptsPerGame:2.5,maxPts:143,minPts:-102,recent20AvgRank:2.55,r1:9,r2:4,r3:7,r4:8},
-  '矢嶋':{games:12,avgRank:2.67,topRate:16.7,renRate:50.0,avoidRate:66.7,lastRate:33.3,plusRate:50.0,stdDev:47.9,avgPts1st:58.5,avgPts4th:-59.8,totalPts:-91,ptsPerGame:-7.6,maxPts:66,minPts:-97,recent20AvgRank:2.67,r1:2,r2:4,r3:2,r4:4},
-  '本井':{games:13,avgRank:2.62,topRate:15.4,renRate:38.5,avoidRate:84.6,lastRate:15.4,plusRate:23.1,stdDev:41.3,avgPts1st:77.0,avgPts4th:-50.5,totalPts:-85,ptsPerGame:-6.5,maxPts:92,minPts:-56,recent20AvgRank:2.62,r1:2,r2:3,r3:6,r4:2},
+  __KEY_TK_n__:{games:44,avgRank:2.25,topRate:31.8,renRate:61.4,avoidRate:81.8,lastRate:18.2,plusRate:61.4,stdDev:50.4,avgPts1st:78.0,avgPts4th:-50.2,totalPts:695,ptsPerGame:15.8,maxPts:133,minPts:-59,recent20AvgRank:2.75,r1:14,r2:13,r3:9,r4:8},
+  __KEY_FuJi__:{games:3,avgRank:4.00,topRate:0.0,renRate:0.0,avoidRate:0.0,lastRate:100.0,plusRate:0.0,stdDev:31.5,avgPts1st:null,avgPts4th:-71.7,totalPts:-215,ptsPerGame:-71.7,maxPts:-53,minPts:-108,recent20AvgRank:4.00,r1:0,r2:0,r3:0,r4:3},
+  __KEY_KaYaM__:{games:10,avgRank:2.80,topRate:10.0,renRate:40.0,avoidRate:70.0,lastRate:30.0,plusRate:40.0,stdDev:41.1,avgPts1st:53.0,avgPts4th:-63.7,totalPts:-173,ptsPerGame:-17.3,maxPts:53,minPts:-79,recent20AvgRank:2.80,r1:1,r2:3,r3:3,r4:3},
+  __KEY_KaWa_i__:{games:18,avgRank:2.78,topRate:22.2,renRate:33.3,avoidRate:66.7,lastRate:33.3,plusRate:33.3,stdDev:48.2,avgPts1st:56.2,avgPts4th:-64.3,totalPts:-328,ptsPerGame:-18.2,maxPts:65,minPts:-96,recent20AvgRank:2.78,r1:4,r2:2,r3:6,r4:6},
+  __KEY_MaTsuB__:{games:35,avgRank:2.31,topRate:31.4,renRate:57.1,avoidRate:80.0,lastRate:20.0,plusRate:57.1,stdDev:49.9,avgPts1st:70.5,avgPts4th:-59.7,totalPts:285,ptsPerGame:8.1,maxPts:84,minPts:-66,recent20AvgRank:2.35,r1:11,r2:9,r3:8,r4:7},
+  __KEY_OkaZ__:{games:49,avgRank:2.53,topRate:20.4,renRate:51.0,avoidRate:75.5,lastRate:24.5,plusRate:46.9,stdDev:45.3,avgPts1st:69.9,avgPts4th:-56.8,totalPts:-158,ptsPerGame:-3.2,maxPts:102,minPts:-88,recent20AvgRank:2.55,r1:10,r2:15,r3:12,r4:12},
+  __KEY_OtsuK__:{games:28,avgRank:2.50,topRate:32.1,renRate:46.4,avoidRate:71.4,lastRate:28.6,plusRate:46.4,stdDev:58.6,avgPts1st:73.7,avgPts4th:-64.0,totalPts:70,ptsPerGame:2.5,maxPts:143,minPts:-102,recent20AvgRank:2.55,r1:9,r2:4,r3:7,r4:8},
+  __KEY_YaJi__:{games:12,avgRank:2.67,topRate:16.7,renRate:50.0,avoidRate:66.7,lastRate:33.3,plusRate:50.0,stdDev:47.9,avgPts1st:58.5,avgPts4th:-59.8,totalPts:-91,ptsPerGame:-7.6,maxPts:66,minPts:-97,recent20AvgRank:2.67,r1:2,r2:4,r3:2,r4:4},
+  __KEY_MoTo_i__:{games:13,avgRank:2.62,topRate:15.4,renRate:38.5,avoidRate:84.6,lastRate:15.4,plusRate:23.1,stdDev:41.3,avgPts1st:77.0,avgPts4th:-50.5,totalPts:-85,ptsPerGame:-6.5,maxPts:92,minPts:-56,recent20AvgRank:2.62,r1:2,r2:3,r3:6,r4:2},
 };
 
 const RADAR_RANKS = {
-  '土岐':[2,1,2,1,8,1],'藤木':[9,9,9,9,1,9],'鹿山':[8,6,6,6,2,8],
-  '河井':[4,8,7,7,6,7],'松林':[3,2,3,2,7,4],'岡崎':[5,3,4,4,4,5],
-  '大塚':[1,5,5,5,9,3],'矢嶋':[6,4,8,3,5,6],'本井':[7,7,1,8,3,2],
+  __KEY_TK_n__:[2,1,2,1,8,1],__KEY_FuJi__:[9,9,9,9,1,9],__KEY_KaYaM__:[8,6,6,6,2,8],
+  __KEY_KaWa_i__:[4,8,7,7,6,7],__KEY_MaTsuB__:[3,2,3,2,7,4],__KEY_OkaZ__:[5,3,4,4,4,5],
+  __KEY_OtsuK__:[1,5,5,5,9,3],__KEY_YaJi__:[6,4,8,3,5,6],__KEY_MoTo_i__:[7,7,1,8,3,2],
 };
 
 const DETAIL_RANKS = {
-  '土岐':{totalPts:1,ptsPerGame:1,topRate:2,renRate:1,avoidRate:2,plusRate:1,stdDev:8,avgPts1st:1,avgRank:1,games:2},
-  '藤木':{totalPts:8,ptsPerGame:9,topRate:9,renRate:9,avoidRate:9,plusRate:9,stdDev:1,avgPts1st:9,avgRank:9,games:9},
-  '鹿山':{totalPts:7,ptsPerGame:7,topRate:8,renRate:6,avoidRate:6,plusRate:6,stdDev:2,avgPts1st:8,avgRank:8,games:8},
-  '河井':{totalPts:9,ptsPerGame:8,topRate:4,renRate:8,avoidRate:7,plusRate:7,stdDev:6,avgPts1st:7,avgRank:7,games:5},
-  '松林':{totalPts:2,ptsPerGame:2,topRate:3,renRate:2,avoidRate:3,plusRate:2,stdDev:7,avgPts1st:4,avgRank:2,games:3},
-  '岡崎':{totalPts:6,ptsPerGame:4,topRate:5,renRate:3,avoidRate:4,plusRate:4,stdDev:4,avgPts1st:5,avgRank:4,games:1},
-  '大塚':{totalPts:3,ptsPerGame:3,topRate:1,renRate:5,avoidRate:5,plusRate:5,stdDev:9,avgPts1st:3,avgRank:3,games:4},
-  '矢嶋':{totalPts:5,ptsPerGame:6,topRate:6,renRate:4,avoidRate:8,plusRate:3,stdDev:5,avgPts1st:6,avgRank:6,games:7},
-  '本井':{totalPts:4,ptsPerGame:5,topRate:7,renRate:7,avoidRate:1,plusRate:8,stdDev:3,avgPts1st:2,avgRank:5,games:6},
+  __KEY_TK_n__:{totalPts:1,ptsPerGame:1,topRate:2,renRate:1,avoidRate:2,plusRate:1,stdDev:8,avgPts1st:1,avgRank:1,games:2},
+  __KEY_FuJi__:{totalPts:8,ptsPerGame:9,topRate:9,renRate:9,avoidRate:9,plusRate:9,stdDev:1,avgPts1st:9,avgRank:9,games:9},
+  __KEY_KaYaM__:{totalPts:7,ptsPerGame:7,topRate:8,renRate:6,avoidRate:6,plusRate:6,stdDev:2,avgPts1st:8,avgRank:8,games:8},
+  __KEY_KaWa_i__:{totalPts:9,ptsPerGame:8,topRate:4,renRate:8,avoidRate:7,plusRate:7,stdDev:6,avgPts1st:7,avgRank:7,games:5},
+  __KEY_MaTsuB__:{totalPts:2,ptsPerGame:2,topRate:3,renRate:2,avoidRate:3,plusRate:2,stdDev:7,avgPts1st:4,avgRank:2,games:3},
+  __KEY_OkaZ__:{totalPts:6,ptsPerGame:4,topRate:5,renRate:3,avoidRate:4,plusRate:4,stdDev:4,avgPts1st:5,avgRank:4,games:1},
+  __KEY_OtsuK__:{totalPts:3,ptsPerGame:3,topRate:1,renRate:5,avoidRate:5,plusRate:5,stdDev:9,avgPts1st:3,avgRank:3,games:4},
+  __KEY_YaJi__:{totalPts:5,ptsPerGame:6,topRate:6,renRate:4,avoidRate:8,plusRate:3,stdDev:5,avgPts1st:6,avgRank:6,games:7},
+  __KEY_MoTo_i__:{totalPts:4,ptsPerGame:5,topRate:7,renRate:7,avoidRate:1,plusRate:8,stdDev:3,avgPts1st:2,avgRank:5,games:6},
 };
 
 const MATCHUP = {
-  '土岐':{'藤木':[3,65.8],'鹿山':[10,16.1],'河井':[9,25.9],'松林':[30,-13.1],'岡崎':[40,-2.9],'大塚':[24,0.6],'矢嶋':[8,-7.9],'本井':[8,-4.1]},
-  '藤木':{'土岐':[3,6.2],'矢嶋':[3,-14.4],'本井':[3,8.2]},
-  '鹿山':{'土岐':[10,2.2],'松林':[10,-5.7],'岡崎':[10,3.6]},
-  '河井':{'土岐':[9,-12.0],'松林':[8,-9.4],'岡崎':[17,-1.7],'大塚':[8,-13.5],'矢嶋':[4,43.6],'本井':[8,18.2]},
-  '松林':{'土岐':[30,-26.3],'鹿山':[10,13.5],'河井':[8,10.2],'岡崎':[34,11.0],'大塚':[15,10.2],'本井':[8,5.8]},
-  '岡崎':{'土岐':[40,-14.0],'鹿山':[10,16.6],'河井':[17,16.9],'松林':[34,-4.3],'大塚':[28,-2.2],'矢嶋':[9,20.4],'本井':[9,14.2]},
-  '大塚':{'土岐':[24,-6.2],'河井':[8,5.6],'松林':[15,-1.5],'岡崎':[28,0.2],'矢嶋':[9,13.5]},
-  '矢嶋':{'土岐':[8,5.0],'藤木':[3,58.9],'河井':[4,12.8],'岡崎':[9,0.3],'大塚':[9,-20.6],'本井':[3,-28.4]},
-  '本井':{'土岐':[8,-41.2],'藤木':[3,66.4],'河井':[8,22.0],'松林':[8,-8.3],'岡崎':[9,16.9],'矢嶋':[3,-43.6]},
+  __KEY_TK_n__:{__KEY_FuJi__:[3,65.8],__KEY_KaYaM__:[10,16.1],__KEY_KaWa_i__:[9,25.9],__KEY_MaTsuB__:[30,-13.1],__KEY_OkaZ__:[40,-2.9],__KEY_OtsuK__:[24,0.6],__KEY_YaJi__:[8,-7.9],__KEY_MoTo_i__:[8,-4.1]},
+  __KEY_FuJi__:{__KEY_TK_n__:[3,6.2],__KEY_YaJi__:[3,-14.4],__KEY_MoTo_i__:[3,8.2]},
+  __KEY_KaYaM__:{__KEY_TK_n__:[10,2.2],__KEY_MaTsuB__:[10,-5.7],__KEY_OkaZ__:[10,3.6]},
+  __KEY_KaWa_i__:{__KEY_TK_n__:[9,-12.0],__KEY_MaTsuB__:[8,-9.4],__KEY_OkaZ__:[17,-1.7],__KEY_OtsuK__:[8,-13.5],__KEY_YaJi__:[4,43.6],__KEY_MoTo_i__:[8,18.2]},
+  __KEY_MaTsuB__:{__KEY_TK_n__:[30,-26.3],__KEY_KaYaM__:[10,13.5],__KEY_KaWa_i__:[8,10.2],__KEY_OkaZ__:[34,11.0],__KEY_OtsuK__:[15,10.2],__KEY_MoTo_i__:[8,5.8]},
+  __KEY_OkaZ__:{__KEY_TK_n__:[40,-14.0],__KEY_KaYaM__:[10,16.6],__KEY_KaWa_i__:[17,16.9],__KEY_MaTsuB__:[34,-4.3],__KEY_OtsuK__:[28,-2.2],__KEY_YaJi__:[9,20.4],__KEY_MoTo_i__:[9,14.2]},
+  __KEY_OtsuK__:{__KEY_TK_n__:[24,-6.2],__KEY_KaWa_i__:[8,5.6],__KEY_MaTsuB__:[15,-1.5],__KEY_OkaZ__:[28,0.2],__KEY_YaJi__:[9,13.5]},
+  __KEY_YaJi__:{__KEY_TK_n__:[8,5.0],__KEY_FuJi__:[3,58.9],__KEY_KaWa_i__:[4,12.8],__KEY_OkaZ__:[9,0.3],__KEY_OtsuK__:[9,-20.6],__KEY_MoTo_i__:[3,-28.4]},
+  __KEY_MoTo_i__:{__KEY_TK_n__:[8,-41.2],__KEY_FuJi__:[3,66.4],__KEY_KaWa_i__:[8,22.0],__KEY_MaTsuB__:[8,-8.3],__KEY_OkaZ__:[9,16.9],__KEY_YaJi__:[3,-43.6]},
 };
 
 const PROFILES = {
-  '土岐':{type:'👑 無敵の連帯エース',color:'#4a90d9',initials:'土',
+  __KEY_TK_n__:{type:'👑 無敵の連帯エース',color:'#4a90d9',initials:'土',
     strong:'連帯率61.4%はWG断トツ1位。累計+695もWG1位と、どの指標を見ても圧倒的な存在感。Pts/G+15.8は2位以下に大差をつけており、このWGの絶対王者として君臨している。',
-    weak:'直近20戦の平均順位が2.75と全体成績(2.25)から悪化している点が唯一の懸念材料。松林との補正差分が-13.1と、特定の相手に苦手意識が出ている。',
+    weak:'直近20戦の平均順位が2.75と全体成績(2.25)から悪化している点が唯一の懸念材料。MaTsuBとの補正差分が-13.1と、特定の相手に苦手意識が出ている。',
     trend:'直近20戦の成績がやや落ちており、王座に陰りが見え始めている可能性も。引き続き要注目。',
-    hitokoto:'👑 このWGの絶対王者。データがすべてを物語っている。あえて弱点を挙げるとすれば「松林が隣にいるとき」だけ。全メンバーが日々対策を研究しているが、なかなか崩せない。直近20戦のわずかな陰りは本物の翳りか、はたまた嵐の前の静けさか。次の活動日が楽しみすぎる。'},
-  '藤木':{type:'🃏 伝説の3半荘男',color:'#e67e22',initials:'藤',
+    hitokoto:'👑 このWGの絶対王者。データがすべてを物語っている。あえて弱点を挙げるとすれば「MaTsuBが隣にいるとき」だけ。全メンバーが日々対策を研究しているが、なかなか崩せない。直近20戦のわずかな陰りは本物の翳りか、はたまた嵐の前の静けさか。次の活動日が楽しみすぎる。'},
+  __KEY_FuJi__:{type:'🃏 伝説の3半荘男',color:'#e67e22',initials:'藤',
     strong:'安定性（標準偏差）はWG1位。参加わずか3半荘ながら、その存在感は絶大。これは「毎回ほぼ同じように負ける」という驚くべき一貫性の結果。',
     weak:'参加3半荘すべてで最下位という完璧な記録。Top率・連帯率・プラス率がすべて0%。累計-215はWG下位。',
     trend:'サンプルが3半荘しかないため正確な評価は困難。次回以降の参戦でデータが積み上がることに期待。',
     hitokoto:'🃏 わずか3半荘で統計学WGに衝撃を与えた男。全半荘ラス達成という驚異的な一貫性は、ある種の才能かもしれない。「安定性WG1位」という称号は誰も想定していない形で獲得された。次回の参戦で真の実力が明らかになるのか、それとも伝説に磨きをかけるのか。全員が固唾を呑んで見守っている。'},
-  '鹿山':{type:'🔍 データ蓄積中の未知数',color:'#aaaaaa',initials:'鹿',
-    strong:'安定性（標準偏差）はWG2位と、ブレが少ない堅実なスタイル。岡崎との同卓では「普通～」と安定した相性を発揮している。',
-    weak:'参加10半荘とサンプルが少なく全体評価が難しい。松林との補正差分が-5.7とやや苦戦。累計-173、Pts/G-17.3とマイナス圏。',
+  __KEY_KaYaM__:{type:'🔍 データ蓄積中の未知数',color:'#aaaaaa',initials:'鹿',
+    strong:'安定性（標準偏差）はWG2位と、ブレが少ない堅実なスタイル。OkaZとの同卓では「普通～」と安定した相性を発揮している。',
+    weak:'参加10半荘とサンプルが少なく全体評価が難しい。MaTsuBとの補正差分が-5.7とやや苦戦。累計-173、Pts/G-17.3とマイナス圏。',
     trend:'10半荘のデータではまだ判断材料が不足。真の実力は参加回数が増えるにつれ明らかになる。',
     hitokoto:'🔍 10半荘というデータでは真の姿はまだ謎に包まれている。安定性の高さは本物のスタイルなのか、単なるサンプル不足なのか。WGメンバーが最も「読めない」と感じているのがこの人かもしれない。もっと参加してデータを積み上げてほしい。お待ちしています。'},
-  '河井':{type:'⚡ 矢嶋との相性に生きる男',color:'#e8c830',initials:'河',
-    strong:'矢嶋との補正差分+43.6は全組み合わせ中でもトップクラスの相性。本井との相性も+18.2と良好。特定の相手には圧倒的な強さを発揮できるポテンシャルを持つ。',
-    weak:'累計-328はWG最下位。土岐・松林・大塚には苦手で、多くの相手にマイナスの補正差分が出ている。Pts/G-18.2もWG下位圏。',
+  __KEY_KaWa_i__:{type:'⚡ YaJiとの相性に生きる男',color:'#e8c830',initials:'河',
+    strong:'YaJiとの補正差分+43.6は全組み合わせ中でもトップクラスの相性。MoTo_iとの相性も+18.2と良好。特定の相手には圧倒的な強さを発揮できるポテンシャルを持つ。',
+    weak:'累計-328はWG最下位。TK_n・MaTsuB・OtsuKには苦手で、多くの相手にマイナスの補正差分が出ている。Pts/G-18.2もWG下位圏。',
     trend:'直近20戦も全体と変わらない成績が続いており、現状維持の状態。',
-    hitokoto:'⚡ データが語る現実は厳しい。累計-328というWG最下位の数字は直視せざるを得ない。しかし！矢嶋との同卓時だけは別人のように輝く謎の相性がある。矢嶋を隣に置き続けることが逆転への道筋かもしれない。諦めたらそこで試合終了ですよ。'},
-  '松林':{type:'🌊 土岐以外には強い安定型',color:'#9b59b6',initials:'松',
-    strong:'土岐以外のメンバーとの相性はすべて「得意！」以上。連帯率57.1%はWG2位。累計+285もWG2位と実力は折り紙付き。岡崎・鹿山・河井・大塚・本井と幅広く得意な相手を持つ。',
-    weak:'土岐との補正差分-26.3はWG内でも最大級の苦手相性で「超苦手！」評価。土岐と同卓した30半荘で大きく引きずられている。',
+    hitokoto:'⚡ データが語る現実は厳しい。累計-328というWG最下位の数字は直視せざるを得ない。しかし！YaJiとの同卓時だけは別人のように輝く謎の相性がある。YaJiを隣に置き続けることが逆転への道筋かもしれない。諦めたらそこで試合終了ですよ。'},
+  __KEY_MaTsuB__:{type:'🌊 TK_n以外には強い安定型',color:'#9b59b6',initials:'松',
+    strong:'TK_n以外のメンバーとの相性はすべて「得意！」以上。連帯率57.1%はWG2位。累計+285もWG2位と実力は折り紙付き。OkaZ・KaYaM・KaWa_i・OtsuK・MoTo_iと幅広く得意な相手を持つ。',
+    weak:'TK_nとの補正差分-26.3はWG内でも最大級の苦手相性で「超苦手！」評価。TK_nと同卓した30半荘で大きく引きずられている。',
     trend:'直近20戦の平均順位2.35は全体平均2.31とほぼ同水準で安定。',
-    hitokoto:'🌊 土岐さんさえいなければ、このWGの王者はこの人だったかもしれない。土岐との対戦時だけ、謎の別人モードに突入してしまうのが最大の課題。他のメンバーへの安定した強さは本物。土岐との心理的な壁を超えた日、統計学WGの勢力図が書き換えられる。'},
-  '岡崎':{type:'🥈 準優勝の申し子',color:'#27ae60',initials:'岡',
+    hitokoto:'🌊 TK_nさんさえいなければ、このWGの王者はこの人だったかもしれない。TK_nとの対戦時だけ、謎の別人モードに突入してしまうのが最大の課題。他のメンバーへの安定した強さは本物。TK_nとの心理的な壁を超えた日、統計学WGの勢力図が書き換えられる。'},
+  __KEY_OkaZ__:{type:'🥈 準優勝の申し子',color:'#27ae60',initials:'岡',
     strong:'参加半荘数49はWGダントツ1位のフル参戦型。連帯率51.0%はWG3位と安定して上位に絡む。2位回数15回はWG全員の中で最多で、崩れない安定感が光る。',
     weak:'Top率20.4%はWG6位と伸び悩み。試合数最多にもかかわらず累計-158・Pts/G-3.2というのがデータの核心で「勝ちきれない試合」が積み重なっている。',
     trend:'直近20戦の平均順位2.55は全体とほぼ同水準で大きな変化なし。',
-    hitokoto:'🥈 2位が15回ってどういうこと？もはや2位のプロ。連帯率51%という数字はガチで強いのに、なぜかいつも誰かに美味しいところを持っていかれる。WG最多試合数という圧倒的経験値を持ちながら、なぜトップが遠いのか。それが岡崎の永遠のミステリー。そろそろ金メダルを首にかける番では？'},
-  '大塚':{type:'💥 爆発型トップハンター',color:'#e74c3c',initials:'大',
+    hitokoto:'🥈 2位が15回ってどういうこと？もはや2位のプロ。連帯率51%という数字はガチで強いのに、なぜかいつも誰かに美味しいところを持っていかれる。WG最多試合数という圧倒的経験値を持ちながら、なぜトップが遠いのか。それがOkaZの永遠のミステリー。そろそろ金メダルを首にかける番では？'},
+  __KEY_OtsuK__:{type:'💥 爆発型トップハンター',color:'#e74c3c',initials:'大',
     strong:'Top率32.1%はWG1位。MaxPts143もWG1位と、勝つときのスケールが別格。1着時の平均得点+73.7はWG3位と、勝ちゲームの質が非常に高い。累計+70でプラス圏を維持。',
     weak:'標準偏差58.6はWG9位（最下位）で結果のブレ幅がダントツ。4着回避率・連帯率・プラス率はいずれもWG5位と中位圏。',
     trend:'直近20戦の平均順位2.55は全体平均2.50からわずかに悪化。調整局面の可能性あり。',
     hitokoto:'🎲 スコアの振れ幅、もはや天気予報レベル。晴れの日は最高だけど、荒れる日は本当に荒れる。でもそのジェットコースター感がなぜか憎めない。標準偏差をもう少し「統計学的」に管理できたら、このWGの台風の目になれる逸材。次の活動日、嵐を起こすか、自分が飲み込まれるか、全員が注目している。🌪️'},
-  '矢嶋':{type:'🎭 個性派の二面性プレイヤー',color:'#c0392b',initials:'矢',
-    strong:'藤木との補正差分+58.9はWG内でも最高クラスの相性。土岐・河井とも「得意！」評価で、得意な相手には圧倒的な強さを発揮できる。',
-    weak:'大塚との補正差分-20.6、本井との-28.4はいずれも「超苦手！」評価。得意・苦手の差が激しい。累計-91、Pts/G-7.6とマイナス圏。',
+  __KEY_YaJi__:{type:'🎭 個性派の二面性プレイヤー',color:'#c0392b',initials:'矢',
+    strong:'FuJiとの補正差分+58.9はWG内でも最高クラスの相性。TK_n・KaWa_iとも「得意！」評価で、得意な相手には圧倒的な強さを発揮できる。',
+    weak:'OtsuKとの補正差分-20.6、MoTo_iとの-28.4はいずれも「超苦手！」評価。得意・苦手の差が激しい。累計-91、Pts/G-7.6とマイナス圏。',
     trend:'直近20戦のデータと全体がほぼ同水準で変化なし。',
-    hitokoto:'🎭 好き嫌いが激しすぎる個性派。藤木との相性は神がかり的(+58.9)なのに、大塚・本井には謎のほど苦手意識が強い。同じ卓に誰がいるかで、まるで別人のように成績が変わる。「今日の卓メン誰？」が最重要事項になっているはず。'},
-  '本井':{type:'🛡️ 守備の達人・土岐の前に散る',color:'#f39c12',initials:'本',
-    strong:'4着回避率84.6%はWG1位という驚異的な守備力。藤木との補正差分+66.4はWG全組み合わせ中で最高値。河井・岡崎とも「得意！」相性。',
-    weak:'土岐との補正差分-41.2、矢嶋との-43.6はいずれも「超苦手！」で、特定の相手に極端に弱い。累計-85、プラス率23.1%はWG最低水準。',
+    hitokoto:'🎭 好き嫌いが激しすぎる個性派。FuJiとの相性は神がかり的(+58.9)なのに、OtsuK・MoTo_iには謎のほど苦手意識が強い。同じ卓に誰がいるかで、まるで別人のように成績が変わる。「今日の卓メン誰？」が最重要事項になっているはず。'},
+  __KEY_MoTo_i__:{type:'🛡️ 守備の達人・TK_nの前に散る',color:'#f39c12',initials:'本',
+    strong:'4着回避率84.6%はWG1位という驚異的な守備力。FuJiとの補正差分+66.4はWG全組み合わせ中で最高値。KaWa_i・OkaZとも「得意！」相性。',
+    weak:'TK_nとの補正差分-41.2、YaJiとの-43.6はいずれも「超苦手！」で、特定の相手に極端に弱い。累計-85、プラス率23.1%はWG最低水準。',
     trend:'直近20戦も全体と同水準で大きな変化なし。',
-    hitokoto:'🛡️ 4着回避率WG1位という鉄壁の守りを誇るのに、なぜか累計マイナス。これは土岐・矢嶋という天敵2人の存在が大きい。この2人さえいなければ安定したプラス成績を積み上げられるはず。天敵との心理的な相性を克服することが、次のステージへの鍵。'},
+    hitokoto:'🛡️ 4着回避率WG1位という鉄壁の守りを誇るのに、なぜか累計マイナス。これはTK_n・YaJiという天敵2人の存在が大きい。この2人さえいなければ安定したプラス成績を積み上げられるはず。天敵との心理的な相性を克服することが、次のステージへの鍵。'},
 };
 
-const PTS_RANK = {'土岐':1,'松林':2,'大塚':3,'本井':4,'矢嶋':5,'岡崎':6,'鹿山':7,'藤木':8,'河井':9};
+const PTS_RANK = {__KEY_TK_n__:1,__KEY_MaTsuB__:2,__KEY_OtsuK__:3,__KEY_MoTo_i__:4,__KEY_YaJi__:5,__KEY_OkaZ__:6,__KEY_KaYaM__:7,__KEY_FuJi__:8,__KEY_KaWa_i__:9};
 
 let radarCharts = {};
 
@@ -352,7 +352,7 @@ function showPage(name){
   setTimeout(()=>buildRadar(name), 100);
 }
 
-showPage('土岐');
+showPage('TK_n');
 </script>
 </body>
 </html>
