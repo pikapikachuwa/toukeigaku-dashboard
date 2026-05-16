@@ -53,6 +53,16 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 
 <div class="medal-grid" id="medal-grid"></div>
 
+<div class="chart-card" id="summary-card">
+  <div class="chart-title"><span>📋 サマリー表</span></div>
+  <div class="tbl-wrap">
+    <table id="summary-tbl" style="border-collapse:collapse;font-size:11px;width:100%;min-width:700px;">
+      <thead id="summary-thead"></thead>
+      <tbody id="summary-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
 <div class="chart-card">
   <div class="chart-title"><span>累計ポイント推移</span></div>
   <div style="height:280px;position:relative;"><canvas id="line-chart"></canvas></div>
@@ -269,6 +279,119 @@ buildMedals();
 buildLineChart();
 renderTable('totalPts', null);
 switchBar('totalPts', '累計Pts比較', document.querySelector('.tab-btn.active'));
+buildSummaryTable();
+
+function buildSummaryTable(){
+  const ORDER = ['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
+
+  const S = {
+    th_label: 'padding:5px 8px;border:1px solid #b0b0b0;background:#d9d9d9;font-weight:700;font-size:11px;text-align:left;white-space:nowrap;',
+    th_member:'padding:5px 6px;border:1px solid #b0b0b0;background:#dce6f1;font-weight:700;font-size:11px;text-align:center;white-space:nowrap;',
+    td_base:  'padding:4px 7px;border:1px solid #c8c8c8;text-align:center;white-space:nowrap;font-size:11px;',
+    td_label: 'padding:4px 8px;border:1px solid #c8c8c8;font-weight:600;font-size:11px;white-space:nowrap;background:#f2f2f2;text-align:left;',
+  };
+
+  const thead = document.getElementById('summary-thead');
+  let hRow = '<tr><th style="'+S.th_label+'">WGメンバー</th>';
+  ORDER.forEach(m => { hRow += '<th style="'+S.th_member+'">'+dn(m)+'</th>'; });
+  thead.innerHTML = hRow + '</tr>';
+
+  const allData = ORDER.map(m => DATA.find(x=>x.name===m));
+  const get = (key) => allData.map(d => d ? d[key] : 0);
+
+  function getRank(val, arr, higherBetter){
+    const sorted = [...new Set(arr)].sort((a,b)=> higherBetter ? b-a : a-b);
+    return sorted.indexOf(val) + 1;
+  }
+  function arrowHtml(val, arr, higherBetter){
+    const n = [...new Set(arr)].length;
+    const r = getRank(val, arr, higherBetter);
+    if(r===1) return '<span style="color:#1a7c3e;font-size:10px;margin-right:2px;">▲</span>';
+    if(r===n) return '<span style="color:#c00000;font-size:10px;margin-right:2px;">▼</span>';
+    return '<span style="color:#7f7f7f;font-size:10px;margin-right:2px;">➡</span>';
+  }
+  function blueBg(val, max, lightness){
+    if(val===0) return 'background:#fff;';
+    const l = Math.round(lightness - (val/Math.max(max,1))*30);
+    return 'background:hsl(213,72%,'+l+'%);color:#fff;font-weight:600;';
+  }
+  function redBg(val, max){
+    if(val===0) return 'background:#fff;';
+    const l = Math.round(90 - (val/Math.max(max,1))*25);
+    return 'background:hsl(0,70%,'+l+'%);color:#fff;font-weight:600;';
+  }
+  function ptsIcon(v){
+    if(v>50)  return '<span style="color:#1a7c3e;">🍀</span> ';
+    if(v>0)   return '<span style="color:#1a7c3e;">✅</span> ';
+    if(v===0) return '<span style="color:#bf8f00;">❗</span> ';
+    return '<span style="color:#c00000;">❌</span> ';
+  }
+
+  const rows = [
+    { label:'半荘数', render:(d)=>{
+      const arr=get('games'); const mx=Math.max(...arr);
+      const bg=d.games===mx?'background:#fff2cc;font-weight:700;':'';
+      return '<td style="'+S.td_base+bg+'">'+d.games+'</td>';
+    }},
+    { label:'平均順位', render:(d)=>{
+      const arr=get('avgRank'); const r=getRank(d.avgRank,arr,false); const n=[...new Set(arr)].length;
+      const bg=r===1?'background:#c6efce;':r===n?'background:#ffc7ce;':'';
+      return '<td style="'+S.td_base+bg+'">'+d.avgRank.toFixed(2)+'</td>';
+    }},
+    { label:'1st', render:(d)=>{
+      const arr=get('r1'); const mx=Math.max(...arr);
+      return '<td style="'+S.td_base+blueBg(d.r1,mx,78)+'">'+d.r1+'回</td>';
+    }},
+    { label:'2nd', render:(d)=>{
+      const arr=get('r2'); const mx=Math.max(...arr);
+      return '<td style="'+S.td_base+blueBg(d.r2,mx,82)+'">'+d.r2+'回</td>';
+    }},
+    { label:'3rd', render:(d)=>{
+      const arr=get('r3'); const mx=Math.max(...arr);
+      return '<td style="'+S.td_base+blueBg(d.r3,mx,86)+'">'+d.r3+'回</td>';
+    }},
+    { label:'4th', render:(d)=>{
+      const arr=get('r4'); const mx=Math.max(...arr);
+      return '<td style="'+S.td_base+redBg(d.r4,mx)+'">'+d.r4+'回</td>';
+    }},
+    { label:'Top率', render:(d)=>{
+      const arr=get('topRate');
+      return '<td style="'+S.td_base+'">'+arrowHtml(d.topRate,arr,true)+d.topRate.toFixed(1)+'%</td>';
+    }},
+    { label:'連帯率', render:(d)=>{
+      const arr=get('renRate');
+      return '<td style="'+S.td_base+'">'+arrowHtml(d.renRate,arr,true)+d.renRate.toFixed(1)+'%</td>';
+    }},
+    { label:'4着回避率', render:(d)=>{
+      const arr=get('avoidRate');
+      return '<td style="'+S.td_base+'">'+arrowHtml(d.avoidRate,arr,true)+d.avoidRate.toFixed(1)+'%</td>';
+    }},
+    { label:'Max Pts', render:(d)=>{
+      const col=d.maxPts>=0?'#1a7c3e':'#c00000';
+      return '<td style="'+S.td_base+'color:'+col+';font-weight:600;">'+(d.maxPts>0?'+':'')+d.maxPts+' p</td>';
+    }},
+    { label:'Min Pts', render:(d)=>{
+      const col=d.minPts>=0?'#1a7c3e':'#c00000';
+      return '<td style="'+S.td_base+'color:'+col+';font-weight:600;">'+(d.minPts>0?'+':'')+d.minPts+' p</td>';
+    }},
+    { label:'累計 Pts', render:(d)=>{
+      const col=d.totalPts>=0?'#1a7c3e':'#c00000';
+      const bg=d.totalPts>=0?'background:#eff7ef;':'background:#fff0f0;';
+      return '<td style="'+S.td_base+bg+'color:'+col+';font-weight:700;">'+ptsIcon(d.totalPts)+(d.totalPts>0?'+':'')+d.totalPts+' p</td>';
+    }},
+    { label:'Pts/G', render:(d)=>{
+      const arr=get('ptsPerGame'); const col=d.ptsPerGame>=0?'#1a7c3e':'#c00000';
+      return '<td style="'+S.td_base+'color:'+col+';">'+arrowHtml(d.ptsPerGame,arr,true)+(d.ptsPerGame>0?'+':'')+d.ptsPerGame.toFixed(1)+'</td>';
+    }},
+  ];
+
+  const tbody = document.getElementById('summary-tbody');
+  rows.forEach(row => {
+    let html = '<tr><td style="'+S.td_label+'">'+row.label+'</td>';
+    allData.forEach(d => { html += d ? row.render(d) : '<td style="'+S.td_base+'">-</td>'; });
+    tbody.innerHTML += html + '</tr>';
+  });
+}
 </script>
 </body>
 </html>
