@@ -38,6 +38,27 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 .tbl tr:hover td{background:#f9f9f9;}
 .sep{border-left:2px solid #eee;}
 .grp{font-size:9px;color:#aaa;text-align:center;padding:3px 4px;background:#f5f5f5;border-bottom:1px solid #eee;}
+
+.rank-board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem;}
+@media(max-width:700px){.rank-board{grid-template-columns:1fr;}}
+.rank-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:12px 14px;}
+.rank-card-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.rank-badge{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;color:#fff;}
+.rank-badge.konten {background:linear-gradient(135deg,#b8860b,#ffd700);color:#222;}
+.rank-badge.jusei  {background:linear-gradient(135deg,#6a0dad,#c471ed);}
+.rank-badge.jugo   {background:linear-gradient(135deg,#1565c0,#42a5f5);}
+.rank-badge.juketsu{background:linear-gradient(135deg,#2e7d32,#66bb6a);}
+.rank-badge.jushi  {background:linear-gradient(135deg,#546e7a,#90a4ae);}
+.rank-badge.shoshin{background:linear-gradient(135deg,#795548,#bcaaa4);}
+.rank-member{font-weight:700;font-size:13px;}
+.rank-pt-row{display:flex;justify-content:space-between;font-size:11px;color:#555;margin-bottom:6px;}
+.rank-pt-val{font-weight:700;}
+.rank-bar-wrap{background:#f0f0f0;border-radius:4px;height:8px;margin-bottom:6px;overflow:hidden;}
+.rank-bar-fill{height:100%;border-radius:4px;transition:width .3s;}
+.rank-next{font-size:11px;color:#444;line-height:1.6;}
+.rank-next .highlight{font-weight:700;color:#1a5276;}
+.rank-next .warn{color:#c0392b;font-weight:700;}
+.rank-next .good{color:#1a7c3e;font-weight:700;}
 </style>
 </head>
 <body>
@@ -48,7 +69,11 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
     <span class="dash-title">🀄 統計学WG 戦績ダッシュボード</span>
     <span class="dash-meta">63半荘 ／ 9活動日 ／ 最終更新 2026/05/16</span>
   </div>
-  <a href="player_pages.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;background:#333;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;">個人・同卓分析はこちら →</a>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="player_pages.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;background:#333;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;">個人・同卓分析はこちら →</a>
+    <a href="total_dashboard.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;background:#1a5276;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;">🏆 Season2+3 トータルはこちら →</a>
+    <a href="rank_board.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;background:#7b341e;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;">🏯 WGランクボードはこちら →</a>
+  </div>
 </div>
 
 <div class="medal-grid" id="medal-grid"></div>
@@ -166,12 +191,17 @@ function buildMedals(){
   ['gold','silver','bronze'].forEach((cls, i) => {
     const s = sorted[i];
     const labels = ['🥇 1位','🥈 2位','🥉 3位'];
+    const rd = RANK_DATA[s.name];
+    const t = rd ? getRankInfo(rd.totalPt) : null;
+    const badge = t ? '<span class="rank-badge '+t.cls+'" style="font-size:10px;padding:2px 7px;margin-left:6px;">'+t.rank+t.grade+'</span>' : '';
+    const rankPt = rd ? '<div style="font-size:11px;color:#888;margin-top:3px;">WGランクPt: <b style="color:'+(rd.totalPt>=0?'#1a7c3e':'#c00000')+'">'+(rd.totalPt>=0?'+':'')+rd.totalPt+'</b> ／ <b style="color:'+(rd.ptg>=0?'#1a7c3e':'#c00000')+'">'+(rd.ptg>=0?'+':'')+rd.ptg+'/G</b></div>' : '';
     const c = document.createElement('div');
     c.className = 'medal-card ' + cls;
     c.innerHTML = '<div class="medal-label">' + labels[i] + '</div>'
-      + '<div class="medal-name">' + dn(s.name) + '</div>'
-      + '<div class="medal-pts ' + pc(s.totalPts) + '">' + ps(s.totalPts) + ' pts</div>'
-      + '<div class="medal-sub">Pts/G ' + ps(f1(s.ptsPerGame)) + ' ／ Top率 ' + pct(s.topRate) + ' ／ ' + s.games + '半荘</div>';
+      + '<div class="medal-name" style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px;">' + dn(s.name) + badge + '</div>'
+      + '<div class="medal-pts ' + pc(s.totalPts) + '">' + ps(s.totalPts) + ' pts（Season3）</div>'
+      + rankPt
+      + '<div class="medal-sub" style="margin-top:4px;">平均順位 ' + f2(s.avgRank) + ' ／ Top率 ' + pct(s.topRate) + ' ／ 連帯率 ' + pct(s.renRate) + '</div>';
     grid.appendChild(c);
   });
 }
@@ -272,6 +302,125 @@ function renderTable(sortKey, btn){
       + '<td class="' + pc(d.minPts) + '">' + ps(d.minPts) + '</td>'
       + '<td class="sep">' + d.r1 + '</td><td>' + d.r2 + '</td><td>' + d.r3 + '</td><td>' + d.r4 + '</td>';
     tbody.appendChild(tr);
+  });
+}
+
+// ===== WGランクシステム =====
+const RANK_DATA = {
+  '土岐': {inheritPt:956,  s3Pt:1532,  totalPt:2488,  ptg:28.9,  s3Games:53},
+  '藤木': {inheritPt:15,   s3Pt:-524,  totalPt:-509,  ptg:-174.7,s3Games:3},
+  '鹿山': {inheritPt:738,  s3Pt:249,   totalPt:987,   ptg:13.8,  s3Games:18},
+  '河井': {inheritPt:-918, s3Pt:-589,  totalPt:-1507, ptg:-32.7, s3Games:18},
+  '松林': {inheritPt:340,  s3Pt:124,   totalPt:464,   ptg:3.0,   s3Games:41},
+  '岡崎': {inheritPt:404,  s3Pt:-132,  totalPt:272,   ptg:-2.7,  s3Games:49},
+  '大塚': {inheritPt:-1104,s3Pt:-46,   totalPt:-1150, ptg:-1.6,  s3Games:28},
+  '矢嶋': {inheritPt:-314, s3Pt:-776,  totalPt:-1090, ptg:-38.8, s3Games:20},
+  '本井': {inheritPt:-118, s3Pt:162,   totalPt:44,    ptg:7.4,   s3Games:22},
+};
+
+const RANK_THRESHOLDS = [
+  {min:4000,  max:null,  rank:'魂天', grade:'',  cls:'konten',  icon:'👑', barColor:'#ffd700'},
+  {min:2667,  max:4000,  rank:'雀聖', grade:'Ⅲ', cls:'jusei',   icon:'🔱', barColor:'#c471ed'},
+  {min:1833,  max:2667,  rank:'雀聖', grade:'Ⅱ', cls:'jusei',   icon:'🔱', barColor:'#c471ed'},
+  {min:1500,  max:1833,  rank:'雀聖', grade:'Ⅰ', cls:'jusei',   icon:'🔱', barColor:'#c471ed'},
+  {min:1000,  max:1500,  rank:'雀豪', grade:'Ⅲ', cls:'jugo',    icon:'⚡', barColor:'#42a5f5'},
+  {min:500,   max:1000,  rank:'雀豪', grade:'Ⅱ', cls:'jugo',    icon:'⚡', barColor:'#42a5f5'},
+  {min:0,     max:500,   rank:'雀豪', grade:'Ⅰ', cls:'jugo',    icon:'⚡', barColor:'#42a5f5'},
+  {min:-500,  max:0,     rank:'雀傑', grade:'Ⅲ', cls:'juketsu', icon:'🌟', barColor:'#66bb6a'},
+  {min:-1000, max:-500,  rank:'雀傑', grade:'Ⅱ', cls:'juketsu', icon:'🌟', barColor:'#66bb6a'},
+  {min:-1500, max:-1000, rank:'雀傑', grade:'Ⅰ', cls:'juketsu', icon:'🌟', barColor:'#66bb6a'},
+  {min:-2167, max:-1500, rank:'雀士', grade:'Ⅲ', cls:'jushi',   icon:'🌙', barColor:'#90a4ae'},
+  {min:-2833, max:-2167, rank:'雀士', grade:'Ⅱ', cls:'jushi',   icon:'🌙', barColor:'#90a4ae'},
+  {min:-3500, max:-2833, rank:'雀士', grade:'Ⅰ', cls:'jushi',   icon:'🌙', barColor:'#90a4ae'},
+  {min:-4000, max:-3500, rank:'初心', grade:'Ⅲ', cls:'shoshin', icon:'🌱', barColor:'#bcaaa4'},
+  {min:-4500, max:-4000, rank:'初心', grade:'Ⅱ', cls:'shoshin', icon:'🌱', barColor:'#bcaaa4'},
+  {min:null,  max:-4500, rank:'初心', grade:'Ⅰ', cls:'shoshin', icon:'🌱', barColor:'#bcaaa4'},
+];
+
+function getRankInfo(pt){
+  for(const t of RANK_THRESHOLDS){
+    const aboveMin = t.min===null || pt >= t.min;
+    const belowMax = t.max===null || pt < t.max;
+    if(aboveMin && belowMax) return t;
+  }
+  return RANK_THRESHOLDS[RANK_THRESHOLDS.length-1];
+}
+
+function getNextRankInfo(t){
+  const idx = RANK_THRESHOLDS.indexOf(t);
+  return idx > 0 ? RANK_THRESHOLDS[idx-1] : null;
+}
+
+function buildRankBoard(){
+  const order = ['土岐','矢嶋','藤木','松林','鹿山','岡崎','大塚','河井','本井'];
+  const board = document.getElementById('rank-board');
+  
+  // WGランクPtで降順ソート
+  const sorted = [...order].sort((a,b)=> RANK_DATA[b].totalPt - RANK_DATA[a].totalPt);
+  
+  sorted.forEach(m => {
+    const rd = RANK_DATA[m];
+    const t = getRankInfo(rd.totalPt);
+    const next = getNextRankInfo(t);
+    const color = COLORS[m] || '#666';
+    
+    // プログレスバー計算
+    let barPct = 0;
+    if(t.min !== null && t.max !== null){
+      const range = t.max - t.min;
+      barPct = Math.min(100, Math.max(0, ((rd.totalPt - t.min) / range) * 100));
+    } else if(t.max === null){
+      barPct = 100; // 魂天
+    } else {
+      barPct = 0;
+    }
+
+    // 次のランクまでの情報
+    let nextInfo = '';
+    if(!next){
+      nextInfo = `<span class="good">👑 魂天達成！</span>`;
+    } else {
+      const needPt = next.min - rd.totalPt;
+      const ptgAbs = Math.abs(rd.ptg);
+      if(rd.ptg > 0){
+        const gamesNeeded = Math.ceil(needPt / rd.ptg);
+        nextInfo = `次の目標 <span class="highlight">${next.rank}${next.grade}</span> まで <span class="highlight">あと${needPt.toLocaleString()}pt</span><br>
+        現在のペース（<span class="good">+${rd.ptg}/G</span>）→ 約<span class="highlight">${gamesNeeded}半荘</span>で昇格圏`;
+      } else if(rd.ptg < 0){
+        // 降格リスク
+        const prev = RANK_THRESHOLDS[RANK_THRESHOLDS.indexOf(t)+1];
+        if(prev){
+          const dropPt = rd.totalPt - prev.max;
+          const dropGames = Math.ceil(dropPt / ptgAbs);
+          nextInfo = `<span class="warn">⚠ 降格リスク</span>：${prev.rank}${prev.grade}まで あと${dropPt.toLocaleString()}pt<br>
+          現在のペース（<span class="warn">${rd.ptg}/G</span>）→ 約${dropGames}半荘で降格の可能性`;
+        } else {
+          nextInfo = `<span class="warn">⚠ 現在ペースマイナス（${rd.ptg}/G）</span>`;
+        }
+      } else {
+        nextInfo = `次の目標 <span class="highlight">${next.rank}${next.grade}</span> まで <span class="highlight">あと${needPt.toLocaleString()}pt</span>`;
+      }
+    }
+
+    board.innerHTML += `
+    <div class="rank-card">
+      <div class="rank-card-header">
+        <span class="rank-badge ${t.cls}">${t.icon} ${t.rank}${t.grade}</span>
+        <span class="rank-member" style="color:${color};">${dn(m)}</span>
+      </div>
+      <div class="rank-pt-row">
+        <span>WGランクPt</span>
+        <span class="rank-pt-val" style="color:${rd.totalPt>=0?'#1a7c3e':'#c00000'}">${rd.totalPt>=0?'+':''}${rd.totalPt.toLocaleString()}</span>
+      </div>
+      <div class="rank-pt-row" style="font-size:10px;color:#888;">
+        <span>引継ぎ${rd.inheritPt>=0?'+':''}${rd.inheritPt} ／ S3 ${rd.s3Pt>=0?'+':''}${rd.s3Pt}（${rd.s3Games}半荘）</span>
+        <span>ランクPt/G: <b style="color:${rd.ptg>=0?'#1a7c3e':'#c00000'}">${rd.ptg>=0?'+':''}${rd.ptg}</b></span>
+      </div>
+      <div class="rank-bar-wrap">
+        <div class="rank-bar-fill" style="width:${barPct.toFixed(1)}%;background:${t.barColor};"></div>
+      </div>
+      <div class="rank-next">${nextInfo}</div>
+    </div>`;
   });
 }
 
