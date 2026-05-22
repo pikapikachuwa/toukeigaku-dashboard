@@ -85,7 +85,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#0d0d1a;color:#eee
 <div class="header">
   <div>
     <div><span class="header-title">🏯 統計学WG</span><span class="season-tag">RANK BOARD</span></div>
-    <div class="header-sub">Season3 WGランクボード ／ 引継ぎPt（S2÷3）＋ S3累積WGランクPt ／ 最終更新 2026/05/16</div>
+    <div class="header-sub">Season3 WGランクボード ／ 引継ぎPt（S2÷3）＋ S3累積WGランクPt ／ 最終更新 2026/05/22</div>
   </div>
   <div class="nav-btns">
     <a class="nav-btn" href="mahjong_dashboard.html">← Season3</a>
@@ -126,15 +126,15 @@ function dn(n){return _DN[n]||n;}
 const COLORS_MAP={'土岐':'#4a90d9','矢嶋':'#e74c3c','藤木':'#e67e22','松林':'#9b59b6','鹿山':'#95a5a6','岡崎':'#27ae60','大塚':'#c0392b','河井':'#f1c40f','本井':'#1abc9c'};
 
 const RANK_DATA=[
-  {name:'土岐', inheritPt:956,  s3Pt:1532,  totalPt:2488,  ptg:28.9,  s3Games:53, avgRank:2.25,topRate:30.2,renRate:62.3,totalScorePts:758},
-  {name:'鹿山', inheritPt:738,  s3Pt:249,   totalPt:987,   ptg:13.8,  s3Games:18, avgRank:2.39,topRate:22.2,renRate:55.6,totalScorePts:36},
-  {name:'松林', inheritPt:340,  s3Pt:124,   totalPt:464,   ptg:3.0,   s3Games:41, avgRank:2.46,topRate:29.3,renRate:51.2,totalScorePts:118},
-  {name:'岡崎', inheritPt:404,  s3Pt:-132,  totalPt:272,   ptg:-2.7,  s3Games:49, avgRank:2.53,topRate:20.4,renRate:51.0,totalScorePts:-158},
-  {name:'本井', inheritPt:-118, s3Pt:162,   totalPt:44,    ptg:7.4,   s3Games:22, avgRank:2.45,topRate:22.7,renRate:45.5,totalScorePts:6},
-  {name:'藤木', inheritPt:15,   s3Pt:-524,  totalPt:-509,  ptg:-174.7,s3Games:3,  avgRank:4.0, topRate:0.0, renRate:0.0, totalScorePts:-215},
-  {name:'矢嶋', inheritPt:-314, s3Pt:-776,  totalPt:-1090, ptg:-38.8, s3Games:20, avgRank:2.85,topRate:15.0,renRate:40.0,totalScorePts:-287},
-  {name:'大塚', inheritPt:-1104,s3Pt:-46,   totalPt:-1150, ptg:-1.6,  s3Games:28, avgRank:2.5, topRate:32.1,renRate:46.4,totalScorePts:70},
-  {name:'河井', inheritPt:-918, s3Pt:-589,  totalPt:-1507, ptg:-32.7, s3Games:18, avgRank:2.78,topRate:22.2,renRate:33.3,totalScorePts:-328},
+  {name:'土岐', inheritPt:   954,  s3Pt:   845,   totalPt:  1799,   ptg:   14.8,  s3Games:57, avgRank:2.29,topRate:34.5,renRate:58.9,totalScorePts:1684},
+  {name:'鹿山', inheritPt:   737,  s3Pt:   246,   totalPt:   983,   ptg:   13.7,  s3Games:18, avgRank:2.29,topRate:26.5,renRate:58.2,totalScorePts:812},
+  {name:'松林', inheritPt:   341,  s3Pt:   123,   totalPt:   464,   ptg:    3.0,  s3Games:41, avgRank:2.41,topRate:26.8,renRate:54.5,totalScorePts:422},
+  {name:'岡崎', inheritPt:   405,  s3Pt:  -130,   totalPt:   275,   ptg:   -2.7,  s3Games:49, avgRank:2.44,topRate:26.5,renRate:53.5,totalScorePts:336},
+  {name:'本井', inheritPt:  -119,  s3Pt:   161,   totalPt:    42,   ptg:    7.3,  s3Games:22, avgRank:2.54,topRate:22.9,renRate:47.9,totalScorePts:-79},
+  {name:'藤木', inheritPt:    16,  s3Pt:  -306,   totalPt:  -290,   ptg:  -43.7,  s3Games: 7, avgRank:2.56,topRate:29.4,renRate:44.1,totalScorePts:-7},
+  {name:'大塚', inheritPt: -1100,  s3Pt:   187,   totalPt:  -913,   ptg:    5.8,  s3Games:32, avgRank:2.67,topRate:19.1,renRate:42.8,totalScorePts:-1216},
+  {name:'矢嶋', inheritPt:  -314,  s3Pt:  -776,   totalPt: -1090,   ptg:  -38.8,  s3Games:20, avgRank:2.61,topRate:20.7,renRate:46.4,totalScorePts:-705},
+  {name:'河井', inheritPt:  -915,  s3Pt:  -349,   totalPt: -1264,   ptg:  -15.9,  s3Games:22, avgRank:2.73,topRate:19.5,renRate:38.2,totalScorePts:-1247},
 ];
 
 const THRESHOLDS=[
