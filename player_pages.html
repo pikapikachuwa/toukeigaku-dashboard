@@ -489,9 +489,9 @@ function buildPage(name){
         <tr><td style="color:#888;">4着回避率</td><td>${pct(d.avoidRate)}</td><td>${rk(dr.avoidRate)}</td></tr>
         <tr><td style="color:#888;">ラス率</td><td class="neg">${pct(d.lastRate)}</td><td>${rk(dr.lastRate)}</td></tr>
         <tr><td style="color:#888;">プラス率</td><td>${pct(d.plusRate)}</td><td>${rk(dr.plusRate)}</td></tr>
-        <tr><td style="color:#888;">標準偏差</td><td>${f1(d.stdDev)}</td><td>${rk(dr.stdDev)}</td></tr>
         <tr><td style="color:#888;">1着時平均Pts</td><td class="pos">${ps(f1(d.avgPts1st))}</td><td>${rk(dr.avgPts1st)}</td></tr>
         <tr><td style="color:#888;">4着時平均Pts</td><td class="neg">${ps(f1(d.avgPts4th))}</td><td>${rk(dr.avgPts4th)}</td></tr>
+        <tr><td style="color:#888;">振れ幅</td><td>${f1(d.stdDev)}</td><td></td></tr>
         <tr><td style="color:#888;">直近20戦</td><td>${f2(d.recentAvgRank)}</td><td>${d.recentAvgRank>d.avgRank?'↓ やや低下':d.recentAvgRank<d.avgRank?'↑ 上昇中':'→ 横ばい'}</td></tr>
       </table>
     </div>
@@ -507,7 +507,7 @@ function buildPage(name){
     <div class="stat-pill"><span class="stat-pill-label">Pts/G（全期間）</span><span class="stat-pill-val ${pc(da.ptsPerGame)}">${ps(f1(da.ptsPerGame))}</span></div>
     <div class="stat-pill"><span class="stat-pill-label">Top率（全期間）</span><span class="stat-pill-val">${pct(da.topRate)} ${rk(dra.topRate)}</span></div>
     <div class="stat-pill"><span class="stat-pill-label">連帯率（全期間）</span><span class="stat-pill-val">${pct(da.renRate)} ${rk(dra.renRate)}</span></div>
-    <div class="stat-pill"><span class="stat-pill-label">標準偏差（全期間）</span><span class="stat-pill-val">${f1(da.stdDev)} ${rk(dra.stdDev)}</span></div>
+    <div class="stat-pill"><span class="stat-pill-label">振れ幅（全期間）</span><span class="stat-pill-val">${f1(da.stdDev)}</span></div>
     <div class="stat-pill"><span class="stat-pill-label">MaxPts</span><span class="stat-pill-val pos">+${da.maxPts}</span></div>
     <div class="stat-pill"><span class="stat-pill-label">MinPts</span><span class="stat-pill-val neg">${da.minPts}</span></div>
     <div class="stat-pill"><span class="stat-pill-label">1着時平均Pts</span><span class="stat-pill-val pos">+${f1(da.avgPts1st)} ${rk(dra.avgPts1st)}</span></div>
