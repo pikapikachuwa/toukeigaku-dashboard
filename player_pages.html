@@ -76,13 +76,20 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 <script>
 const _DN={'土岐':'TK_n','矢嶋':'YaJi','藤木':'FuJi','松林':'MaTsuB','鹿山':'KaYaM','岡崎':'OkaZ','大塚':'OtsuK','河井':'KaWa_i','本井':'MoTo_i'};
 function dn(n){return _DN[n]||n;}
-const N=9;
 function r2s(r){return Math.round((N-r)/(N-1)*100);}
 function ps(n){return n==null?'-':(n>0?'+':'')+n;}
 function f1(n){return n==null?'-':Number(n).toFixed(1);}
 function f2(n){return n==null?'-':Number(n).toFixed(2);}
 function pct(n){return n==null?'-':f1(n)+'%';}
 function pc(n){return n>0?'pos':n<0?'neg':'';}
+function rk(n){
+  if(n==null) return '';
+  const t=Math.min(4,Math.max(1,Math.ceil(n/N*4)));  // 25%刻みのティア（1=上位25%, 4=下位25%）。人数Nに自動追従
+  if(t===2||t===3) return `<span style="font-size:10px;font-weight:500;color:#888;">WG${n}位</span>`;  // 中間ティアⅡ・Ⅲ：無色
+  const top=(t===1);
+  const bg=top?'#d9f0e1':'#f9ddd8', c=top?'#1b7a32':'#b5352a';   // Ⅰ=緑 / Ⅳ=赤
+  return `<span style="display:inline-block;padding:1px 8px;border-radius:999px;background:${bg};color:${c};font-size:10px;font-weight:700;line-height:1.7;">WG${n}位</span>`;
+}
 function grade(v){
   if(v>=10) return {label:'超得意！',cls:'gA'};
   if(v>=3)  return {label:'得意！',  cls:'gB'};
@@ -91,6 +98,7 @@ function grade(v){
   return          {label:'超苦手！', cls:'gE'};
 }
 const ALL_MEMBERS=['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
+const N=ALL_MEMBERS.length;
 
 const S3={
   '土岐': {games:74,avgRank:2.28,topRate:31.1,renRate:60.8,avoidRate:79.7,lastRate:20.3,plusRate:58.1,stdDev:51.0,avgPts1st:78.9,avgPts4th:-53.4,recentAvgRank:2.30,totalPts:969,ptsPerGame:13.1,maxPts:133,minPts:-66,r1:23,r2:22,r3:14,r4:15},
@@ -126,26 +134,26 @@ const RADAR_RANKS={
   '本井': [6, 6, 1, 9, 1, 4],
 };
 const S3_RANKS={
-  '土岐': {avgRank:1,topRate:1,renRate:1,avoidRate:2,lastRate:2,plusRate:1,stdDev:6,ptsPerGame:1,totalPts:1,maxPts:2,minPts:2,games:1,avgPts1st:1},
-  '藤木': {avgRank:7,topRate:4,renRate:9,avoidRate:7,lastRate:7,plusRate:8,stdDev:9,ptsPerGame:8,totalPts:5,maxPts:6,minPts:9,games:9,avgPts1st:2},
-  '鹿山': {avgRank:6,topRate:9,renRate:7,avoidRate:3,lastRate:3,plusRate:5,stdDev:2,ptsPerGame:7,totalPts:7,maxPts:7,minPts:4,games:7,avgPts1st:8},
-  '河井': {avgRank:9,topRate:7,renRate:8,avoidRate:4,lastRate:4,plusRate:7,stdDev:3,ptsPerGame:9,totalPts:8,maxPts:9,minPts:6,games:6,avgPts1st:9},
-  '松林': {avgRank:3,topRate:2,renRate:2,avoidRate:6,lastRate:6,plusRate:2,stdDev:7,ptsPerGame:2,totalPts:2,maxPts:8,minPts:3,games:4,avgPts1st:3},
-  '岡崎': {avgRank:5,topRate:8,renRate:4,avoidRate:8,lastRate:8,plusRate:6,stdDev:4,ptsPerGame:6,totalPts:9,maxPts:3,minPts:5,games:2,avgPts1st:4},
-  '大塚': {avgRank:4,topRate:3,renRate:3,avoidRate:5,lastRate:5,plusRate:3,stdDev:8,ptsPerGame:3,totalPts:3,maxPts:1,minPts:8,games:3,avgPts1st:5},
-  '矢嶋': {avgRank:8,topRate:5,renRate:5,avoidRate:9,lastRate:9,plusRate:4,stdDev:5,ptsPerGame:5,totalPts:6,maxPts:4,minPts:7,games:5,avgPts1st:7},
-  '本井': {avgRank:2,topRate:6,renRate:6,avoidRate:1,lastRate:1,plusRate:9,stdDev:1,ptsPerGame:4,totalPts:4,maxPts:5,minPts:1,games:8,avgPts1st:6},
+  '土岐': {avgRank:1,topRate:1,renRate:1,avoidRate:2,lastRate:2,plusRate:1,stdDev:6,ptsPerGame:1,totalPts:1,maxPts:2,minPts:2,games:1,avgPts1st:1,avgPts4th:2},
+  '藤木': {avgRank:7,topRate:4,renRate:9,avoidRate:7,lastRate:7,plusRate:8,stdDev:9,ptsPerGame:8,totalPts:5,maxPts:6,minPts:9,games:9,avgPts1st:2,avgPts4th:9},
+  '鹿山': {avgRank:6,topRate:9,renRate:7,avoidRate:3,lastRate:3,plusRate:5,stdDev:2,ptsPerGame:7,totalPts:7,maxPts:7,minPts:4,games:7,avgPts1st:8,avgPts4th:3},
+  '河井': {avgRank:9,topRate:7,renRate:8,avoidRate:4,lastRate:4,plusRate:7,stdDev:3,ptsPerGame:9,totalPts:8,maxPts:9,minPts:6,games:6,avgPts1st:9,avgPts4th:8},
+  '松林': {avgRank:3,topRate:2,renRate:2,avoidRate:6,lastRate:6,plusRate:2,stdDev:7,ptsPerGame:2,totalPts:2,maxPts:8,minPts:3,games:4,avgPts1st:3,avgPts4th:5},
+  '岡崎': {avgRank:5,topRate:8,renRate:4,avoidRate:8,lastRate:8,plusRate:6,stdDev:4,ptsPerGame:6,totalPts:9,maxPts:3,minPts:5,games:2,avgPts1st:4,avgPts4th:4},
+  '大塚': {avgRank:4,topRate:3,renRate:3,avoidRate:5,lastRate:5,plusRate:3,stdDev:8,ptsPerGame:3,totalPts:3,maxPts:1,minPts:8,games:3,avgPts1st:5,avgPts4th:7},
+  '矢嶋': {avgRank:8,topRate:5,renRate:5,avoidRate:9,lastRate:9,plusRate:4,stdDev:5,ptsPerGame:5,totalPts:6,maxPts:4,minPts:7,games:5,avgPts1st:7,avgPts4th:6},
+  '本井': {avgRank:2,topRate:6,renRate:6,avoidRate:1,lastRate:1,plusRate:9,stdDev:1,ptsPerGame:4,totalPts:4,maxPts:5,minPts:1,games:8,avgPts1st:6,avgPts4th:1},
 };
 const ALL_RANKS={
-  '土岐': {avgRank:1,topRate:1,renRate:1,avoidRate:2,lastRate:2,plusRate:1,stdDev:8,ptsPerGame:1,totalPts:1,maxPts:2,minPts:4,games:3,avgPts1st:2},
-  '藤木': {avgRank:5,topRate:2,renRate:7,avoidRate:6,lastRate:6,plusRate:6,stdDev:9,ptsPerGame:4,totalPts:5,maxPts:9,minPts:9,games:9,avgPts1st:1},
-  '鹿山': {avgRank:2,topRate:5,renRate:2,avoidRate:1,lastRate:1,plusRate:2,stdDev:1,ptsPerGame:2,totalPts:2,maxPts:3,minPts:3,games:7,avgPts1st:6},
-  '河井': {avgRank:9,topRate:9,renRate:9,avoidRate:9,lastRate:9,plusRate:9,stdDev:3,ptsPerGame:9,totalPts:9,maxPts:7,minPts:6,games:5,avgPts1st:9},
-  '松林': {avgRank:3,topRate:3,renRate:3,avoidRate:3,lastRate:3,plusRate:3,stdDev:7,ptsPerGame:3,totalPts:3,maxPts:5,minPts:2,games:6,avgPts1st:3},
-  '岡崎': {avgRank:4,topRate:4,renRate:4,avoidRate:5,lastRate:5,plusRate:4,stdDev:6,ptsPerGame:5,totalPts:4,maxPts:4,minPts:5,games:1,avgPts1st:7},
-  '大塚': {avgRank:8,topRate:8,renRate:8,avoidRate:8,lastRate:8,plusRate:7,stdDev:5,ptsPerGame:8,totalPts:8,maxPts:1,minPts:8,games:2,avgPts1st:4},
-  '矢嶋': {avgRank:7,topRate:7,renRate:6,avoidRate:7,lastRate:7,plusRate:5,stdDev:4,ptsPerGame:7,totalPts:7,maxPts:6,minPts:7,games:4,avgPts1st:8},
-  '本井': {avgRank:6,topRate:6,renRate:5,avoidRate:4,lastRate:4,plusRate:8,stdDev:2,ptsPerGame:6,totalPts:6,maxPts:8,minPts:1,games:8,avgPts1st:5},
+  '土岐': {avgRank:1,topRate:1,renRate:1,avoidRate:2,lastRate:2,plusRate:1,stdDev:8,ptsPerGame:1,totalPts:1,maxPts:2,minPts:4,games:3,avgPts1st:2,avgPts4th:2},
+  '藤木': {avgRank:5,topRate:2,renRate:7,avoidRate:6,lastRate:6,plusRate:6,stdDev:9,ptsPerGame:4,totalPts:5,maxPts:9,minPts:9,games:9,avgPts1st:1,avgPts4th:8},
+  '鹿山': {avgRank:2,topRate:5,renRate:2,avoidRate:1,lastRate:1,plusRate:2,stdDev:1,ptsPerGame:2,totalPts:2,maxPts:3,minPts:3,games:7,avgPts1st:6,avgPts4th:3},
+  '河井': {avgRank:9,topRate:9,renRate:9,avoidRate:9,lastRate:9,plusRate:9,stdDev:3,ptsPerGame:9,totalPts:9,maxPts:7,minPts:6,games:5,avgPts1st:9,avgPts4th:9},
+  '松林': {avgRank:3,topRate:3,renRate:3,avoidRate:3,lastRate:3,plusRate:3,stdDev:7,ptsPerGame:3,totalPts:3,maxPts:5,minPts:2,games:6,avgPts1st:3,avgPts4th:5},
+  '岡崎': {avgRank:4,topRate:4,renRate:4,avoidRate:5,lastRate:5,plusRate:4,stdDev:6,ptsPerGame:5,totalPts:4,maxPts:4,minPts:5,games:1,avgPts1st:7,avgPts4th:6},
+  '大塚': {avgRank:8,topRate:8,renRate:8,avoidRate:8,lastRate:8,plusRate:7,stdDev:5,ptsPerGame:8,totalPts:8,maxPts:1,minPts:8,games:2,avgPts1st:4,avgPts4th:7},
+  '矢嶋': {avgRank:7,topRate:7,renRate:6,avoidRate:7,lastRate:7,plusRate:5,stdDev:4,ptsPerGame:7,totalPts:7,maxPts:6,minPts:7,games:4,avgPts1st:8,avgPts4th:4},
+  '本井': {avgRank:6,topRate:6,renRate:5,avoidRate:4,lastRate:4,plusRate:8,stdDev:2,ptsPerGame:6,totalPts:6,maxPts:8,minPts:1,games:8,avgPts1st:5,avgPts4th:1},
 };
 const MATCHUP_COMMENTS = {
   '土岐': {
@@ -461,11 +469,11 @@ function buildPage(name){
 
   // 最新シーズン指標 (5列)
   const s3Metrics=`<div class="metrics5">
-    <div class="metric"><div class="metric-label">📊 参加半荘数</div><div class="metric-val">${d.games}<span style="font-size:13px;color:#888;font-weight:400;">G</span></div><div class="metric-rank">WG ${dr.games}位</div></div>
-    <div class="metric"><div class="metric-label">🎯 平均順位</div><div class="metric-val">${f2(d.avgRank)}</div><div class="metric-rank">WG ${dr.avgRank}位</div></div>
-    <div class="metric"><div class="metric-label">🥇 Top率</div><div class="metric-val">${pct(d.topRate)}</div><div class="metric-rank">WG ${dr.topRate}位</div></div>
-    <div class="metric"><div class="metric-label">💰 累計Pts</div><div class="metric-val ${pc(d.totalPts)}">${ps(d.totalPts)}</div><div class="metric-rank">WG ${dr.totalPts}位</div></div>
-    <div class="metric"><div class="metric-label">📈 Pts/G</div><div class="metric-val ${pc(d.ptsPerGame)}">${ps(f1(d.ptsPerGame))}</div><div class="metric-rank">WG ${dr.ptsPerGame}位</div></div>
+    <div class="metric"><div class="metric-label">📊 参加半荘数</div><div class="metric-val">${d.games}<span style="font-size:13px;color:#888;font-weight:400;">G</span></div><div class="metric-rank">${rk(dr.games)}</div></div>
+    <div class="metric"><div class="metric-label">🎯 平均順位</div><div class="metric-val">${f2(d.avgRank)}</div><div class="metric-rank">${rk(dr.avgRank)}</div></div>
+    <div class="metric"><div class="metric-label">🥇 Top率</div><div class="metric-val">${pct(d.topRate)}</div><div class="metric-rank">${rk(dr.topRate)}</div></div>
+    <div class="metric"><div class="metric-label">💰 累計Pts</div><div class="metric-val ${pc(d.totalPts)}">${ps(d.totalPts)}</div><div class="metric-rank">${rk(dr.totalPts)}</div></div>
+    <div class="metric"><div class="metric-label">📈 Pts/G</div><div class="metric-val ${pc(d.ptsPerGame)}">${ps(f1(d.ptsPerGame))}</div><div class="metric-rank">${rk(dr.ptsPerGame)}</div></div>
   </div>`;
 
   const s3Detail=`<div class="two-col" style="margin-bottom:0.75rem;">
@@ -477,13 +485,13 @@ function buildPage(name){
     <div class="card">
       <div class="card-title">📋 詳細指標</div>
       <table class="detail-tbl">
-        <tr><td style="color:#888;">連帯率</td><td>${pct(d.renRate)}</td><td>WG ${dr.renRate}位</td></tr>
-        <tr><td style="color:#888;">4着回避率</td><td>${pct(d.avoidRate)}</td><td>WG ${dr.avoidRate}位</td></tr>
-        <tr><td style="color:#888;">ラス率</td><td class="neg">${pct(d.lastRate)}</td><td></td></tr>
-        <tr><td style="color:#888;">プラス率</td><td>${pct(d.plusRate)}</td><td>WG ${dr.plusRate}位</td></tr>
-        <tr><td style="color:#888;">標準偏差</td><td>${f1(d.stdDev)}</td><td>WG ${dr.stdDev}位</td></tr>
-        <tr><td style="color:#888;">1着時Pts</td><td class="pos">${ps(f1(d.avgPts1st))}</td><td>WG ${dr.avgPts1st}位</td></tr>
-        <tr><td style="color:#888;">4着時Pts</td><td class="neg">${ps(f1(d.avgPts4th))}</td><td></td></tr>
+        <tr><td style="color:#888;">連帯率</td><td>${pct(d.renRate)}</td><td>${rk(dr.renRate)}</td></tr>
+        <tr><td style="color:#888;">4着回避率</td><td>${pct(d.avoidRate)}</td><td>${rk(dr.avoidRate)}</td></tr>
+        <tr><td style="color:#888;">ラス率</td><td class="neg">${pct(d.lastRate)}</td><td>${rk(dr.lastRate)}</td></tr>
+        <tr><td style="color:#888;">プラス率</td><td>${pct(d.plusRate)}</td><td>${rk(dr.plusRate)}</td></tr>
+        <tr><td style="color:#888;">標準偏差</td><td>${f1(d.stdDev)}</td><td>${rk(dr.stdDev)}</td></tr>
+        <tr><td style="color:#888;">1着時平均Pts</td><td class="pos">${ps(f1(d.avgPts1st))}</td><td>${rk(dr.avgPts1st)}</td></tr>
+        <tr><td style="color:#888;">4着時平均Pts</td><td class="neg">${ps(f1(d.avgPts4th))}</td><td>${rk(dr.avgPts4th)}</td></tr>
         <tr><td style="color:#888;">直近20戦</td><td>${f2(d.recentAvgRank)}</td><td>${d.recentAvgRank>d.avgRank?'↓ やや低下':d.recentAvgRank<d.avgRank?'↑ 上昇中':'→ 横ばい'}</td></tr>
       </table>
     </div>
@@ -492,18 +500,18 @@ function buildPage(name){
   // 全期間通算指標
   const allMetrics=`<div class="metrics3">
     <div class="metric"><div class="metric-label">📊 通算半荘数</div><div class="metric-val">${da.games}<span style="font-size:13px;color:#888;font-weight:400;">G</span></div></div>
-    <div class="metric"><div class="metric-label">🎯 全期間平均順位</div><div class="metric-val">${f2(da.avgRank)}</div><div class="metric-rank">WG ${dra.avgRank}位</div></div>
-    <div class="metric"><div class="metric-label">💰 全期間累計Pts</div><div class="metric-val ${pc(da.totalPts)}">${ps(da.totalPts)}</div><div class="metric-rank">WG ${dra.totalPts}位</div></div>
+    <div class="metric"><div class="metric-label">🎯 全期間平均順位</div><div class="metric-val">${f2(da.avgRank)}</div><div class="metric-rank">${rk(dra.avgRank)}</div></div>
+    <div class="metric"><div class="metric-label">💰 全期間累計Pts</div><div class="metric-val ${pc(da.totalPts)}">${ps(da.totalPts)}</div><div class="metric-rank">${rk(dra.totalPts)}</div></div>
   </div>
   <div class="all-stats-grid" style="grid-template-columns:repeat(3,1fr);">
     <div class="stat-pill"><span class="stat-pill-label">Pts/G（全期間）</span><span class="stat-pill-val ${pc(da.ptsPerGame)}">${ps(f1(da.ptsPerGame))}</span></div>
-    <div class="stat-pill"><span class="stat-pill-label">Top率（全期間）</span><span class="stat-pill-val">${pct(da.topRate)} <small style="color:#aaa;font-size:10px;">WG${dra.topRate}位</small></span></div>
-    <div class="stat-pill"><span class="stat-pill-label">連帯率（全期間）</span><span class="stat-pill-val">${pct(da.renRate)} <small style="color:#aaa;font-size:10px;">WG${dra.renRate}位</small></span></div>
-    <div class="stat-pill"><span class="stat-pill-label">標準偏差（全期間）</span><span class="stat-pill-val">${f1(da.stdDev)} <small style="color:#aaa;font-size:10px;">WG${dra.stdDev}位</small></span></div>
+    <div class="stat-pill"><span class="stat-pill-label">Top率（全期間）</span><span class="stat-pill-val">${pct(da.topRate)} ${rk(dra.topRate)}</span></div>
+    <div class="stat-pill"><span class="stat-pill-label">連帯率（全期間）</span><span class="stat-pill-val">${pct(da.renRate)} ${rk(dra.renRate)}</span></div>
+    <div class="stat-pill"><span class="stat-pill-label">標準偏差（全期間）</span><span class="stat-pill-val">${f1(da.stdDev)} ${rk(dra.stdDev)}</span></div>
     <div class="stat-pill"><span class="stat-pill-label">MaxPts</span><span class="stat-pill-val pos">+${da.maxPts}</span></div>
     <div class="stat-pill"><span class="stat-pill-label">MinPts</span><span class="stat-pill-val neg">${da.minPts}</span></div>
-    <div class="stat-pill"><span class="stat-pill-label">1着時平均Pts</span><span class="stat-pill-val pos">+${f1(da.avgPts1st)} <small style="color:#aaa;font-size:10px;">WG${dra.avgPts1st}位</small></span></div>
-    <div class="stat-pill"><span class="stat-pill-label">4着時平均Pts</span><span class="stat-pill-val neg">${f1(da.avgPts4th)}</span></div>
+    <div class="stat-pill"><span class="stat-pill-label">1着時平均Pts</span><span class="stat-pill-val pos">+${f1(da.avgPts1st)} ${rk(dra.avgPts1st)}</span></div>
+    <div class="stat-pill"><span class="stat-pill-label">4着時平均Pts</span><span class="stat-pill-val neg">${f1(da.avgPts4th)} ${rk(dra.avgPts4th)}</span></div>
     <div class="stat-pill"><span class="stat-pill-label">着順（1/2/3/4）</span><span class="stat-pill-val" style="font-size:11px;">${da.r1}/${da.r2}/${da.r3}/${da.r4}</span></div>
   </div>`;
 
