@@ -64,6 +64,48 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 .hitokoto-label.s3{color:#1565c0;}
 .hitokoto-label.all{color:#e65100;}
 .hitokoto-text{font-size:12px;color:#333;line-height:1.85;}
+
+/* === 攻守マップ === */
+.am-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:0.9rem 1rem;margin:14px 0 4px;cursor:pointer;}
+.am-title{font-size:14px;font-weight:700;color:#222;}
+.am-title .sub{font-size:11.5px;font-weight:400;color:#888;margin-left:6px;}
+.am-toggle-row{display:flex;align-items:center;justify-content:center;margin:10px 0 6px;}
+.am-seg{display:inline-flex;border:1px solid #ccc;border-radius:8px;overflow:hidden;}
+.am-seg button{min-width:92px;text-align:center;padding:7px 16px;font-size:13px;font-weight:600;border:none;background:#fff;color:#777;cursor:pointer;transition:all .15s;}
+.am-seg button.active{color:#fff;}
+.am-seg button.active.m-all{background:#2c3e50;}
+.am-seg button.active.m-s3{background:#c0392b;}
+.am-modecap{text-align:center;font-size:12px;font-weight:600;margin:2px 0 4px;}
+.am-modecap.m-all{color:#2c3e50;}
+.am-modecap.m-s3{color:#c0392b;}
+.am-logic{margin-top:6px;border-top:1px solid #eee;padding-top:8px;}
+.am-logic summary{font-size:12.5px;font-weight:700;color:#444;cursor:pointer;list-style:none;outline:none;}
+.am-logic summary::-webkit-details-marker{display:none;}
+.am-logic summary::before{content:'\25B8 ';color:#999;}
+.am-logic[open] summary::before{content:'\25BE ';color:#999;}
+.am-logic p{font-size:12px;line-height:1.8;color:#444;margin:8px 0;}
+.am-formula{background:#f7f7f2;border:1px solid #e6e6df;border-radius:8px;padding:9px 11px;font-size:11.5px;color:#333;line-height:1.9;margin:6px 0;font-family:monospace;}
+.am-qmap{display:flex;gap:10px;align-items:stretch;margin:10px 0 4px;}
+.am-qy{width:42px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;font-size:10px;color:#888;font-weight:600;padding:2px 0;text-align:center;line-height:1.4;}
+.am-grid3{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.am-qc{border:1px solid #e6e6df;border-radius:8px;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px 3px;text-align:center;}
+.am-qe{font-size:18px;line-height:1;}
+.am-qn{font-size:10.5px;color:#333;font-weight:600;}
+.am-qc-green{background:#eaf5ec;border-color:#cfe6d4;}
+.am-qc-blue{background:#e8f0f9;border-color:#cfe0f0;}
+.am-qc-amber{background:#faf0e0;border-color:#eedcc0;}
+.am-qc-gray{background:#f0f0ea;border-color:#deded2;}
+.am-qc-mid{background:#fafaf7;}
+.am-qx{display:flex;justify-content:space-between;font-size:10px;color:#888;font-weight:600;margin:6px 0 2px 52px;}
+.am-note{font-size:11px;color:#777;line-height:1.7;border-left:3px solid #e0e0e0;padding-left:10px;margin-top:8px;}
+/* === 二つ名バッジ === */
+.id-badges{display:flex;flex-direction:column;gap:4px;margin-top:6px;}
+.id-row{display:flex;align-items:center;gap:6px;font-size:12px;flex-wrap:wrap;}
+.id-scope{font-size:10px;font-weight:700;padding:1px 7px;border-radius:5px;color:#fff;flex-shrink:0;}
+.id-scope.all{background:#2c3e50;}
+.id-scope.s3{background:#c0392b;}
+.id-nick{font-weight:700;color:#333;}
+.id-tag{font-size:10.5px;color:#777;background:#f2f2ec;border:1px solid #e4e4da;border-radius:999px;padding:1px 8px;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -384,42 +426,42 @@ const MATCHUP_ALL = {
 };
 
 const PROFILES={
-  '土岐':{type:'👑 盤石の絶対王者',color:'#4a90d9',initials:'土',
+  '土岐':{type:'👑 盤石の絶対王者',color:'#4a90d9',initials:'土',nick:{all:'👑 攻守両断の絶対王者',s3:'👑 隙ゼロ、今も独走中'},
     s3:'🏯 74半荘でPts/G・Top率・連帯率・プラス率のWG1位を独占（S3順位は主要指標を総ナメ）。今季累計Pts+969・WGランクPt+2721で雀聖Ⅲをキープし、独走態勢は揺るがない。💦 ただし6/13は1着1回のみ・4着2回で−57pts、WGランクPtも2853→2721へ今季初の大きな後退となった。😤 それでもMaTsuB（相対+9.4）・KaWa_i（相対+7.8）相手には絶好調を維持。唯一OtsuK（相対−9.3）が今季最大の天敵で、ここだけは珍しく崩される。',
     all:'🏆 185半荘・累計Pts+2114・Pts/G+11.4——数字だけ見ればもはや別次元のプレイヤー。Top率35.1%はWG断トツ1位で、3回に1回以上1着を取る計算だ。😤 65回の1着・でも39回の4着——実はラスも普通に引くのに累計がここまで伸びるのは、勝つ時のスコアが圧倒的に高いから。最高スコア133がそれを物語る。🤫 正直に言うと、このWGにTK_nがいる限り他8人は「2位争い」をしているに過ぎない。MoTo_i（相対+9.3）は格好の稼ぎ場である一方、長い付き合いのMaTsuB（84戦！）には全期間相対−3.5とやや手を焼く。魂天（+4000pt）はまだ遠いが、王者の貫禄は本物だ。',
-    playStyle:'👑 「攻めて勝つ、これが本物の王者」　全指標を見渡すと、平均順位・Top率・連帯率・プラス率・累計Pts・Pts/G、そして1着時の勝ち幅まで——7つのWG1位を独占🏆。文句なしの絶対王者だ。⚡ ところが振れ幅は強気型。意外でしょ? TK_nは「安定して勝つ」タイプじゃなく「デカく勝って数字を作る」タイプなんだ。1着時平均78.9点（WG1位）が証拠で、勝つときの破壊力はWGで群を抜く。守りに入らず攻め続けるからこそ、74戦の大ボリュームでこの成績を維持できる💪。🔮 AIからの期待：もはや別次元。このWGにTK_nがいる限り、他8人は実質「2位争い」をしているにすぎない😏。次の目標は遥か高みの魂天（+4000pt）。王者の称号、当面は揺るがない。'},
-  '藤木':{type:'🔄 復活を期す中堅',color:'#e67e22',initials:'藤',
+    playStyle:'👑 「攻めも守りも全員より上、もう謝ってほしいレベルの王者」　源泉分解で覗くと、今季は攻撃寄与+7.5・守備寄与+5.6でどっちもWGダントツ、通算でも+7.8／+3.6。『大きく勝つ』と『浅く負ける』を一人で両取りしてる反則キャラだ⚔️🛡️。1ゲームあたり平均より13点も多く持っていく計算で、卓の養分製造機。🔮 弱点探しが一番の難題。むしろ守備寄与が通算+3.6→今季+5.6と伸びてて、隙を埋めにきてるのが怖い。他8人は実質「2位決定戦」をやってるだけ説、濃厚😏。'},
+  '藤木':{type:'🔄 復活を期す中堅',color:'#e67e22',initials:'藤',nick:{all:'⚔️ 地力は攻め型の二刀流',s3:'💥 今季だけ守備が大噴火（△）'},
     s3:'📊 11半荘・累計Pts-90・Pts/G-8.2と数字的には苦しいシーズン。ただし6/3の4試合は+50pts・平均順位2.2と悪くない内容だった。🌟 FuJi最大の武器はKaWa_i・OtsuKとの相性——それぞれ8戦で上回り率62.5%と同じ卓では強さを発揮する。😰 参加試合が11戦とまだ少なく、サンプル不足で真の実力が測りにくい状況。今後参加を重ねてデータが蓄積されると本当の姿が見えてくる。',
     all:'📊 全期間38半荘・累計Pts+43・Pts/G+1.1——薄い、あまりにも薄いプラスだがプラスはプラスだ。この微妙な数字の背景には「好調時は爆発するが、不調時は沈む」という大きな波がある。最高+91・最低-108という振れ幅がFuJiの本質を語っている。😅 Top率28.9%・連帯率44.7%と中堅ポジションをキープしているが、S3で参加試合が少ないため全体に存在感が薄め。「出れば戦える」のか「出ないから負けてない」のか、もっと参加して謎を解明してほしい。🎭 全期間MATCHUPを見ると、KaWa_i・OtsuKには相性良好な一方、YaJi・MoTo_iには苦戦傾向。卓の相手次第でガラッと変わる「場の申し子」タイプと見た。次のステップは参加数を増やして真の実力を証明すること——逃げるな、卓に出ろ。',
-    playStyle:'🎰 「1着かラスか、霧の中の一発屋」　FuJiはまだ11戦だけの未知数。振れ幅は一発型△（要観察）で、最低-108点・4着時の失点の深さはともにWG9位（最深）——沈むときは誰よりもデカく沈む💥。だが1着時の勝ち幅はWG2位と、勝つときの破壊力も相当だ。🔍 着順がこの男を物語る。連帯率はWG9位（最下位）なのにTop率はWG4位。つまり「2着がほぼない（2着わずか1回）。1着か、それ以外か」という超・極端スタイル。中間がない、まさにハイリスク・ハイリターンの体現者だ。🔮 AIからの期待：△が示す通り、まだサンプル不足で真の姿は霧の中🌫️。でも1着時の勝ち幅（WG2位）は本物の光。もっと卓に出てデータが溜まれば「真の一発屋」か「化ける原石」か、その正体が見えてくる。逃げるな、打って証明してくれ🎲。'},
-  '鹿山':{type:'🛡️ 堅実な守備職人',color:'#95a5a6',initials:'鹿',
+    playStyle:'🎰 「通算は攻め型なのに、今季だけ守備が大噴火」　面白いギャップ。通算38戦だと攻撃寄与+3.2の立派な攻め型なのに、今季11戦は守備寄与−8.6でWG最悪クラスにダイブ💥。『地力は攻撃型、でも今季はとにかく深く沈んでる』というツンデレ構成。🔍 ただ今季は11戦の△（要観察）。サンプルが薄すぎて、この大噴火が本性か事故か神のみぞ知る。🔮 通算の攻め寄与は本物だから、今季の「深い負け」さえ止まれば普通に戦える。まずは卓に出ろ、話はそれからだ🎲。'},
+  '鹿山':{type:'🛡️ 堅実な守備職人',color:'#95a5a6',initials:'鹿',nick:{all:'🧱 沈まない守備の鬼',s3:'🗡️ 看板倒れの足踏み中'},
     s3:'📉 6/13はまさかの1着ゼロ・4着3回で−229pts、今季最悪の1日に。累計Pts+36→−193、WGランクPt983→420で雀豪Ⅲ→雀豪Ⅰへ2段階降格、順位も2位→3位（MaTsuBに逆転された）。💦 27半荘で平均順位2.63・Top率14.8%（WG最下位）と、自慢の守備が空回りしている。😤 救いはMoTo_iとの相性——相対+20.8はS3全ペア屈指の好相性で、唯一の稼ぎ場。逆にOtsuK（相対−11.8）には今日完全に飲まれた。立て直しが次回の課題だ。',
     all:'🛡️ 全期間107半荘・累計Pts+583・4着回避率85.1%（全期間WG1位）——このラス回避能力はもはや芸術の域。107試合で4着16回という鉄壁は健在だ。📉 ただしS3に入って雲行きが怪しい。守備型ゆえに大勝ちが少なく、一度崩れると取り返しにくい弱点が6/13で露呈した。😏 Top率24.3%は連帯率55.1%の割に低め＝「2着は多いがトップが少ない」いつも惜しいパターン。OkaZには全期間相対−3.6とやや苦手だが、MoTo_i（相対+8.0）・FuJi（相対+8.1）とは好相性。「もう少し攻めれば」と毎回思わせる、WG屈指のもどかしさを持つ職人だ。',
-    playStyle:'🛡️ 「ラスは引かない、でもトップも遠い」守りの職人　KaYaMの真骨頂は守備🧱。4着回避率77.8%（WG3位）・ラス率22.2%（WG3位）で、振れ幅は鉄壁型——WGで最も事故らない男のひとりだ。打点が荒れず、卓を静かにまとめる安定感は本物。😅 ただ数字をよく見ると弱点も透ける。Top率14.8%はなんとWG9位（最下位）、1着時の勝ち幅もWG8位。「ラスは引かないのに成績が伸びない」のは、守りすぎて1着が取れず、たまの勝ちも小さいから。負けないことと勝つことは別物、という見本だ。🔮 AIからの期待：守備力は文句なし。あとは「勝ちにいく勇気」だけ🔥。鉄壁の土台があるんだから、ここぞで一歩踏み込めれば一気に化ける。攻めるKaYaM、見てみたい。'},
-  '河井':{type:'💦 苦闘の連続',color:'#f1c40f',initials:'河',
+    playStyle:'🛡️ 「通算は守備の鬼、なのに今季は攻守そろって平均以下」　通算107戦の守備寄与+4.9は伊達じゃない、「沈まない」地力は本物の鬼だ🧱。…が、今季27戦は攻撃寄与−6.4・守備寄与−0.8で、素点だと攻守ダブルで平均割れ📉。順位とWGランクPtが上位なのは引継ぎと着順点のおかげで、生スコアの稼ぎは正直スカスカ。😅 今季は『鬼の看板を背負ったまま中身が遅刻してる』状態。🔮 守備の地力（通算+4.9）は信じてる。あとは攻撃寄与−6.4＝勝ちが小さすぎ問題。守ってるだけじゃ点は降ってこないぞ🔥。'},
+  '河井':{type:'💦 苦闘の連続',color:'#f1c40f',initials:'河',nick:{all:'🪜 攻守そろって絶賛修行中',s3:'📒 まだ底ばい、伸びしろの塊'},
     s3:'😰 30半荘・累計Pts-360・Pts/G-12.0と厳しいシーズンが続いている。6/3の4試合も合計-98pts・平均順位3.0と流れが変わらなかった。🪜 TK_nとの21戦で上回り率33.3%と苦手意識が数字に出ており、OtsuKには56.2%と優位に立てているのが数少ない救い。💪 WGランクPt-1463（雀傑Ⅰ）まで落ちており、浮上のためには自分のペースを崩さないことが大切。次回こそ流れを変えたい。',
     all:'💸 全期間131半荘・累計Pts-1347・Pts/G-10.3——この数字を見て何も感じない人間はいない。131試合参加して-1347というのはある意味でWG史に残る記録かもしれない。4着40回という実績も「どうしてこうなった」と思わずにはいられない。😰 Top率19.1%・連帯率38.2%はWG最下位争い。ただし最高スコア+97を持っており、調子が良い時は良い。問題は「調子が良い時」が少なすぎること。最低スコア-96と最高の幅はあるのに、平均するとマイナスに収束してしまう不思議な引力がKaWa_iにはある。🔥 全期間MATCHUPでもTK_nには上回り率40%と苦手、OtsuKには53.8%と勝ち越しとムラがある。このWGで一番「もったいない」プレイヤー。その実力が結果に反映される日を、ミンちゃんは信じて待っている——待っている間に少し作戦を変えてみてはどうだろうか。',
-    playStyle:'💦 「ラスは避けてるのに、勝ちが小さすぎる」　KaWa_iは苦しい数字が並ぶ。平均順位・Pts/G、そして1着時の勝ち幅と最高スコアまで、なんとWG9位（最下位）が4つ😰。とくに「勝ってもスコアが伸びない」のが最大の課題だ。👀 ところが意外な発見もある。4着回避率もラス率も実はWG4位＝「言うほどラスを引いていない」。振れ幅も堅実型。つまり守備の土台はそこそこあるのに、攻めの火力が枯れている。Max68点（WG最小）が象徴的で、「ラスは避けるけど勝ちも小さい→点が積み上がらない」という構造的な苦しさを抱えている。🔮 AIからの期待：守りはできている。鍵は1着時の勝ち幅だ🔥。一回の大きな勝ちが流れを変える。火力さえ戻れば、この堅実さが一気にプラスへ転じる。ミンちゃんは信じて待ってるぞ🙏。'},
-  '松林':{type:'🎯 安定の中堅',color:'#9b59b6',initials:'松',
+    playStyle:'💦 「攻めも守りも平均以下、言い訳の効かない最下位ゾーン」　今季も通算も攻撃寄与−5前後・守備寄与−5前後で、見事に左下『修行中』に定住中🪜。『勝ちは小さく、負けは深い』のフルコンボを毎度きめてくる。😭 救いのなさが、これが今季のスランプじゃなく通算131戦でも同じ＝「地力としてここ」なところ。データが優しくない。🔮 でも裏を返せば伸びしろは攻守どっちにも転がってる。一発逆転を狙う前に、まず守備寄与（負けの深さ−5.1）を浅くする——それだけで景色が変わる。底は打った、ここから🙏。'},
+  '松林':{type:'🎯 安定の中堅',color:'#9b59b6',initials:'松',nick:{all:'⚖️ 安定のいぶし銀',s3:'⚔️ 今季は攻めっ気マシマシ'},
     s3:'📈 41半荘・累計Pts+118・Top率29.3%（WG2位）とトップを取る力は本物。ただしPts/G+2.9と得点効率はもう一段欲しい。🛡️ OkaZとの34戦で上回り率64.7%と圧倒的な相性を誇り、TK_nとの35戦でも40.0%とそこそこ善戦している。WGランクPt+464（雀豪Ⅰ）で安定した中位をキープ。💡 次の目標は雀豪Ⅱ（+500）まであと36pt。このペースなら十分に届く距離だ。',
     all:'🎯 全期間123半荘・累計Pts+422・Top率26.8%——きれいな中堅。悪い意味ではなく、本当に安定してWG中位に居続けるという難しいことを自然にやっている。33回の1着・34回の2着という数字が示す通り、上位を取る力は本物だ。🤔 ただし正直に言うと、Pts/G+3.4というのは物足りない。Top率と連帯率の割にスコアが伸びていない＝1着・2着の時の点数が平凡、ということが透けて見える。「勝てるのに大勝できない」というもったいなさがある。💪 OkaZとの34戦で上回り率64.7%と圧倒的な相性は全期間でも健在。TK_nとの84戦（！）という膨大な対戦歴の中で上回り率53.6%とほぼ互角に渡り合っているのは密かにすごい事実だ。「陰のTK_n対抗馬」として密かに評価している。',
-    playStyle:'🥈 「大勝ちなしで2位集団、いぶし銀の効率屋」　MaTsuBの成績表は美しい。Top率・連帯率・プラス率・累計Pts・Pts/G——軒並みWG2位で、王者TK_nに次ぐ「影のNo.2」だ✨。振れ幅は普通型でバランスも抜群。👀 面白いのはここ。最高スコアは84点でWG8位、つまり「爆発力は低い」のに累計はWG2位。これは「一撃に頼らず、コツコツ小さく勝ちを積む」効率型の証明だ。派手さはないが、確実に上位に居続けるという一番難しいことを自然にやってのける、いぶし銀の打ち手🪙。🔮 AIからの期待：安定感は王者級。あとひと押しの爆発力が加われば、TK_nの背中が見えてくる🔥。「陰のTK_n対抗馬」として、ミンちゃんは密かに本命視している。'},
-  '岡崎':{type:'😱 試練のシーズン',color:'#27ae60',initials:'岡',
+    playStyle:'🥈 「コツコツ攻め寄り、影のNo.2いぶし銀」　今季は攻撃寄与+3.1の攻め寄り、通算+1.5／+1.9でほぼ『平均型』のど真ん中✨。派手さゼロ、でも攻守どっちも平均よりちょい上で安定。職人の鑑。😏 弱点らしい弱点が「突き抜けの無さ」なのが逆に弱点。攻撃寄与+3.1はTK_nの半分以下で、王者の背中はまだ豆粒。🔮 崩れにくさは立派な武器。あとは攻撃寄与をもう一段上げて『攻め寄り→攻撃型』に化ければ、2番手集団から頭ひとつ抜ける。地味に有望株だ🔥。'},
+  '岡崎':{type:'😱 試練のシーズン',color:'#27ae60',initials:'岡',nick:{all:'⚖️ ど真ん中の皆勤賞',s3:'🗡️ 攻めが行方不明の今季'},
     s3:'💔 53半荘・累計Pts-364・Pts/G-6.9と出場数は多いのに結果が伴わない苦しいシーズン。WGランクPt-185（雀傑Ⅲ）まで落ちており、雀豪Ⅰ（0pt）への浮上が当面の目標。😤 MaTsuBには上回り率35.3%と苦手、KaWa_iには52.4%とやや優位——相手によって極端に結果が変わる傾向がある。🚀 今の参加数とモチベーションがあれば必ず浮上できる。ここが底だと信じて次の一戦に臨もう。',
     all:'📋 全期間189半荘——このWGで最多出場記録保持者。189試合出続けているというだけで、このWGへの貢献度は計り知れない。累計Pts+130・Pts/G+0.7とほぼゼロ圏だが、「189試合やってプラスを保っている」という見方もできる（前向きに）。😅 1着49回・2着51回・3着41回・4着48回という着順分布は見事なくらいバランスが取れている——良く言えば「万能型」、悪く言えば「メリハリがない」。Top率25.9%もそれなりにあるが、4着率も25.4%とほぼ同率という「上も下も引く」スタイルが全期間の真実だ。🎲 S3の苦境は全期間の底力で必ず乗り越えられる。189試合積み上げてきた経験値は伊達じゃない——ただし今のペースが続くと、その経験値が「苦労の歴史」になってしまうので早めの巻き返しを期待している。',
-    playStyle:'🎲 「2着の帝王、あと一歩が遠い苦労人」　OkaZは53戦というWG最多級の出場数を誇る皆勤賞タイプ📋。なのに累計PtsはWG9位（最下位）と苦しいシーズン。着順を見ると2着が16回——堂々のWG最多クラスだ。🔍 ここに本質が隠れてる。「2着は取れるのに1着が遠い」（Top率WG8位）。しかも4着回避率もラス率もWG8位＝勝ちと負けの両極端で、安定したプラスを生む「中間」が薄い。Max102点（WG3位）と爆発力はあるのに活かしきれていない、典型的な「惜しい」プレイヤーだ。🔮 AIからの期待：出続ける継続力こそ最大の武器💪。あの量産する2着を1着に変えられれば、浮上は一気だ。底は打った、ここから巻き返してくれ🚀。'},
-  '大塚':{type:'🌙 粘りの守備型',color:'#c0392b',initials:'大',
+    playStyle:'🎲 「通算はど真ん中の平均、今季は攻めが行方不明」　通算189戦（WG皆勤賞級）で攻撃寄与±0.0・守備寄与+0.7＝可もなく不可もなく『ど真ん中の平均型』⚖️。出席だけは満点💮。😅 今季53戦は攻撃寄与−5.4まで失速して『攻撃難』。守備は平均並みなのに勝ちの大きさが今季は神隠し、マイナスは完全に攻め側の責任だ。🔮 189戦やって平均ど真ん中＝地力は平均、それ以上でも以下でもない。浮上の鍵は攻撃寄与一点。今季−5.4を通算並みの±0に戻すだけでプラス圏、量産中の2着を1着に変えれば一気だ🚀。'},
+  '大塚':{type:'🌙 粘りの守備型',color:'#c0392b',initials:'大',nick:{all:'🎢 沈む日は底まで沈む男',s3:'📈 しれっと平均型へ昇格中'},
     s3:'🚀 6/13は1着3回・2着3回の固め取りで+123pts、今季のターニングポイントに！累計Pts−18→+105でついにプラス転換、WGランクPt−1364→−980で雀傑Ⅰ→雀傑Ⅱへ昇格を決めた。🔥 45半荘でTop率28.9%とトップ力はWG上位、得意のYaJi（相対+14.6）・KaYaM（相対+7.3）がいる卓で輝く。😤 苦手はMaTsuB（相対−10.7）とFuJi（相対−8.2）——安定型に場を締められると勝ちパターンが消える。この上昇気流に乗っていきたい。',
     all:'😱 全期間186半荘・累計Pts−1257・4着54回——OtsuKのWGヒストリーは「波乱」の2文字に尽きる。最高スコア+143はこのWG歴代最高値（！）を持ちながら、最低−102・4着54回も併せ持つ「天使と悪魔の同居」だ。🤯 Top率19.4%はWG下位だが、+143を叩き出す爆発力は本物。問題は再現性——派手な1着の裏で静かに4着が積み上がる。Pts/G−6.8はその4着の多さが全てを食う証拠だ。💡 KaWa_iとの80戦で全期間相対+5.8と長年優位に立つのは小さな誇り。6/13の固め取りは「安定して出せれば化ける」ことの証明——この波を本物にできるか、WG全員が注目している。',
-    playStyle:'🎢 「上振れWGトップ、でも下振れもWGトップ」生粋の博打打ち　数字を並べると意外な顔が見えてくる。Top率28.9%・連帯率51.1%・プラス率51.1%はどれもWG3位、累計PtsもPts/GもWG3位——「攻めて勝ちを取りにいく力」は実はWG上位グループにいる💪。極めつけは最高スコア+143、これはWG1位の爆発力だ🚀。⚡ ところが平均順位はWG4位どまり。鍵は振れ幅にある。OtsuKは強気型（振れ幅WG8位）で、最低-102もWGワースト級。「勝つときはWG最大級に勝つが、負けるときもWG最大級に沈む」。さらに面白いのが、最高値はWG1位なのに1着時の平均勝ち幅はWG5位どまり——ドカンと一発はあるけど普段の勝ちは意外と淡白。逆に4着時の失点はWG7位と深い。「勝ち方は地味、負け方は派手」、これがOtsuKの知られざる本質だ。🔮 AIからの期待：攻撃指標は軒並みWG3位、爆発力はWG1位。素材は完全にWG上位だ。あとは「派手な負け方」——4着の傷さえ浅くできれば平均順位は一気に上がる。直近20戦は2.25と本来（2.47）より好調、6/13の固め取り（+123）はその片鱗。この強気スタイル、ミンちゃんは嫌いじゃない。化けるなら今だぞ🔥。'},
-  '矢嶋':{type:'😤 高波の試練',color:'#e74c3c',initials:'矢',
+    playStyle:'🎢 「通算は修行中、でも今季はしれっと平均型に昇格」　通算186戦だと攻撃寄与−3.6・守備寄与−3.2の『修行中』、長年攻守ともマイナスの苦労人だった📉。…が今季45戦は攻撃寄与+2.6・守備寄与−0.3まで急浮上、しれっと『平均型』に化けてる🚀。『勝ちが大きくなって、負けの深さも平均並みに収まった』のが好調の正体。🔮 残る宿題はやっぱり守備寄与。通算−3.2の「沈むと深い」が本来の地雷で、今季−0.3に抑えてるのを通年でキープできれば、晴れて修行中を卒業だ🔥。'},
+  '矢嶋':{type:'😤 高波の試練',color:'#e74c3c',initials:'矢',nick:{all:'⚖️ 実は地力は悪くない',s3:'💥 沈み方が全部持っていく今季'},
     s3:'🎢 6/13は1着5回の固め取り…と思いきや4着も3回という超高波の1日。それでも+163pts稼ぎ、累計Pts−354→−191、WGランクPt−1163→−852で雀傑Ⅰ→雀傑Ⅱへ昇格！🌟 33半荘でTop率は24.2%まで回復、ラスの裏で確実にトップを取る攻撃型へ変貌中。😤 FuJi（相対+16.5・3戦△）が圧倒的な稼ぎ場だが、KaWa_i（相対−15.2）とOkaZ（相対−11.0）には沈められがち。このジェットコースターを乗りこなせれば浮上は近い。',
     all:'📉 全期間153半荘・累計Pts−609・Pts/G−4.0——「苦戦の記録集」に変化の兆しが見える。34回の1着の一方で43回の4着、この振れ幅の大きさがYaJiの本質だ。😤 とはいえ153試合やり続けた継続力は本物で、6/13のような固め取りができる日も増えてきた。Top率22.2%・連帯率47.1%と実力は決して低くない——4着のダメージさえ抑えられれば一気に化ける。🌅 TK_nには長年苦しめられてきたが、FuJi（全期間相対+13.0）相手なら別人のように輝く。雀傑Ⅱ昇格を足がかりに、「次こそ大逆転」の予言を今季も置いておく。',
-    playStyle:'🎢 「1着も4着も量産、振り切れたジェットコースター」　YaJiのシーズンは絶叫マシンだ😱。ラス率33.3%・4着回避率66.7%はどちらもWG9位（最下位）——とにかくラスが多い。なのにTop率はWG5位、プラス率はWG4位と、勝つときはしっかり勝つ。🔍 着順分布を見ると一目瞭然。1着8回・4着11回で両極端に振り切れている。プラス率はWG4位と悪くないのに累計がWG6位に沈むのは、量産する4着のダメージが稼ぎをまるごと食ってしまうから。「トップを取る力はあるのに、ラスが全部持っていく」のがYaJiの泣きどころだ。🔮 AIからの期待：伸びしろは「ラスを減らす」の一点に集約される✂️。Top率もプラス率も中位以上、攻撃力は本物なんだから、4着回避を意識するだけで景色が変わる。化ける条件は揃ってる🌅。'},
-  '本井':{type:'🌟 ラス回避の達人',color:'#1abc9c',initials:'本',
+    playStyle:'🎢 「通算は平均、今季は『沈み方』が全部持っていく」　通算153戦は攻撃寄与−2.3・守備寄与−1.7で、ほぼ『平均型』の下振れ側⚖️、地力は悪くない。だが今季33戦は守備寄与−4.2に悪化して『守備難』——『負けるとき深く沈む』が今季のマイナスの主犯だ💥。攻撃寄与−1.6は平均圏、つまり攻めは悪くない。🔮 伸びしろは守備寄与のワンポイントに全集約✂️。深い負け（今季−4.2）を通算並み（−1.7）に戻すだけで、攻めは平均圏なんだからプラスが見えてくる。ラスのダメージさえ浅くすれば、化けるぞ🌅。'},
+  '本井':{type:'🌟 ラス回避の達人',color:'#1abc9c',initials:'本',nick:{all:'⚖️ 守備寄りのバランサー',s3:'🛡️ 守りで点を作る異端児'},
     s3:'🛡️ 22半荘・4着回避率100%（WG1位）・ラス率0.0%（WG1位）という驚異の数字。ラスなし継続記録はWG史上でも特筆すべき成果だ。😅 ただし累計Pts+6・Pts/G+0.3とほぼゼロ圏内で、「ラスは引かないが勝てない」という独自のジレンマがある。🎯 WGランクPt+42（雀豪Ⅰ）とラスなしの割にポイントが伸びていないのは、2〜3着が多くWGランクPtの加算が少ないため。Top率を上げることが次のステップだ。',
     all:'🛡️ 全期間48半荘・4着回避率75.0%・ラス率25.0%——MoTo_iの全期間データでも守備スタイルの一貫性が光る。48試合で4着はたった12回という数字は、S3で見せたラス回避能力が単なるまぐれではないことを証明している。😅 ただし累計Pts-79・Pts/G-1.6と、全期間では薄いマイナス。「ラスは引かないが積み上げられない」というジレンマはS3だけでなく全期間を通じた課題だ。1着11回・2着12回・3着13回・4着12回という着順の均等さは、「全着順コンプリート職人」とも言える。🎭 全期間MATCHUPではTK_nに上回り率35.3%と大苦手。逆にYaJiには60%と優位に立てており、相手によって明確な得手不得手がある。参加試合が48と少ないため、まだ伸びしろは十分——これからデータが積み上がるほど、MoTo_iの本当の姿が見えてくる。',
-    playStyle:'🧱 「絶対にラスらない男、でも勝ってもいない」　MoTo_iの守備は芸術の域だ🎨。4着回避率86.4%・ラス率13.6%・4着時の失点の浅さ・最低スコアの浅さ、ぜんぶWG1位👑。振れ幅は鉄壁型。「とにかく沈まない」一点においてWG最強と言っていい。😇 だが裏を返すと…プラス率はWG9位（最下位）。「ラスは引かないけど、勝ってもいない」。着順は3着が9回と最多で、安全運転で2〜3着にまとめる。だから累計はほぼゼロ（+6）、平均順位はWG2位なのにポイントが伸びないという独自のジレンマを抱えている。🔮 AIからの期待：この鉄壁に「1着を取りにいく攻め」が少し加われば化ける🔥。「負けない」を「勝つ」に進化させたとき、MoTo_iは一気に上位戦線へ。守備は完成、あとは攻撃だ。'},
+    playStyle:'🧱 「守りで点を作る異端児、でも攻めがとにかく細い」　今季は攻撃寄与−4.0・守備寄与+4.3で、左上『粘り型』——WGで数少ない「守りで稼ぐ」レアタイプだ🛡️。通算でも守備寄与+0.7とプラス側、「沈まない」は一貫した持ち味。😇 ただし攻撃寄与−4.0はWG下位、『負けないけど勝ちが小粒すぎて点が伸びない』のが構造的な細さ。守備で貯めた分を攻めの細さがちまちま食う。🔮 守りはもう完成形。あとは攻撃寄与をマイナスから0へ寄せるだけで収支は一気にプラス。『負けない』に『たまにドカン』が乗れば上位は目前だ🔥。'},
 };
 
 function buildMatchup(mu,label,name){
@@ -484,6 +526,25 @@ function buildMatchup(mu,label,name){
   </div>`;
 }
 
+
+/* === 攻守マップ データ＆型導出（buildPageが参照するため先に定義）=== */
+const AC={
+  ALL:{'土岐':[7.8,3.6],'藤木':[3.2,-2.1],'鹿山':[0.5,4.9],'河井':[-5.2,-5.1],'松林':[1.5,1.9],'岡崎':[0.0,0.7],'大塚':[-3.6,-3.2],'矢嶋':[-2.3,-1.7],'本井':[-2.3,0.7]},
+  S3:{'土岐':[7.5,5.6],'藤木':[0.4,-8.6],'鹿山':[-6.4,-0.8],'河井':[-6.8,-5.2],'松林':[3.1,-0.2],'岡崎':[-5.4,-1.5],'大塚':[2.6,-0.3],'矢嶋':[-1.6,-4.2],'本井':[-4.0,4.3]}
+};
+const AG={
+  ALL:{'土岐':185,'藤木':38,'鹿山':107,'河井':131,'松林':123,'岡崎':189,'大塚':186,'矢嶋':153,'本井':48},
+  S3:{'土岐':74,'藤木':11,'鹿山':27,'河井':30,'松林':41,'岡崎':53,'大塚':45,'矢嶋':33,'本井':22}
+};
+function cellType(a,d){
+  const ax=a>=3?2:a<=-3?0:1, dx=d>=3?2:d<=-3?0:1;
+  const G={'2_0':'🛡️粘り型','2_1':'🧱守備寄り','2_2':'👑王者型','1_0':'🗡️攻撃難','1_1':'⚖️平均型','1_2':'⚔️攻撃寄り','0_0':'📒修行中','0_1':'🩹守備難','0_2':'🎲ギャンブラー'};
+  return G[dx+'_'+ax];
+}
+function typeTag(mode,name){
+  return cellType(AC[mode][name][0],AC[mode][name][1]) + (AG[mode][name]<15?' △':'');
+}
+
 function buildPage(name){
   const d=S3[name],da=ALL[name],p=PROFILES[name];
   const dr=S3_RANKS[name],dra=ALL_RANKS[name];
@@ -541,7 +602,11 @@ function buildPage(name){
   return `
   <div class="hero">
     <div class="avatar" style="background:${p.color}22;color:${p.color};">${p.initials}</div>
-    <div><div class="hero-name" style="color:${p.color};">${dn(name)}</div><div class="type-badge">${p.type}</div></div>
+    <div><div class="hero-name" style="color:${p.color};">${dn(name)}</div>
+      <div class="id-badges">
+        <div class="id-row"><span class="id-scope all">📊通算</span><span class="id-nick">${p.nick.all}</span><span class="id-tag">${typeTag('ALL',name)}</span></div>
+        <div class="id-row"><span class="id-scope s3">🔥最新</span><span class="id-nick">${p.nick.s3}</span><span class="id-tag">${typeTag('S3',name)}</span></div>
+      </div></div>
   </div>
 
   <div class="section-block s3">
@@ -550,9 +615,10 @@ function buildPage(name){
     <div class="hitokoto-block s3">
       <div class="hitokoto-label s3">💬 AIからヒトコト｜最新シーズン</div>
       <div class="hitokoto-text">${p.s3}</div>
-      <div class="hitokoto-label s3" style="margin-top:14px;border-top:1px dashed #bbdefb;padding-top:12px;">🀄 打ち方の特徴</div>
+      <div class="hitokoto-label s3" style="margin-top:14px;border-top:1px dashed #bbdefb;padding-top:12px;">🀄 ${dn(name)}のプレイスタイル</div>
       <div class="hitokoto-text">${p.playStyle}</div>
     </div>
+    <div class="am-mount" id="am-mount-${name}"></div>
     ${buildMatchup(muS3,'最新シーズン',name)}
   </div>
 
@@ -588,6 +654,7 @@ function showPage(name){
   document.getElementById('page-'+name).classList.add('active');
   document.querySelectorAll('.nav a').forEach(a=>{if(a.textContent===dn(name))a.classList.add('active');});
   drawRadar(name);
+  drawMap(name);
 }
 
 let drawn={};
@@ -622,6 +689,121 @@ function drawRadar(name){
   ctx.fillStyle='#555';ctx.font='10px Arial';ctx.textAlign='center';
   for(let i=0;i<n;i++){const a=Math.PI/2+i*2*Math.PI/n,r=R+16,lx=cx+r*Math.cos(-a),ly=cy-r*Math.sin(-a);const ls=labels[i].split('\n');ls.forEach((l,li)=>ctx.fillText(l,lx,ly+li*12-(ls.length-1)*6));}
 }
+
+/* === 攻守マップ 描画（個人ページ内・選択者ハイライト）=== */
+const A_CX=190,A_CY=165,A_SC=13.0,NSV='http://www.w3.org/2000/svg';
+const apx=a=>A_CX+a*A_SC, apy=d=>A_CY-d*A_SC;
+let mapMode='ALL', amAnimId=null;
+const mapMounted={};
+function mapCardHTML(){
+  return `<div class="am-card">
+    <div class="am-title">🀄 攻守マップ<span class="sub">WG全員の中での「稼ぎ方」（この人をハイライト）</span></div>
+    <div class="am-toggle-row"><div class="am-seg">
+      <button type="button" class="am-btn-all m-all active">📊 通算</button>
+      <button type="button" class="am-btn-s3 m-s3">🔥 最新</button>
+    </div></div>
+    <div class="am-modecap m-all">通算：290戦</div>
+    <svg viewBox="0 0 360 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;max-width:380px;margin:0 auto;">
+      <line x1="40" y1="165" x2="340" y2="165" stroke="#d5d5cf"/>
+      <line x1="190" y1="35" x2="190" y2="305" stroke="#d5d5cf"/>
+      <rect x="151" y="126" width="78" height="78" fill="none" stroke="#cfcfc7" stroke-dasharray="4 3"/>
+      <text x="190" y="121" text-anchor="middle" font-size="9" fill="#aaa">±3 ほぼ平均</text>
+      <text x="300" y="48" text-anchor="middle" font-size="11" fill="#999">👑 王者型</text>
+      <text x="86" y="48" text-anchor="middle" font-size="11" fill="#999">🛡️ 粘り型</text>
+      <text x="300" y="300" text-anchor="middle" font-size="11" fill="#999">🎲 ギャンブラー</text>
+      <text x="86" y="300" text-anchor="middle" font-size="11" fill="#999">📒 修行中</text>
+      <text x="334" y="180" text-anchor="end" font-size="10" fill="#888">攻撃寄与 →</text>
+      <text x="196" y="46" text-anchor="start" font-size="10" fill="#888">↑ 守備寄与</text>
+      <g class="am-dots"></g>
+    </svg>
+    <details class="am-logic">
+      <summary>📐 算定ロジックについては、こちらをタップ</summary>
+      <p>各メンバーが「<b>攻め（大きく勝つ）</b>」と「<b>守り（浅く負ける）</b>」のどちらでWG平均より稼いでいるかを、1ゲームあたりの<b>素点（半荘スコア）</b>で分解。横軸＝攻撃寄与、縦軸＝守備寄与。色付きの大きい点がこのページの人です。</p>
+      <div class="am-formula">攻撃寄与 ＝ 自分の平均ゲイン − WG平均ゲイン<br>守備寄与 ＝ 自分の平均ロス − WG平均ロス<br><span style="color:#888;">※ゲイン＝プラスのスコアだけ／ロス＝マイナスのスコアだけを全試合で平均</span></div>
+      <p><b>原点はWG平均（0）。</b> プラス＝平均より得意・マイナス＝苦手。±3pt/G以内は「並（平均的）」。15戦未満は △（要観察）。🔥最新Season＝今の調子／📊通算＝本来の地力。</p>
+      <div class="am-qmap">
+        <div class="am-qy"><span>守備 高<br>↑</span><span>↓<br>守備 低</span></div>
+        <div class="am-grid3">
+          <div class="am-qc am-qc-blue"><span class="am-qe">🛡️</span><span class="am-qn">粘り型</span></div>
+          <div class="am-qc"><span class="am-qe">🧱</span><span class="am-qn">守備寄り</span></div>
+          <div class="am-qc am-qc-green"><span class="am-qe">👑</span><span class="am-qn">王者型</span></div>
+          <div class="am-qc"><span class="am-qe">🗡️</span><span class="am-qn">攻撃難</span></div>
+          <div class="am-qc am-qc-mid"><span class="am-qe">⚖️</span><span class="am-qn">平均型</span></div>
+          <div class="am-qc"><span class="am-qe">⚔️</span><span class="am-qn">攻撃寄り</span></div>
+          <div class="am-qc am-qc-gray"><span class="am-qe">📒</span><span class="am-qn">修行中</span></div>
+          <div class="am-qc"><span class="am-qe">🩹</span><span class="am-qn">守備難</span></div>
+          <div class="am-qc am-qc-amber"><span class="am-qe">🎲</span><span class="am-qn">ギャンブラー</span></div>
+        </div>
+      </div>
+      <div class="am-qx"><span>← 攻撃 低</span><span>攻撃 高 →</span></div>
+      <div class="am-note">※ 素点ベース（WGランクPtではありません）。勝った試合の点数には守備の貢献も含まれるため、「攻撃」は厳密な攻撃センスというより「上振れの大きさ」を表します。</div>
+    </details>
+  </div>`;
+}
+function amEnsureDots(g){
+  if(g._d) return g._d;
+  const d={};
+  ALL_MEMBERS.forEach(k=>{
+    const c=document.createElementNS(NSV,'circle');c.setAttribute('r','5');c.setAttribute('fill',PROFILES[k].color);c.setAttribute('stroke','#fff');c.setAttribute('stroke-width','1.2');
+    const t=document.createElementNS(NSV,'text');t.setAttribute('font-size','10.5');t.setAttribute('font-weight','600');t.setAttribute('fill',PROFILES[k].color);t.setAttribute('paint-order','stroke');t.setAttribute('stroke','#fff');t.setAttribute('stroke-width','3');t.textContent=dn(k);
+    g.appendChild(c);g.appendChild(t);d[k]={c,t};
+  });
+  g._d=d;return d;
+}
+function amPlace(d,k,x,y,sel,dim){
+  const c=d[k].c,t=d[k].t;
+  c.setAttribute('cx',x.toFixed(1));c.setAttribute('cy',y.toFixed(1));
+  c.setAttribute('r',sel?'8':'5');c.setAttribute('stroke',sel?'#222':'#fff');c.setAttribute('stroke-width',sel?'2':'1.2');c.setAttribute('opacity',dim?'0.4':'1');
+  t.setAttribute('x',(x+(sel?10:8)).toFixed(1));t.setAttribute('y',(y-7).toFixed(1));t.setAttribute('font-size',sel?'12.5':'10.5');t.setAttribute('font-weight',sel?'700':'600');t.setAttribute('opacity',dim?'0.45':'1');
+}
+function amLabels(d,mode){ ALL_MEMBERS.forEach(k=>{ d[k].t.textContent = AG[mode][k]<15 ? dn(k)+' △' : dn(k); }); }
+function amModeUI(card,mode){
+  card.querySelector('.am-btn-all').classList.toggle('active',mode==='ALL');
+  card.querySelector('.am-btn-s3').classList.toggle('active',mode==='S3');
+  const cap=card.querySelector('.am-modecap');
+  cap.className='am-modecap '+(mode==='ALL'?'m-all':'m-s3');
+  cap.textContent = mode==='ALL' ? '通算：290戦' : '最新Season：84戦';
+}
+function amStatic(card,name,mode){
+  const g=card.querySelector('.am-dots'),d=amEnsureDots(g);
+  amLabels(d,mode);
+  ALL_MEMBERS.forEach(k=>{const sel=k===name;amPlace(d,k,apx(AC[mode][k][0]),apy(AC[mode][k][1]),sel,!sel);});
+}
+function amAnimate(card,name,toMode){
+  const g=card.querySelector('.am-dots'),d=amEnsureDots(g),fromMode=toMode==='ALL'?'S3':'ALL';
+  amLabels(d,toMode);
+  const t0=performance.now(),dur=500;
+  if(amAnimId)cancelAnimationFrame(amAnimId);
+  function frame(t){
+    let p=Math.min(1,(t-t0)/dur),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+    ALL_MEMBERS.forEach(k=>{
+      const x=apx(AC[fromMode][k][0])+(apx(AC[toMode][k][0])-apx(AC[fromMode][k][0]))*e;
+      const y=apy(AC[fromMode][k][1])+(apy(AC[toMode][k][1])-apy(AC[fromMode][k][1]))*e;
+      amPlace(d,k,x,y,k===name,k!==name);
+    });
+    if(p<1)amAnimId=requestAnimationFrame(frame);
+  }
+  amAnimId=requestAnimationFrame(frame);
+}
+function drawMap(name){
+  const mount=document.getElementById('am-mount-'+name);
+  if(!mount)return;
+  if(!mapMounted[name]){
+    mount.innerHTML=mapCardHTML();
+    const card=mount.querySelector('.am-card');
+    card.addEventListener('click',function(ev){
+      if(ev.target.closest('.am-logic'))return;
+      mapMode=mapMode==='ALL'?'S3':'ALL';
+      amModeUI(card,mapMode);
+      amAnimate(card,name,mapMode);
+    });
+    mapMounted[name]=card;
+  }
+  const card=mapMounted[name];
+  amModeUI(card,mapMode);
+  amStatic(card,name,mapMode);
+}
+
 showPage(ALL_MEMBERS[0]);
 </script>
 </body>
