@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統計学WG｜記録・実績の殿堂</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:#0d0d1a;color:#eee;font-size:13px;}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:1px solid #2a2a4a;}
+.header-title{font-size:18px;font-weight:700;letter-spacing:2px;color:#ffd700;}
+.header-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.season-tag{background:#7b341e;color:#ffd700;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700;margin-left:8px;}
+.nav-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.nav-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:11px;text-decoration:none;}
+.nav-btn:hover{background:rgba(255,255,255,0.2);}
+.container{max-width:1100px;margin:0 auto;padding:1.2rem;}
+.howto{background:#1a1a2e;border-radius:10px;padding:11px 16px;margin-bottom:1.3rem;border:1px solid #2a2a4a;font-size:11px;color:#aaa;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+.howto b{color:#eee;}
+.mini-chip{font-size:10px;font-weight:700;border-radius:99px;padding:1px 8px;border:1px solid;}
+.cat-section{margin-bottom:1.5rem;}
+.cat-title{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:8px;margin-bottom:10px;font-weight:700;font-size:14px;letter-spacing:1px;}
+.cat-title .cnt{margin-left:auto;font-size:11px;font-weight:600;opacity:.85;}
+.g-purple{background:linear-gradient(90deg,#2a0a4a,#5a1a8a);color:#e0aaff;border:1px solid #9b59b6;}
+.g-blue{background:linear-gradient(90deg,#0a1a3a,#1a3a7a);color:#90caf9;border:1px solid #1565c0;}
+.g-coral{background:linear-gradient(90deg,#3a1208,#7a2c14);color:#ffab91;border:1px solid #d85a30;}
+.g-gold{background:linear-gradient(90deg,#3d2b00,#7a5c00);color:#ffd700;border:1px solid #c8960c;}
+.g-green{background:linear-gradient(90deg,#0a2a1a,#1a5a2a);color:#a5d6a7;border:1px solid #2e7d32;}
+.g-teal{background:linear-gradient(90deg,#06292b,#0a4a4e);color:#4dd0e1;border:1px solid #00838f;}
+.ach{background:#1a1a2e;border-radius:10px;padding:11px 14px;margin-bottom:8px;border:1px solid #2a2a4a;display:flex;gap:13px;align-items:flex-start;}
+.ach.locked{opacity:.62;}
+.ach-ic{width:42px;height:42px;border-radius:8px;background:#0d0d1a;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0;border:1px solid #2a2a4a;}
+.ach-body{flex:1;min-width:0;}
+.ach-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px;}
+.ach-name{font-size:14px;font-weight:700;}
+.ach-tag{font-size:9px;font-weight:700;border-radius:4px;padding:1px 6px;}
+.tg-kin{background:#3d2b00;color:#ffd700;border:1px solid #c8960c;}
+.tg-gin{background:#23232f;color:#cfd8dc;border:1px solid #78909c;}
+.tg-neta{background:#06292b;color:#4dd0e1;border:1px solid #00838f;}
+.ach-desc{font-size:11px;color:#9aa;margin-bottom:8px;line-height:1.5;}
+.chips{display:flex;flex-wrap:wrap;gap:5px;}
+.chip{font-size:10.5px;font-weight:700;border-radius:99px;padding:2px 9px;border:1px solid;white-space:nowrap;}
+.chip.lit::before{content:'\2713 ';font-size:9px;}
+.chip.dim{background:#13131f;border-color:#2a2a4a;color:#4a4a5a;font-weight:400;}
+.cnt-pill{flex-shrink:0;font-size:11px;font-weight:700;color:#9aa;background:#0d0d1a;border:1px solid #2a2a4a;border-radius:99px;padding:2px 9px;white-space:nowrap;}
+@media(max-width:560px){.ach-ic{width:36px;height:36px;font-size:19px;}}
+</style></head><body>
+<div class="header">
+  <div>
+    <div><span class="header-title">🏯 統計学WG</span><span class="season-tag">RECORDS 殿堂</span></div>
+    <div class="header-sub">記録・実績の殿堂 ／ カテゴリ別・通常と超は隣同士 ／ データ 半荘291・2026/06/13時点 ／ <b style="color:#ff7043;">試作版</b></div>
+  </div>
+  <div class="nav-btns">
+    <a class="nav-btn" href="mahjong_dashboard.html">← Season3</a>
+    <a class="nav-btn" href="total_dashboard.html">🏆 トータル</a>
+    <a class="nav-btn" href="rank_board.html">🏅 ランク</a>
+    <a class="nav-btn" href="player_pages.html">個人ページ →</a>
+  </div>
+</div>
+<div class="container">
+  <div class="howto">
+    <span><b>読み方：</b>各実績に全9人を表示。<b style="color:#66bb6a;">点灯＝解除済み</b>（メンバー色）／ 薄い＝未解除。点いてる数がそのまま希少度。</span>
+    <span><span class="mini-chip tg-kin">金</span>超・版　<span class="mini-chip tg-gin">銀</span>通常版　<span class="mini-chip tg-neta">ネタ</span>中立</span>
+  </div>
+  <div id="board"></div>
+</div>
+<script>
+const CATS=[{"emoji": "🀄", "title": "完全支配・完全崩壊（連帯の鏡像）", "g": "purple", "names": ["完全支配", "超・完全支配", "完全崩壊", "超・完全崩壊"], "items": [{"name": "完全支配", "icon": "🀄", "desc": "4半荘連続で全連帯＋トップ3回以上", "tier": "銀", "holders": ["MaTsuB", "OkaZ", "TK_n"], "n": 3}, {"name": "超・完全支配", "icon": "🀄", "desc": "8半荘連続で全連帯＋トップ4回以上", "tier": "金", "holders": [], "n": 0}, {"name": "完全崩壊", "icon": "💀", "desc": "4半荘連続で全逆連帯＋ラス3回以上", "tier": "銀", "holders": ["KaWa_i", "MaTsuB", "OtsuK", "TK_n", "YaJi"], "n": 5}, {"name": "超・完全崩壊", "icon": "💀", "desc": "8半荘連続で全逆連帯＋ラス4回以上", "tier": "金", "holders": ["KaWa_i"], "n": 1}]}, {"emoji": "🛟", "title": "連帯・ラス系（連続ウィンドウ）", "g": "blue", "names": ["連対パーフェクト", "超・連対パーフェクト", "ラスなしデー", "超・ラスなしデー", "全部沈没", "超・全部沈没", "うれしい階段", "かなしい階段"], "items": [{"name": "連対パーフェクト", "icon": "🤝", "desc": "4半荘連続で全部1〜2着", "tier": "銀", "holders": ["KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 8}, {"name": "超・連対パーフェクト", "icon": "🤝", "desc": "8半荘連続で全部1〜2着", "tier": "金", "holders": [], "n": 0}, {"name": "ラスなしデー", "icon": "🛟", "desc": "4半荘連続でラスなし（3着OK）", "tier": "銀", "holders": ["FuJi", "KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 9}, {"name": "超・ラスなしデー", "icon": "🛟", "desc": "8半荘連続でラスなし", "tier": "金", "holders": ["KaYaM", "MaTsuB", "OkaZ", "OtsuK", "TK_n"], "n": 5}, {"name": "全部沈没", "icon": "🌊", "desc": "4半荘連続で全マイナススコア", "tier": "銀", "holders": ["KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 8}, {"name": "超・全部沈没", "icon": "🌊", "desc": "8半荘連続で全マイナススコア", "tier": "金", "holders": ["KaWa_i", "OtsuK"], "n": 2}, {"name": "うれしい階段", "icon": "📈", "desc": "4半荘連続で 4→3→2→1 と着順が上がり続けた", "tier": "ネタ", "holders": ["KaWa_i", "TK_n"], "n": 2}, {"name": "かなしい階段", "icon": "📉", "desc": "4半荘連続で 1→2→3→4 と着順が下がり続けた", "tier": "ネタ", "holders": ["KaYaM", "MaTsuB", "MoTo_i", "TK_n"], "n": 4}]}, {"emoji": "🚀", "title": "1日の大勝・大敗", "g": "coral", "names": ["一日大勝", "超・一日大勝", "養分デー", "超・養分デー", "大逆転デー", "全着順コンプ"], "items": [{"name": "一日大勝", "icon": "🚀", "desc": "1日の合計スコア +200以上", "tier": "銀", "holders": ["KaYaM", "OkaZ", "TK_n"], "n": 3}, {"name": "超・一日大勝", "icon": "🚀", "desc": "1日の合計スコア +300以上", "tier": "金", "holders": ["TK_n"], "n": 1}, {"name": "養分デー", "icon": "⛏️", "desc": "1日の合計スコア -220以下", "tier": "銀", "holders": ["KaWa_i", "KaYaM", "OtsuK"], "n": 3}, {"name": "超・養分デー", "icon": "⛏️", "desc": "1日の合計スコア -300以下", "tier": "金", "holders": ["KaWa_i"], "n": 1}, {"name": "大逆転デー", "icon": "🦸", "desc": "どん底-80以下から+50着地", "tier": "銀", "holders": ["MaTsuB", "MoTo_i", "TK_n"], "n": 3}, {"name": "全着順コンプ", "icon": "🎰", "desc": "その日1〜4着を各1回以上", "tier": "ネタ", "holders": ["FuJi", "KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 9}]}, {"emoji": "💯", "title": "一撃（単発半荘）", "g": "gold", "names": ["ビッグウィン", "ビッグルーズ"], "items": [{"name": "ビッグウィン", "icon": "💯", "desc": "1半荘 +100以上", "tier": "銀", "holders": ["KaYaM", "MaTsuB", "OkaZ", "OtsuK", "TK_n"], "n": 5}, {"name": "ビッグルーズ", "icon": "🪦", "desc": "1半荘 -100以下", "tier": "銀", "holders": ["FuJi", "OtsuK"], "n": 2}]}, {"emoji": "🪙", "title": "通算・成長", "g": "green", "names": ["100戦の漢", "200戦の漢", "トップコレクター10", "トップコレクター25", "トップコレクター50", "連帯マイスター", "プラス職人", "生涯フルコンプ", "円卓の騎士", "黒字転換", "安定の境地"], "items": [{"name": "100戦の漢", "icon": "🪙", "desc": "通算出場100半荘", "tier": "銀", "holders": ["KaWa_i", "KaYaM", "MaTsuB", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 7}, {"name": "200戦の漢", "icon": "🪙", "desc": "通算出場200半荘", "tier": "金", "holders": [], "n": 0}, {"name": "トップコレクター10", "icon": "👑", "desc": "通算1着10回", "tier": "銀", "holders": ["FuJi", "KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 9}, {"name": "トップコレクター25", "icon": "👑", "desc": "通算1着25回", "tier": "銀", "holders": ["KaWa_i", "KaYaM", "MaTsuB", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 7}, {"name": "トップコレクター50", "icon": "👑", "desc": "通算1着50回", "tier": "金", "holders": ["TK_n"], "n": 1}, {"name": "連帯マイスター", "icon": "🤝", "desc": "通算連帯50回", "tier": "銀", "holders": ["KaWa_i", "KaYaM", "MaTsuB", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 7}, {"name": "プラス職人", "icon": "💚", "desc": "通算プラス収支30回", "tier": "銀", "holders": ["KaWa_i", "KaYaM", "MaTsuB", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 7}, {"name": "生涯フルコンプ", "icon": "🎰", "desc": "1〜4着を通算で各10回以上", "tier": "銀", "holders": ["KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 8}, {"name": "円卓の騎士", "icon": "🃏", "desc": "WG全8人と同卓達成", "tier": "ネタ", "holders": ["FuJi", "KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 9}, {"name": "黒字転換", "icon": "📈", "desc": "S2の収支が赤字だったが、S3で黒字に転換", "tier": "ネタ", "holders": ["MoTo_i", "OtsuK"], "n": 2}, {"name": "安定の境地", "icon": "🎯", "desc": "20戦以上で平均順位 2.40以下", "tier": "金", "holders": ["KaYaM", "TK_n"], "n": 2}]}, {"emoji": "🎭", "title": "ネタ・珍実績", "g": "teal", "names": ["ジェットコースター", "ど真ん中の人生", "空気", "ブレない男", "±0の魔術師", "おしい!", "ピッタリ賞", "凪", "デジャヴ", "おひさしぶり"], "items": [{"name": "ジェットコースター", "icon": "🎢", "desc": "同じ日に1着と4着が同数（各1回以上）、かつ1着+4着が2着+3着より多い", "tier": "ネタ", "holders": ["FuJi", "KaWa_i", "MaTsuB", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 7}, {"name": "ど真ん中の人生", "icon": "🍣", "desc": "その日1着も4着もなく、2着と3着がちょうど同数（上下に振れない中庸）", "tier": "ネタ", "holders": ["OtsuK", "TK_n", "YaJi"], "n": 3}, {"name": "空気", "icon": "🧊", "desc": "その日ぜんぶ2〜3着（トップもラスもなし）", "tier": "ネタ", "holders": ["KaWa_i", "MaTsuB", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 6}, {"name": "ブレない男", "icon": "🌀", "desc": "その日の出場ぜんぶ同じ着順", "tier": "ネタ", "holders": ["FuJi", "KaWa_i", "TK_n"], "n": 3}, {"name": "±0の魔術師", "icon": "😇", "desc": "1日の合計が±5以内で着地", "tier": "ネタ", "holders": ["KaWa_i", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 6}, {"name": "おしい!", "icon": "💸", "desc": "半荘スコア +90〜99 or -99〜-90", "tier": "ネタ", "holders": ["FuJi", "KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "TK_n", "YaJi"], "n": 8}, {"name": "ピッタリ賞", "icon": "🎯", "desc": "半荘スコアがちょうど0", "tier": "ネタ", "holders": ["KaYaM", "MaTsuB", "OtsuK"], "n": 3}, {"name": "凪", "icon": "🪑", "desc": "その日の出場ぜんぶ±20以内", "tier": "ネタ", "holders": ["OkaZ"], "n": 1}, {"name": "デジャヴ", "icon": "🔁", "desc": "過去と同じ4半荘の着順並びを再現", "tier": "ネタ", "holders": ["FuJi", "KaWa_i", "KaYaM", "MaTsuB", "MoTo_i", "OkaZ", "OtsuK", "TK_n", "YaJi"], "n": 9}, {"name": "おひさしぶり", "icon": "👻", "desc": "公式戦を90日（約3ヶ月）ぶりに参加", "tier": "ネタ", "holders": ["FuJi", "KaWa_i", "MaTsuB", "MoTo_i", "OtsuK"], "n": 5}]}];const MEMBERS=["TK_n", "YaJi", "FuJi", "MaTsuB", "KaYaM", "OkaZ", "OtsuK", "KaWa_i", "MoTo_i"];const COL={"TK_n": "#4a90d9", "YaJi": "#e74c3c", "FuJi": "#e67e22", "MaTsuB": "#9b59b6", "KaYaM": "#95a5a6", "OkaZ": "#27ae60", "OtsuK": "#c0392b", "KaWa_i": "#f1c40f", "MoTo_i": "#1abc9c"};
+function tagClass(t){return t==='金'?'tg-kin':(t==='銀'?'tg-gin':'tg-neta');}
+const board=document.getElementById('board');
+CATS.forEach(c=>{
+  const sec=document.createElement('div');sec.className='cat-section';
+  let html=`<div class="cat-title g-${c.g}"><span>${c.emoji} ${c.title}</span><span class="cnt">${c.items.length}種</span></div>`;
+  c.items.forEach(a=>{
+    const locked=a.n===0;
+    const chips=MEMBERS.map(m=>a.holders.includes(m)
+      ? `<span class="chip lit" style="border-color:${COL[m]};color:${COL[m]};background:${COL[m]}1a;">${m}</span>`
+      : `<span class="chip dim">${m}</span>`).join('');
+    html+=`<div class="ach ${locked?'locked':''}">
+      <div class="ach-ic">${locked?'🔒':a.icon}</div>
+      <div class="ach-body">
+        <div class="ach-head"><span class="ach-name">${locked?'？？？ '+a.name:a.name}</span><span class="ach-tag ${tagClass(a.tier)}">${a.tier}</span></div>
+        <div class="ach-desc">${a.desc}</div>
+        <div class="chips">${chips}</div>
+      </div>
+      <div class="cnt-pill">${a.n}/9</div>
+    </div>`;
+  });
+  sec.innerHTML=html;board.appendChild(sec);
+});
+</script></body></html>
