@@ -106,6 +106,35 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 .id-scope.s3{background:#c0392b;}
 .id-nick{font-weight:700;color:#333;}
 .id-tag{font-size:10.5px;color:#777;background:#f2f2ec;border:1px solid #e4e4da;border-radius:999px;padding:1px 8px;white-space:nowrap;}
+
+.choshi-card{margin-bottom:0.75rem;}
+.choshi-meter{padding:4px 2px 6px;}
+.cm-wlabel{font-size:11px;font-weight:700;color:#666;margin-bottom:7px;}
+.cm-top{display:flex;align-items:baseline;gap:7px;margin-bottom:11px;}
+.cm-flame{font-size:20px;}
+.cm-val{font-size:30px;font-weight:700;line-height:1;}
+.cm-stage{font-size:14px;font-weight:600;color:#333;}
+.cm-sub{font-size:10px;font-weight:400;color:#999;}
+.cm-toplabel{display:flex;justify-content:space-between;font-size:9.5px;margin-bottom:5px;}
+.cm-lo{color:#185FA5;font-weight:600;}
+.cm-mid{color:#aaa;}
+.cm-hi{color:#D85A30;font-weight:600;}
+.cm-bar{position:relative;height:11px;border-radius:6px;display:flex;}
+.cm-bar>div:first-child{border-radius:6px 0 0 6px;}
+.cm-bar>div:last-child{border-radius:0 6px 6px 0;}
+.cm-mk{position:absolute;top:12px;transform:translateX(-50%);font-size:12px;color:#c0392b;line-height:1;text-align:center;white-space:nowrap;}
+.cm-here{display:block;font-size:9px;font-weight:700;background:#c0392b;color:#fff;border-radius:4px;padding:1px 4px;margin-top:1px;}
+.cm-basis{font-size:10px;color:#999;margin-top:34px;line-height:1.5;}
+.choshi-spec-mount{margin-top:14px;}
+.choshi-legend{display:flex;flex-wrap:wrap;gap:5px 8px;margin-top:12px;padding-top:9px;border-top:1px solid #eee;}
+.cl-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#888;cursor:pointer;padding:2px 6px;border-radius:10px;transition:background .12s;}
+.cl-item:hover{background:#f0f0ee;}
+.cl-item.active{font-weight:700;color:#222;background:#eef3fb;outline:1px solid #cdddf2;}
+.cl-dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.cl-hint{font-size:9.5px;color:#aaa;margin-top:6px;}
+.choshi-note{font-size:10.5px;color:#888;line-height:1.55;margin-top:10px;}
+.choshi-hito{margin-top:11px;padding:10px 12px;background:#fff8f3;border-left:3px solid #D85A30;border-radius:0 8px 8px 0;font-size:12px;line-height:1.7;color:#444;}
+.ch-lbl{display:block;font-size:10px;font-weight:700;color:#D85A30;margin-bottom:3px;}
 </style>
 </head>
 <body>
@@ -529,6 +558,97 @@ function buildMatchup(mu,label,name){
 
 
 /* === 攻守マップ データ＆型導出（buildPageが参照するため先に定義）=== */
+
+/* === チョーシ（点棒移動平均・3窓 奪い合い） === */
+const CHOSHI_SPEC={"長期": {"土岐": 5.4, "藤木": 0.4, "鹿山": -2.8, "河井": -5.4, "松林": 1.0, "岡崎": -6.7, "大塚": 2.1, "矢嶋": -1.2, "本井": 1.0}, "中期": {"土岐": 1.1, "藤木": -3.7, "鹿山": -1.9, "河井": -3.1, "松林": -2.5, "岡崎": -11.1, "大塚": 1.6, "矢嶋": 2.3, "本井": 4.8}, "短期": {"土岐": 1.6, "藤木": 5.6, "鹿山": -8.4, "河井": -5.0, "松林": -6.0, "岡崎": -8.9, "大塚": 0.6, "矢嶋": -1.1, "本井": 4.1}};
+const CHOSHI_HITO={"土岐": "👑 長期+5.4はリーグ王者級の地力！さすがTK_n…と言いたいけど直近は中期+1.1・短期+1.6でやや小休止中🤔 8人の包囲網か、貯金で余裕こいてるのか？ここらで一発ガツンと、王者の貫禄を見せつけてほしい🔥", "藤木": "🎆 短期+5.6で直近ドカン！FuJiが暴れてる…けど中期−3.7・長期ほぼ0、出場少なめゆえブレも特大⚡ この爆発がホンモノか花火で終わるか、もっと卓に降臨してくれないと判定不能！続いたらガチで脅威だぞ😼", "鹿山": "📉 長期・中期は平常運転だったのに直近8戦で−8.4の急ブレーキ！KaYaM、何があった…!? 短期はブレるから一時的かもだけど、今は供給ターン突入中。早めに流れ断ち切って、いつもの安定感を取り戻そう🛡️", "河井": "🏦 長期−5.4・短期−5.0…安定の供給銀行、KaWa_i😇 みんないつもありがとう(笑)。でも中期でちょい戻したのは確かな光明✨ ここから奪取側に転じたら拍手喝采モノ。下剋上、待ってます🔥", "松林": "🛝 長期はプラスなのに中期−2.5→短期−6.0とズルズル下り坂のMaTsuB💦 地力はあるのは間違いないから、今はガマンの立て直し局面。早く底を打って、バーン!と反発カマしてほしい📈", "岡崎": "🆘 ぶっちゃけ最近のOkaZは卓の供給源…中期−11.1は今リーグ堂々のワースト吐き出し王👑💸 地力(−6.7)以上に直近がしんどい。でも逆に言えば、ここから上げたら一番アツいドラマになる。一発逆転の大物、待ってるぞ🔥", "大塚": "🪙 長期+2.1・中期+1.6・短期+0.6…全部プラスでコツコツ奪取をキープのOtsuK。派手さはゼロ、でもこの「絶対取りこぼさない」安定感、地味に一番こわい😏 玄人好みの強さ、見せつけてる👏", "矢嶋": "🛩️ 中期+2.3は良かったけど短期−1.1で揺り戻し中のYaJi。長期も−1.2でほぼトントン、まさに安定飛行✈️ 大崩れも大爆発もしない安心設計だけど…そろそろ殻を破る一撃で、みんなを驚かせて💥", "本井": "🚀 中期+4.8・短期+4.1、最近ガッツリ奪取側のMoTo_i！数字は文句なし🔥…が、S3の出場がまだ少なめ。「これが地力だ」って証明するには、もっと卓に出るのみ！出れば出るほど化けそうな予感😼"};
+const CHOSHI_JSIG=5;
+const CHOSHI_WINS=['長期','中期','短期'];
+const CHOSHI_WLAB={'長期':'24戦','中期':'16戦','短期':'8戦'};
+const CHOSHI_MAIN='短期';
+const choshiFocusState={};
+function choshiStage(v){
+  var sig=CHOSHI_JSIG;
+  if(v==null)return{t:'—',c:'#888',f:'#bbb'};
+  if(v>=2*sig)return{t:'絶好調',c:'#993C1D',f:'#D85A30'};
+  if(v>=sig)return{t:'好調',c:'#993C1D',f:'#D85A30'};
+  if(v>-sig)return{t:'平常',c:'#5F5E5A',f:'#888780'};
+  if(v>-2*sig)return{t:'不調',c:'#185FA5',f:'#378ADD'};
+  return{t:'絶不調',c:'#185FA5',f:'#185FA5'};
+}
+function choshiMeterHTML(name){
+  var v=CHOSHI_SPEC[CHOSHI_MAIN][name], st=choshiStage(v);
+  var sgn=(v==null?'—':(v>0?'+':'')+v.toFixed(1));
+  var mk=Math.max(0,Math.min(100,(v+15)/30*100));
+  var sig=CHOSHI_JSIG,R=15,wz=Math.max(0,R-2*sig);
+  var fl=[wz,sig,2*sig,sig,wz], cl=['#185FA5','#85B7EB','#D3D1C7','#F0997B','#D85A30'],bar='';
+  for(var i=0;i<5;i++){bar+='<div style="flex:'+fl[i].toFixed(1)+';background:'+cl[i]+'"></div>';}
+  var basis='※ 0＝25,000点持ち（ウマ・オカ除く素点です。）';
+  if(v!=null)basis+='➡ 平均約'+Math.round(25000+v*1000).toLocaleString()+'点で終えてるイメージです。';
+  return '<div class="choshi-meter">'
+   +'<div class="cm-wlabel">⚡ 短期チョーシ（直近8戦）</div>'
+   +'<div class="cm-top"><span class="cm-flame" style="color:'+st.f+'">🔥</span>'
+   +'<span class="cm-val" style="color:'+st.c+'">'+sgn+'</span>'
+   +'<span class="cm-stage">'+st.t+'<span class="cm-sub">・'+dn(name)+'の点棒平均</span></span></div>'
+   +'<div class="cm-toplabel"><span class="cm-lo">←不調！</span><span class="cm-mid">平常</span><span class="cm-hi">好調！→</span></div>'
+   +'<div class="cm-bar">'+bar+'<div class="cm-mk" style="left:'+mk.toFixed(1)+'%">▲<span class="cm-here">今ココ！</span></div></div>'
+   +'<div class="cm-basis">'+basis+'</div></div>';
+}
+function choshiLegendHTML(page){
+  var s='<div class="choshi-legend" id="cleg-'+page+'">';
+  ALL_MEMBERS.forEach(function(k){
+    var me=(k===page);
+    s+='<span class="cl-item'+(me?' active':'')+'" data-k="'+k+'" onclick="choshiFocus(\''+page+'\',\''+k+'\')"><span class="cl-dot" style="background:'+PROFILES[k].color+'"></span>'+dn(k)+'</span>';
+  });
+  s+='</div><div class="cl-hint">※ メンバー名をタップ／クリックすると、その人を下のミニ図に並べて表示できます（もう一度押すと解除）</div>';
+  return s;
+}
+function choshiCardHTML(name){
+  return '<div class="card choshi-card"><div class="card-title">🌊 チョーシ</div>'
+   + '<div id="cm-mount-'+name+'">'+choshiMeterHTML(name)+'</div>'
+   + '<div class="choshi-spec-mount" id="choshi-spec-'+name+'"></div>'
+   + choshiLegendHTML(name)
+   + '<div class="choshi-note">短期〜長期にわたる、ウマ・オカを除いた<b>点棒Pts</b>の移動平均。0よりマイナスなら<b>供給する側</b>、プラスなら<b>奪っている側</b>。</div>'
+   + '<div class="choshi-hito"><span class="ch-lbl">💬 ミンちゃんのチョーシ評</span>'+CHOSHI_HITO[name]+'</div></div>';
+}
+function drawChoshiSpec(page,focus){
+  var mt=document.getElementById('choshi-spec-'+page); if(!mt)return;
+  var W=320,H=176,cx=W/2,sc=(W-60)/30;
+  function X(v){return cx+Math.max(-15,Math.min(15,v))*sc;}
+  var ys={'長期':38,'中期':86,'短期':134}, bw=CHOSHI_JSIG*sc;
+  var hl=(focus&&focus!==page)?[page,focus]:[page];
+  var s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+dn(page)+'のチョーシ奪い合いスペクトラム">';
+  s+='<text x="'+(cx+6)+'" y="16" font-size="9" fill="#999" text-anchor="start">奪取 →</text>';
+  s+='<text x="'+(cx-6)+'" y="16" font-size="9" fill="#999" text-anchor="end">← 供給</text>';
+  s+='<line x1="'+cx+'" y1="22" x2="'+cx+'" y2="'+(H-10)+'" stroke="#ccc" stroke-width="1" stroke-dasharray="3 3"/>';
+  CHOSHI_WINS.forEach(function(w){
+    var y=ys[w];
+    s+='<rect x="'+(cx-bw)+'" y="'+(y-12)+'" width="'+(2*bw)+'" height="24" rx="5" fill="#D3D1C7" opacity="0.28"/>';
+    s+='<text x="14" y="'+(y+1)+'" font-size="11" font-weight="600" fill="#444">'+w+'</text>';
+    s+='<text x="14" y="'+(y+13)+'" font-size="8" fill="#999">'+CHOSHI_WLAB[w]+'</text>';
+    ALL_MEMBERS.forEach(function(k){
+      var v=CHOSHI_SPEC[w][k]; if(v==null||hl.indexOf(k)>=0)return;
+      s+='<circle cx="'+X(v).toFixed(1)+'" cy="'+y+'" r="4" fill="'+PROFILES[k].color+'" opacity="0.8"/>';
+    });
+    hl.forEach(function(k,idx){
+      var mv=CHOSHI_SPEC[w][k]; if(mv==null)return;
+      s+='<circle cx="'+X(mv).toFixed(1)+'" cy="'+y+'" r="7.5" fill="'+PROFILES[k].color+'" stroke="#fff" stroke-width="2"/>';
+      var ly=(idx===0)?(y-14):(y+22);
+      s+='<text x="'+X(mv).toFixed(1)+'" y="'+ly+'" font-size="9" font-weight="600" fill="'+PROFILES[k].color+'" text-anchor="middle">'+dn(k)+' '+(mv>0?'+':'')+mv.toFixed(1)+'</text>';
+    });
+  });
+  s+='</svg>'; mt.innerHTML=s;
+}
+function choshiFocus(page,k){
+  var cur=choshiFocusState[page]||page;
+  var nf=(cur===k)?page:k;
+  choshiFocusState[page]=nf;
+  drawChoshiSpec(page,nf);
+  var leg=document.getElementById('cleg-'+page);
+  if(leg)leg.querySelectorAll('.cl-item').forEach(function(it){var dk=it.getAttribute('data-k');it.classList.toggle('active',dk===page||(nf!==page&&dk===nf));});
+}
+function drawChoshi(name){ choshiFocusState[name]=name; drawChoshiSpec(name,name); }
+
 const AC={
   ALL:{'土岐':[7.2,3.5],'藤木':[3.2,-2.1],'鹿山':[0.5,4.9],'河井':[-5.2,-5.1],'松林':[1.5,1.9],'岡崎':[0.3,0.8],'大塚':[-3.2,-3.4],'矢嶋':[-2.4,-1.3],'本井':[-2.3,0.7]},
   S3:{'土岐':[6.0,5.1],'藤木':[0.5,-8.7],'鹿山':[-6.3,-0.9],'河井':[-6.7,-5.3],'松林':[3.2,-0.3],'岡崎':[-4.1,-0.7],'大塚':[3.3,-1.5],'矢嶋':[-2.2,-2.4],'本井':[-3.9,4.2]}
@@ -619,6 +739,7 @@ function buildPage(name){
       <div class="hitokoto-label s3" style="margin-top:14px;border-top:1px dashed #bbdefb;padding-top:12px;">🀄 ${dn(name)}のプレイスタイル</div>
       <div class="hitokoto-text">${p.playStyle}</div>
     </div>
+    ${choshiCardHTML(name)}
     <div class="am-mount" id="am-mount-${name}"></div>
     ${buildMatchup(muS3,'最新シーズン',name)}
   </div>
@@ -656,6 +777,7 @@ function showPage(name){
   document.querySelectorAll('.nav a').forEach(a=>{if(a.textContent===dn(name))a.classList.add('active');});
   drawRadar(name);
   drawMap(name);
+  drawChoshi(name);
 }
 
 let drawn={};
