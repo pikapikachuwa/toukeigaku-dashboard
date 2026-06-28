@@ -135,6 +135,22 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Sans',sans-serif;background:#f
 .choshi-note{font-size:10.5px;color:#888;line-height:1.55;margin-top:10px;}
 .choshi-hito{margin-top:11px;padding:10px 12px;background:#fff8f3;border-left:3px solid #D85A30;border-radius:0 8px 8px 0;font-size:12px;line-height:1.7;color:#444;}
 .ch-lbl{display:block;font-size:10px;font-weight:700;color:#D85A30;margin-bottom:3px;}
+.choshi-basis{margin-top:13px;border:1px solid #cdddf2;border-radius:8px;overflow:hidden;}
+.choshi-basis summary{cursor:pointer;list-style:none;padding:10px 12px;background:#eef3fb;font-size:11.5px;font-weight:700;color:#2a5a8a;display:flex;align-items:center;justify-content:space-between;}
+.choshi-basis summary::-webkit-details-marker{display:none;}
+.choshi-basis summary::after{content:'▼ 開く';font-size:9px;font-weight:600;color:#7aa3cf;}
+.choshi-basis[open] summary::after{content:'▲ 閉じる';}
+.choshi-basis summary:hover{background:#e3ecf8;}
+.cb-note{font-size:10px;color:#888;padding:9px 12px;line-height:1.55;}
+.cb-tbl{width:100%;border-collapse:collapse;font-size:9.5px;}
+.cb-tbl th,.cb-tbl td{padding:4px 5px;border-top:1px solid #eee;text-align:center;}
+.cb-tbl th{background:#faf9f6;color:#999;font-weight:600;line-height:1.25;}
+.cb-tbl td:first-child,.cb-tbl th:first-child{text-align:left;font-weight:600;color:#555;}
+.cb-me{background:#fff5ef;}
+.cb-v{font-weight:600;}
+.cb-v.p{color:#b5532a;}
+.cb-v.n{color:#185FA5;}
+.cb-d{font-size:8px;color:#aaa;}
 </style>
 </head>
 <body>
@@ -562,6 +578,7 @@ function buildMatchup(mu,label,name){
 /* === チョーシ（点棒移動平均・3窓 奪い合い） === */
 const CHOSHI_SPEC={"長期": {"土岐": 5.4, "藤木": 0.4, "鹿山": -2.8, "河井": -5.4, "松林": 1.0, "岡崎": -6.7, "大塚": 2.1, "矢嶋": -1.2, "本井": 1.0}, "中期": {"土岐": 1.1, "藤木": -3.7, "鹿山": -1.9, "河井": -3.1, "松林": -2.5, "岡崎": -11.1, "大塚": 1.6, "矢嶋": 2.3, "本井": 4.8}, "短期": {"土岐": 1.6, "藤木": 5.6, "鹿山": -8.4, "河井": -5.0, "松林": -6.0, "岡崎": -8.9, "大塚": 0.6, "矢嶋": -1.1, "本井": 4.1}};
 const CHOSHI_HITO={"土岐": "👑 長期+5.4はリーグ王者級の地力！さすがTK_n…と言いたいけど直近は中期+1.1・短期+1.6でやや小休止中🤔 8人の包囲網か、貯金で余裕こいてるのか？ここらで一発ガツンと、王者の貫禄を見せつけてほしい🔥", "藤木": "🎆 短期+5.6で直近ドカン！FuJiが暴れてる…けど中期−3.7・長期ほぼ0、出場少なめゆえブレも特大⚡ この爆発がホンモノか花火で終わるか、もっと卓に降臨してくれないと判定不能！続いたらガチで脅威だぞ😼", "鹿山": "📉 長期・中期は平常運転だったのに直近8戦で−8.4の急ブレーキ！KaYaM、何があった…!? 短期はブレるから一時的かもだけど、今は供給ターン突入中。早めに流れ断ち切って、いつもの安定感を取り戻そう🛡️", "河井": "🏦 長期−5.4・短期−5.0…安定の供給銀行、KaWa_i😇 みんないつもありがとう(笑)。でも中期でちょい戻したのは確かな光明✨ ここから奪取側に転じたら拍手喝采モノ。下剋上、待ってます🔥", "松林": "🛝 長期はプラスなのに中期−2.5→短期−6.0とズルズル下り坂のMaTsuB💦 地力はあるのは間違いないから、今はガマンの立て直し局面。早く底を打って、バーン!と反発カマしてほしい📈", "岡崎": "🆘 ぶっちゃけ最近のOkaZは卓の供給源…中期−11.1は今リーグ堂々のワースト吐き出し王👑💸 地力(−6.7)以上に直近がしんどい。でも逆に言えば、ここから上げたら一番アツいドラマになる。一発逆転の大物、待ってるぞ🔥", "大塚": "🪙 長期+2.1・中期+1.6・短期+0.6…全部プラスでコツコツ奪取をキープのOtsuK。派手さはゼロ、でもこの「絶対取りこぼさない」安定感、地味に一番こわい😏 玄人好みの強さ、見せつけてる👏", "矢嶋": "🛩️ 中期+2.3は良かったけど短期−1.1で揺り戻し中のYaJi。長期も−1.2でほぼトントン、まさに安定飛行✈️ 大崩れも大爆発もしない安心設計だけど…そろそろ殻を破る一撃で、みんなを驚かせて💥", "本井": "🚀 中期+4.8・短期+4.1、最近ガッツリ奪取側のMoTo_i！数字は文句なし🔥…が、S3の出場がまだ少なめ。「これが地力だ」って証明するには、もっと卓に出るのみ！出れば出るほど化けそうな予感😼"};
+const CHOSHI_BASIS={"土岐": {"短期": {"v": 1.6, "d": "6/13–6/24"}, "中期": {"v": 1.1, "d": "6/3–6/24"}, "長期": {"v": 5.4, "d": "5/20–6/24"}}, "藤木": {"短期": {"v": 5.6, "d": "5/20–6/3"}, "中期": {"v": -3.7, "d": "1/31–6/3"}, "長期": {"v": 0.4, "d": "11/1–6/3"}}, "鹿山": {"短期": {"v": -8.4, "d": "6/13"}, "中期": {"v": -1.9, "d": "5/16–6/13"}, "長期": {"v": -2.8, "d": "4/6–6/13"}}, "河井": {"短期": {"v": -5.0, "d": "5/28–6/3"}, "中期": {"v": -3.1, "d": "2/21–6/3"}, "長期": {"v": -5.4, "d": "2/20–6/3"}}, "松林": {"短期": {"v": -6.0, "d": "4/22–5/16"}, "中期": {"v": -2.5, "d": "4/6–5/16"}, "長期": {"v": 1.0, "d": "3/7–5/16"}}, "岡崎": {"短期": {"v": -8.9, "d": "5/28–6/24"}, "中期": {"v": -11.1, "d": "4/6–6/24"}, "長期": {"v": -6.7, "d": "4/2–6/24"}}, "大塚": {"短期": {"v": 0.6, "d": "6/13–6/24"}, "中期": {"v": 1.6, "d": "6/3–6/24"}, "長期": {"v": 2.1, "d": "4/22–6/24"}}, "矢嶋": {"短期": {"v": -1.1, "d": "6/13–6/24"}, "中期": {"v": 2.3, "d": "5/28–6/24"}, "長期": {"v": -1.2, "d": "5/16–6/24"}}, "本井": {"短期": {"v": 4.1, "d": "5/16"}, "中期": {"v": 4.8, "d": "2/21–5/16"}, "長期": {"v": 1.0, "d": "1/31–5/16"}}};
 const CHOSHI_JSIG=5;
 const CHOSHI_WINS=['長期','中期','短期'];
 const CHOSHI_WLAB={'長期':'24戦','中期':'16戦','短期':'8戦'};
@@ -609,7 +626,7 @@ function choshiCardHTML(name){
    + '<div class="choshi-spec-mount" id="choshi-spec-'+name+'"></div>'
    + choshiLegendHTML(name)
    + '<div class="choshi-note">短期〜長期にわたる、ウマ・オカを除いた<b>点棒Pts</b>の移動平均。0よりマイナスなら<b>供給する側</b>、プラスなら<b>奪っている側</b>。</div>'
-   + '<div class="choshi-hito"><span class="ch-lbl">💬 ミンちゃんのチョーシ評</span>'+CHOSHI_HITO[name]+'</div></div>';
+   + '<div class="choshi-hito"><span class="ch-lbl">💬 ミンちゃんのチョーシ評</span>'+CHOSHI_HITO[name]+'</div>'+choshiBasisHTML(name)+'</div>';
 }
 function drawChoshiSpec(page,focus){
   var mt=document.getElementById('choshi-spec-'+page); if(!mt)return;
@@ -648,6 +665,17 @@ function choshiFocus(page,k){
   if(leg)leg.querySelectorAll('.cl-item').forEach(function(it){var dk=it.getAttribute('data-k');it.classList.toggle('active',dk===page||(nf!==page&&dk===nf));});
 }
 function drawChoshi(name){ choshiFocusState[name]=name; drawChoshiSpec(name,name); }
+function cbCell(o){return '<span class="cb-v '+(o.v>0?"p":o.v<0?"n":"")+'">'+(o.v>0?'+':'')+o.v.toFixed(1)+'</span><br><span class="cb-d">'+o.d+'</span>';}
+function choshiBasisHTML(name){
+  var rows='';
+  ALL_MEMBERS.forEach(function(k){
+    var b=CHOSHI_BASIS[k], me=(k===name);
+    rows+='<tr'+(me?' class="cb-me"':'')+'><td>'+dn(k)+'</td><td>'+cbCell(b['短期'])+'</td><td>'+cbCell(b['中期'])+'</td><td>'+cbCell(b['長期'])+'</td></tr>';
+  });
+  return '<details class="choshi-basis"><summary>📋 実際のデータ根拠（各自の集計対象・タップで開閉）</summary>'
+    +'<div class="cb-note">チョーシは各自の<b>直近N戦</b>の平均です。出場数が違うため、同じ「直近8戦」でも人により<b>時期がズレ</b>ます。点棒は卓内ゼロサムですが、各自バラバラの時期を見るため合計は0になりません。下表が各自の実際の集計対象👇</div>'
+    +'<table class="cb-tbl"><thead><tr><th></th><th>短期<br>8戦</th><th>中期<br>16戦</th><th>長期<br>24戦</th></tr></thead><tbody>'+rows+'</tbody></table></details>';
+}
 
 const AC={
   ALL:{'土岐':[7.2,3.5],'藤木':[3.2,-2.1],'鹿山':[0.5,4.9],'河井':[-5.2,-5.1],'松林':[1.5,1.9],'岡崎':[0.3,0.8],'大塚':[-3.2,-3.4],'矢嶋':[-2.4,-1.3],'本井':[-2.3,0.7]},
