@@ -51,12 +51,12 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;color:#333
   <div>
     <span class="header-title">🀄 統計学WG</span>
     <span class="season-tag">TOTAL</span>
-    <span class="dash-meta">295半荘 ／ 46活動日 ／ Season2+3通算 ／ 最終更新 2026/06/24</span>
+    <span class="dash-meta">307半荘 ／ 47活動日 ／ Season2+3通算 ／ 最終更新 2026/07/18</span>
   </div>
   <div class="nav-btns">
     <a class="nav-btn" href="mahjong_dashboard.html">← Season3</a>
     <a class="nav-btn" href="records_board.html">🏯 殿堂</a>
-    <a class="nav-btn" href="player_pages.html">個人ページ →</a>
+    <a class="nav-btn" href="matchup_board.html">⚔️ 相性</a><a class="nav-btn" href="player_pages.html">個人ページ →</a>
   </div>
 </div>
 
@@ -77,7 +77,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;color:#333
 <div class="chart-card">
   <div class="chart-title">
     <span>📈 累計ポイント推移（Season2+3 通算）</span>
-    <span style="font-size:11px;color:#888;">2025/02〜2026/05・全41活動日</span>
+    <span style="font-size:11px;color:#888;">2025/02〜2026/07・全47活動日</span>
   </div>
   <div style="height:300px;position:relative;"><canvas id="line-chart"></canvas></div>
 </div>
@@ -146,15 +146,15 @@ const MEMBER_ORDER = ['土岐','矢嶋','藤木','松林','鹿山','岡崎','大
 const COLORS = {'土岐':'#4a90d9','矢嶋':'#e74c3c','藤木':'#e67e22','松林':'#9b59b6','鹿山':'#95a5a6','岡崎':'#27ae60','大塚':'#c0392b','河井':'#f1c40f','本井':'#1abc9c'};
 
 const DATA = [
-  {name:'土岐',games:190,avgRank:2.2737,topRate:34.21,renRate:59.47,avoidRate:78.95,lastRate:21.05,plusRate:57.89,stdDev:49.72,avgPts1st:70.49,avgPts4th:-54.40,totalPts:2027,ptsPerGame:10.67,maxPts:133,minPts:-82,recent30AvgRank:2.5000,r1:65,r2:48,r3:37,r4:40},
-  {name:'藤木',games:38,avgRank:2.5300,topRate:28.90,renRate:44.70,avoidRate:73.70,lastRate:26.30,plusRate:44.70,stdDev:51.90,avgPts1st:72.70,avgPts4th:-57.50,totalPts:43,ptsPerGame:1.10,maxPts:91,minPts:-108,recent30AvgRank:2.6000,r1:11,r2:6,r3:11,r4:10},
+  {name:'土岐',games:201,avgRank:2.2687,topRate:33.83,renRate:60.20,avoidRate:79.10,lastRate:20.90,plusRate:58.71,stdDev:49.57,avgPts1st:70.46,avgPts4th:-54.71,totalPts:2132,ptsPerGame:10.61,maxPts:133,minPts:-82,recent30AvgRank:2.3000,r1:68,r2:53,r3:38,r4:42},
+  {name:'藤木',games:38,avgRank:2.5263,topRate:28.95,renRate:44.74,avoidRate:73.68,lastRate:26.32,plusRate:44.74,stdDev:51.88,avgPts1st:72.73,avgPts4th:-57.50,totalPts:43,ptsPerGame:1.13,maxPts:91,minPts:-108,recent30AvgRank:2.6000,r1:11,r2:6,r3:11,r4:10},
   {name:'鹿山',games:107,avgRank:2.3551,topRate:24.30,renRate:55.14,avoidRate:85.05,lastRate:14.95,plusRate:53.27,stdDev:42.00,avgPts1st:66.50,avgPts4th:-54.81,totalPts:583,ptsPerGame:5.45,maxPts:120,minPts:-79,recent30AvgRank:2.5667,r1:26,r2:33,r3:32,r4:16},
-  {name:'河井',games:131,avgRank:2.7300,topRate:19.10,renRate:38.20,avoidRate:69.50,lastRate:30.50,plusRate:38.20,stdDev:44.70,avgPts1st:63.30,avgPts4th:-59.10,totalPts:-1347,ptsPerGame:-10.30,maxPts:97,minPts:-96,recent30AvgRank:2.6700,r1:25,r2:25,r3:41,r4:40},
-  {name:'松林',games:123,avgRank:2.4100,topRate:26.80,renRate:54.50,avoidRate:77.20,lastRate:22.80,plusRate:50.40,stdDev:46.50,avgPts1st:68.90,avgPts4th:-55.50,totalPts:422,ptsPerGame:3.40,maxPts:101,minPts:-78,recent30AvgRank:2.5700,r1:33,r2:34,r3:28,r4:28},
-  {name:'岡崎',games:194,avgRank:2.4536,topRate:26.29,renRate:53.61,avoidRate:74.74,lastRate:25.26,plusRate:51.03,stdDev:46.17,avgPts1st:66.24,avgPts4th:-55.71,totalPts:215,ptsPerGame:1.11,maxPts:102,minPts:-88,recent30AvgRank:2.5333,r1:51,r2:53,r3:41,r4:49},
-  {name:'大塚',games:191,avgRank:2.6649,topRate:19.90,renRate:43.46,avoidRate:70.16,lastRate:29.84,plusRate:42.41,stdDev:45.99,avgPts1st:68.11,avgPts4th:-56.82,totalPts:-1271,ptsPerGame:-6.65,maxPts:143,minPts:-102,recent30AvgRank:2.4000,r1:38,r2:45,r3:51,r4:57},
+  {name:'河井',games:141,avgRank:2.7163,topRate:18.44,renRate:39.01,avoidRate:70.92,lastRate:29.08,plusRate:39.01,stdDev:44.34,avgPts1st:63.92,avgPts4th:-59.76,totalPts:-1400,ptsPerGame:-9.93,maxPts:97,minPts:-96,recent30AvgRank:2.6000,r1:26,r2:29,r3:45,r4:41},
+  {name:'松林',games:133,avgRank:2.4286,topRate:27.07,renRate:54.14,avoidRate:75.94,lastRate:24.06,plusRate:50.38,stdDev:46.57,avgPts1st:68.69,avgPts4th:-54.34,totalPts:452,ptsPerGame:3.40,maxPts:101,minPts:-78,recent30AvgRank:2.6000,r1:36,r2:36,r3:29,r4:32},
+  {name:'岡崎',games:200,avgRank:2.4450,topRate:26.50,renRate:53.50,avoidRate:75.50,lastRate:24.50,plusRate:51.00,stdDev:45.93,avgPts1st:66.04,avgPts4th:-55.71,totalPts:303,ptsPerGame:1.51,maxPts:102,minPts:-88,recent30AvgRank:2.5667,r1:53,r2:54,r3:44,r4:49},
+  {name:'大塚',games:202,avgRank:2.6782,topRate:20.30,renRate:42.57,avoidRate:69.31,lastRate:30.69,plusRate:41.58,stdDev:46.30,avgPts1st:67.76,avgPts4th:-56.84,totalPts:-1441,ptsPerGame:-7.13,maxPts:143,minPts:-102,recent30AvgRank:2.7000,r1:41,r2:45,r3:54,r4:62},
   {name:'矢嶋',games:158,avgRank:2.5823,topRate:22.15,renRate:46.84,avoidRate:72.78,lastRate:27.22,plusRate:46.84,stdDev:44.30,avgPts1st:63.60,avgPts4th:-55.26,totalPts:-593,ptsPerGame:-3.75,maxPts:98,minPts:-97,recent30AvgRank:2.5333,r1:35,r2:39,r3:41,r4:43},
-  {name:'本井',games:48,avgRank:2.5400,topRate:22.90,renRate:47.90,avoidRate:75.00,lastRate:25.00,plusRate:39.60,stdDev:43.60,avgPts1st:67.40,avgPts4th:-52.00,totalPts:-79,ptsPerGame:-1.60,maxPts:92,minPts:-57,recent30AvgRank:2.6300,r1:11,r2:12,r3:13,r4:12},
+  {name:'本井',games:48,avgRank:2.5417,topRate:22.92,renRate:47.92,avoidRate:75.00,lastRate:25.00,plusRate:39.58,stdDev:43.58,avgPts1st:67.36,avgPts4th:-52.00,totalPts:-79,ptsPerGame:-1.65,maxPts:92,minPts:-57,recent30AvgRank:2.6333,r1:11,r2:12,r3:13,r4:12},
 ]; 
 const TREND = [
   {date:'2025/02/07', '土岐':0, '藤木':0, '鹿山':0, '河井':0, '松林':132, '岡崎':-66, '大塚':-75, '矢嶋':9, '本井':0},
@@ -203,6 +203,7 @@ const TREND = [
   {date:'2026/06/03', '土岐':2171, '藤木':43, '鹿山':812, '河井':-1347, '松林':422, '岡崎':130, '大塚':-1380, '矢嶋':-772, '本井':-79},
   {date:'2026/06/13', '土岐':2114, '藤木':43, '鹿山':583, '河井':-1347, '松林':422, '岡崎':130, '大塚':-1257, '矢嶋':-609, '本井':-79},
   {date:'2026/06/24', '土岐':2027, '藤木':43, '鹿山':583, '河井':-1347, '松林':422, '岡崎':215, '大塚':-1271, '矢嶋':-593, '本井':-79},
+  {date:'2026/07/18', '土岐':2132, '藤木':43, '鹿山':583, '河井':-1400, '松林':452, '岡崎':303, '大塚':-1441, '矢嶋':-593, '本井':-79},
 ];
 const MATCHUP = {
   '土岐':{'岡崎':[103,17.2],'大塚':[91,23.6],'本井':[34,27.0],'鹿山':[62,1.0],'河井':[43,26.6],'松林':[84,7.5],'矢嶋':[53,13.6],'藤木':[22,10.4]},
@@ -216,28 +217,28 @@ const MATCHUP = {
   '本井':{'土岐':[34,-27.0],'岡崎':[27,1.9],'大塚':[16,14.1],'松林':[23,-1.5],'鹿山':[14,-24.1],'河井':[12,19.3],'矢嶋':[12,5.8],'藤木':[6,65.7]},
 };
 const DETAIL_RANKS = {
-  '土岐':{totalPts:1,ptsPerGame:1,topRate:1,renRate:1,avoidRate:2,plusRate:1,stdDev:8,avgPts1st:2,avgRank:1,games:3},
-  '藤木':{totalPts:6,ptsPerGame:6,topRate:3,renRate:7,avoidRate:9,plusRate:6,stdDev:9,avgPts1st:1,avgRank:7,games:9},
-  '鹿山':{totalPts:2,ptsPerGame:2,topRate:4,renRate:2,avoidRate:1,plusRate:2,stdDev:1,avgPts1st:6,avgRank:2,games:7},
-  '河井':{totalPts:9,ptsPerGame:9,topRate:8,renRate:9,avoidRate:8,plusRate:9,stdDev:4,avgPts1st:8,avgRank:9,games:6},
-  '松林':{totalPts:3,ptsPerGame:3,topRate:2,renRate:3,avoidRate:3,plusRate:4,stdDev:7,avgPts1st:3,avgRank:3,games:5},
-  '岡崎':{totalPts:4,ptsPerGame:4,topRate:5,renRate:4,avoidRate:4,plusRate:3,stdDev:5,avgPts1st:7,avgRank:4,games:1},
-  '大塚':{totalPts:8,ptsPerGame:8,topRate:9,renRate:8,avoidRate:7,plusRate:7,stdDev:6,avgPts1st:4,avgRank:8,games:2},
-  '矢嶋':{totalPts:7,ptsPerGame:7,topRate:7,renRate:6,avoidRate:6,plusRate:5,stdDev:2,avgPts1st:9,avgRank:6,games:4},
-  '本井':{totalPts:5,ptsPerGame:5,topRate:6,renRate:5,avoidRate:5,plusRate:8,stdDev:3,avgPts1st:5,avgRank:5,games:8},
+  '土岐':{totalPts:1,ptsPerGame:1,topRate:1,renRate:1,avoidRate:2,plusRate:1,stdDev:8,avgPts1st:2,avgRank:1,games:2},
+  '藤木':{totalPts:5,ptsPerGame:5,topRate:2,renRate:7,avoidRate:6,plusRate:6,stdDev:9,avgPts1st:1,avgRank:5,games:9},
+  '鹿山':{totalPts:2,ptsPerGame:2,topRate:5,renRate:2,avoidRate:1,plusRate:2,stdDev:1,avgPts1st:6,avgRank:2,games:7},
+  '河井':{totalPts:8,ptsPerGame:9,topRate:9,renRate:9,avoidRate:8,plusRate:9,stdDev:4,avgPts1st:8,avgRank:9,games:5},
+  '松林':{totalPts:3,ptsPerGame:3,topRate:3,renRate:3,avoidRate:3,plusRate:4,stdDev:7,avgPts1st:3,avgRank:3,games:6},
+  '岡崎':{totalPts:4,ptsPerGame:4,topRate:4,renRate:4,avoidRate:4,plusRate:3,stdDev:5,avgPts1st:7,avgRank:4,games:3},
+  '大塚':{totalPts:9,ptsPerGame:8,topRate:8,renRate:8,avoidRate:9,plusRate:7,stdDev:6,avgPts1st:4,avgRank:8,games:1},
+  '矢嶋':{totalPts:7,ptsPerGame:7,topRate:7,renRate:6,avoidRate:7,plusRate:5,stdDev:3,avgPts1st:9,avgRank:7,games:4},
+  '本井':{totalPts:6,ptsPerGame:6,topRate:6,renRate:5,avoidRate:5,plusRate:8,stdDev:2,avgPts1st:5,avgRank:6,games:8}
 };
 const RADAR_RANKS = {
   '土岐':[1, 1, 2, 1, 8, 1],
-  '藤木':[3, 7, 9, 6, 9, 6],
-  '鹿山':[4, 2, 1, 2, 1, 2],
-  '河井':[8, 9, 8, 9, 4, 9],
-  '松林':[2, 3, 3, 4, 7, 3],
-  '岡崎':[5, 4, 4, 3, 5, 4],
-  '大塚':[9, 8, 7, 7, 6, 8],
-  '矢嶋':[7, 6, 6, 5, 2, 7],
-  '本井':[6, 5, 5, 8, 3, 5],
+  '藤木':[2, 7, 6, 6, 9, 5],
+  '鹿山':[5, 2, 1, 2, 1, 2],
+  '河井':[9, 9, 8, 9, 4, 9],
+  '松林':[3, 3, 3, 4, 7, 3],
+  '岡崎':[4, 4, 4, 3, 5, 4],
+  '大塚':[8, 8, 9, 7, 6, 8],
+  '矢嶋':[7, 6, 7, 5, 3, 7],
+  '本井':[6, 5, 5, 8, 2, 6],
 };
-const PTS_RANK = {'土岐':1,'藤木':6,'鹿山':2,'河井':9,'松林':3,'岡崎':4,'大塚':8,'矢嶋':7,'本井':5};
+const PTS_RANK = {'土岐':1,'藤木':5,'鹿山':2,'河井':8,'松林':3,'岡崎':4,'大塚':9,'矢嶋':7,'本井':6};
 
 // ---- MEDALS ----
 function buildMedals(){
