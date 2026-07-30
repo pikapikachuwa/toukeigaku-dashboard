@@ -44,6 +44,19 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;color:#333
 .rank-bad{color:#e74c3c;}
 .s2-badge{display:inline-block;background:#dce6f1;color:#1a5276;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:700;margin-left:3px;}
 .s3-badge{display:inline-block;background:#d5f5e3;color:#1e8449;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:700;margin-left:3px;}
+
+.belt-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(max-width:760px){.belt-wrap{grid-template-columns:1fr;}}
+.belt-col h4{margin:0 0 8px;font-size:12px;font-weight:700;color:#555;letter-spacing:.5px;}
+.belt{border:1px solid #e6e6ee;border-radius:10px;padding:8px 10px;margin-bottom:8px;background:#fcfcfe;}
+.belt-name{font-size:12px;font-weight:700;color:#333;margin-bottom:5px;}
+.belt-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;margin-top:3px;}
+.belt-tier{flex-shrink:0;font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px;}
+.belt-tier.kin{background:#fdf1c8;color:#8a6100;border:1px solid #e8cf7a;}
+.belt-tier.gin{background:#eef1f3;color:#5b6770;border:1px solid #cdd6dc;}
+.belt-h{display:inline-block;color:#fff;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700;}
+.belt-v{font-weight:700;color:#222;}
+.belt-d{color:#999;font-size:10px;}
 </style>
 </head>
 <body>
@@ -55,7 +68,6 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;color:#333
   </div>
   <div class="nav-btns">
     <a class="nav-btn" href="mahjong_dashboard.html">← Season3</a>
-    <a class="nav-btn" href="records_board.html">🏯 殿堂</a>
     <a class="nav-btn" href="matchup_board.html">⚔️ 勝ち負け分析</a><a class="nav-btn" href="player_pages.html">個人ページ →</a>
   </div>
 </div>
@@ -134,6 +146,14 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;color:#333
       </thead>
       <tbody id="detail-tbody"></tbody>
     </table>
+  </div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title"><span>📜 歴代記録ベルト（全期間・塗り替え式）</span><span style="font-size:11px;font-weight:400;color:#888;">金＝歴代1位／銀＝2位・同着あり</span></div>
+  <div class="belt-wrap">
+    <div class="belt-col"><h4>🏆 栄誉ベルト</h4><div id="belt-honor"></div></div>
+    <div class="belt-col"><h4>🪦 不名誉ベルト</h4><div id="belt-dishonor"></div></div>
   </div>
 </div>
 
@@ -443,6 +463,25 @@ buildLineChart();
 renderTable('totalPts',null);
 switchBar('totalPts','累計Pts比較',document.querySelector('.tab-btn.active'));
 buildSummaryTable();
+
+const BELTS={"honor": [{"icon": "🏆", "name": "最長連続トップ", "tiers": [{"t": "金", "h": ["TK_n", "KaYaM", "MaTsuB", "OkaZ", "YaJi"], "v": "3連続", "d": null}, {"t": "銀", "h": ["FuJi", "KaWa_i", "OtsuK", "MoTo_i"], "v": "2連続", "d": null}]}, {"icon": "🤝", "name": "最長連続連帯", "tiers": [{"t": "金", "h": ["TK_n", "MaTsuB"], "v": "9連続", "d": null}, {"t": "銀", "h": ["OkaZ"], "v": "8連続", "d": "2026/02/21"}]}, {"icon": "🛟", "name": "最長連続ラス回避", "tiers": [{"t": "金", "h": ["TK_n"], "v": "21連続", "d": "2026/03/07"}, {"t": "銀", "h": ["OtsuK"], "v": "20連続", "d": "2025/04/02"}]}, {"icon": "🔥", "name": "MAXPts（1半荘 歴代最高）", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "+143", "d": "2026/02/10"}, {"t": "銀", "h": ["TK_n"], "v": "+133", "d": "2026/02/21"}]}, {"icon": "🚀", "name": "一日最高合計", "tiers": [{"t": "金", "h": ["TK_n"], "v": "+433", "d": "2026/02/21"}, {"t": "銀", "h": ["OkaZ"], "v": "+230", "d": "2026/01/31"}]}, {"icon": "🎌", "name": "皆勤王（通算出場）", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "209半荘", "d": null}, {"t": "銀", "h": ["TK_n"], "v": "205半荘", "d": null}]}], "dishonor": [{"icon": "💀", "name": "最長連続ラス", "tiers": [{"t": "金", "h": ["KaWa_i"], "v": "6連続", "d": "2025/03/29"}, {"t": "銀", "h": ["MaTsuB"], "v": "5連続", "d": "2026/05/16"}]}, {"icon": "🪦", "name": "ワーストPts（1半荘 歴代最低）", "tiers": [{"t": "金", "h": ["FuJi"], "v": "-108", "d": "2026/03/06"}, {"t": "銀", "h": ["OtsuK"], "v": "-102", "d": "2026/03/07"}]}, {"icon": "🌊", "name": "一日最低合計", "tiers": [{"t": "金", "h": ["KaWa_i"], "v": "-329", "d": "2025/03/29"}, {"t": "銀", "h": ["OtsuK"], "v": "-281", "d": "2025/05/04"}]}, {"icon": "⛏️", "name": "通算ラス王", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "64回", "d": null}, {"t": "銀", "h": ["OkaZ"], "v": "50回", "d": null}]}], "col": {"TK_n": "#4a90d9", "YaJi": "#e74c3c", "FuJi": "#e67e22", "MaTsuB": "#9b59b6", "KaYaM": "#95a5a6", "OkaZ": "#27ae60", "OtsuK": "#c0392b", "KaWa_i": "#f1c40f", "MoTo_i": "#1abc9c"}};
+function buildBelts(){
+  const C=BELTS.col;
+  const render=(list,el)=>{
+    document.getElementById(el).innerHTML = list.map(b=>{
+      const rows=b.tiers.map(t=>{
+        const chips=t.h.map(n=>'<span class="belt-h" style="background:'+(C[n]||'#666')+'">'+n+'</span>').join(' ');
+        const dt=t.d?'<span class="belt-d">樹立 '+t.d+'</span>':'';
+        return '<div class="belt-row"><span class="belt-tier '+(t.t==='金'?'kin':'gin')+'">'+t.t+'</span>'+chips+'<span class="belt-v">'+t.v+'</span>'+dt+'</div>';
+      }).join('');
+      return '<div class="belt"><div class="belt-name">'+b.icon+' '+b.name+'</div>'+rows+'</div>';
+    }).join('');
+  };
+  render(BELTS.honor,'belt-honor');
+  render(BELTS.dishonor,'belt-dishonor');
+}
+buildBelts();
+
 </script>
 </body>
 </html>
