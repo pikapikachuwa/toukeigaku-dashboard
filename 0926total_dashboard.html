@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統計学WG｜Season2+3 トータルダッシュボード</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;color:#333;font-size:13px;}
+.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.header-title{font-size:18px;font-weight:700;letter-spacing:1px;}
+.header-badge{background:rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;font-size:11px;}
+.dash-meta{font-size:12px;color:#aac;margin-left:10px;}
+.season-tag{display:inline-block;background:#e8b84b;color:#222;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700;margin-left:8px;}
+.nav-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.nav-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;transition:background .2s;}
+.nav-btn:hover{background:rgba(255,255,255,0.35);}
+.container{max-width:1100px;margin:0 auto;padding:1rem;}
+.medal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1rem;}
+@media(max-width:600px){.medal-grid{grid-template-columns:1fr;}}
+.medal-card{background:#fff;border-radius:12px;padding:1rem;text-align:center;border:2px solid #e0e0e0;}
+.medal-card.gold{border-color:#f5c518;background:linear-gradient(135deg,#fffde7,#fff8e1);}
+.medal-card.silver{border-color:#b0bec5;background:linear-gradient(135deg,#f5f5f5,#eceff1);}
+.medal-card.bronze{border-color:#bf9270;background:linear-gradient(135deg,#fbe9e7,#fce4d6);}
+.medal-icon{font-size:28px;}
+.medal-name{font-size:16px;font-weight:700;margin:4px 0;}
+.medal-pts{font-size:13px;color:#666;}
+.chart-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1.25rem;margin-bottom:1rem;}
+.chart-title{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:1rem;font-weight:700;font-size:14px;color:#333;}
+.tab-btns{display:flex;flex-wrap:wrap;gap:4px;}
+.tab-btn{background:#f0f0f0;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:11px;color:#555;}
+.tab-btn.active{background:#4a90d9;color:#fff;}
+.tbl-wrap{overflow-x:auto;}
+.tbl{width:100%;border-collapse:collapse;min-width:700px;font-size:11px;}
+.tbl th{background:#f0f4f8;padding:6px 8px;border:1px solid #dde;text-align:center;font-weight:600;white-space:nowrap;}
+.tbl td{padding:5px 8px;border:1px solid #eee;text-align:center;white-space:nowrap;}
+.tbl tr:hover td{background:#f8faff;}
+.tbl .left{text-align:left;}
+.tbl .sep{border-left:2px solid #c0cfe0;}
+.tbl .grp{font-size:10px;color:#888;background:#f8f8f8;}
+.rank-1{color:#e8a000;font-weight:700;}
+.rank-good{color:#27ae60;}
+.rank-bad{color:#e74c3c;}
+.s2-badge{display:inline-block;background:#dce6f1;color:#1a5276;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:700;margin-left:3px;}
+.s3-badge{display:inline-block;background:#d5f5e3;color:#1e8449;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:700;margin-left:3px;}
+
+.belt-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(max-width:760px){.belt-wrap{grid-template-columns:1fr;}}
+.belt-col h4{margin:0 0 8px;font-size:12px;font-weight:700;color:#555;letter-spacing:.5px;}
+.belt{border:1px solid #e6e6ee;border-radius:10px;padding:8px 10px;margin-bottom:8px;background:#fcfcfe;}
+.belt-name{font-size:12px;font-weight:700;color:#333;margin-bottom:5px;}
+.belt-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;margin-top:3px;}
+.belt-tier{flex-shrink:0;font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px;}
+.belt-tier.kin{background:#fdf1c8;color:#8a6100;border:1px solid #e8cf7a;}
+.belt-tier.gin{background:#eef1f3;color:#5b6770;border:1px solid #cdd6dc;}
+.belt-h{display:inline-block;color:#fff;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700;}
+.belt-v{font-weight:700;color:#222;}
+.belt-d{color:#999;font-size:10px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <span class="header-title">🀄 統計学WG</span>
+    <span class="season-tag">TOTAL</span>
+    <span class="dash-meta">364半荘 ／ 55活動日 ／ Season2+3通算 ／ 最終更新 2026/09/26</span>
+  </div>
+  <div class="nav-btns">
+    <a class="nav-btn" href="mahjong_dashboard.html">← Season3</a>
+    <a class="nav-btn" href="matchup_board.html">⚔️ 勝ち負け分析</a><a class="nav-btn" href="player_pages.html">個人ページ →</a>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="medal-grid" id="medal-grid"></div>
+
+<div class="chart-card" id="summary-card">
+  <div class="chart-title"><span>📋 サマリー表（Season2+3 通算）</span></div>
+  <div class="tbl-wrap">
+    <table id="summary-tbl" style="border-collapse:collapse;font-size:11px;width:100%;min-width:700px;">
+      <thead id="summary-thead"></thead>
+      <tbody id="summary-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title">
+    <span>📈 累計ポイント推移（Season2+3 通算）</span>
+    <span style="font-size:11px;color:#888;">2025/02〜2026/09・全55活動日</span>
+  </div>
+  <div style="height:300px;position:relative;"><canvas id="line-chart"></canvas></div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title">
+    <span id="bar-label">累計Pts比較</span>
+    <div class="tab-btns">
+      <button class="tab-btn active" onclick="switchBar('totalPts','累計Pts比較',this)">累計Pts</button>
+      <button class="tab-btn" onclick="switchBar('ptsPerGame','Pts/G比較',this)">Pts/G</button>
+      <button class="tab-btn" onclick="switchBar('avgRank','平均順位比較',this)">平均順位</button>
+      <button class="tab-btn" onclick="switchBar('topRate','Top率比較',this)">Top率</button>
+      <button class="tab-btn" onclick="switchBar('renRate','連帯率比較',this)">連帯率</button>
+      <button class="tab-btn" onclick="switchBar('avoidRate','4着回避率比較',this)">回避率</button>
+      <button class="tab-btn" onclick="switchBar('plusRate','プラス率比較',this)">プラス率</button>
+      <button class="tab-btn" onclick="switchBar('stdDev','標準偏差比較',this)">標準偏差</button>
+    </div>
+  </div>
+  <div style="height:220px;position:relative;"><canvas id="bar-chart"></canvas></div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title">
+    <span>📄 詳細テーブル</span>
+    <div class="tab-btns">
+      <button class="tab-btn" onclick="renderTable('member',this)">メンバー順</button>
+      <button class="tab-btn active" onclick="renderTable('totalPts',this)">累計Pts順</button>
+      <button class="tab-btn" onclick="renderTable('ptsPerGame',this)">Pts/G順</button>
+      <button class="tab-btn" onclick="renderTable('avgRank',this)">平均順位順</button>
+      <button class="tab-btn" onclick="renderTable('topRate',this)">Top率順</button>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th class="grp center" colspan="2"></th>
+          <th class="grp center sep" colspan="2">基本</th>
+          <th class="grp center sep" colspan="5">順位系</th>
+          <th class="grp center sep" colspan="3">安定性</th>
+          <th class="grp center sep" colspan="1">直近30戦</th>
+          <th class="grp center sep" colspan="4">累計Pts</th>
+          <th class="grp center sep" colspan="4">着順回数</th>
+        </tr>
+        <tr>
+          <th class="center">順</th><th class="left">名前</th>
+          <th class="sep">半荘数</th><th>平均順位</th>
+          <th class="sep">Top率</th><th>連帯率</th><th>4着回避率</th><th>ラス率</th><th>プラス率</th>
+          <th class="sep">標準偏差</th><th>1着時Pts</th><th>4着時Pts</th>
+          <th class="sep">直近30戦<br>平均順位</th>
+          <th class="sep">累計Pts</th><th>Pts/G</th><th>MaxPts</th><th>MinPts</th>
+          <th class="sep">1st</th><th>2nd</th><th>3rd</th><th>4th</th>
+        </tr>
+      </thead>
+      <tbody id="detail-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="chart-card">
+  <div class="chart-title"><span>📜 歴代記録ベルト（全期間・塗り替え式）</span><span style="font-size:11px;font-weight:400;color:#888;">金＝歴代1位／銀＝2位・同着あり</span></div>
+  <div class="belt-wrap">
+    <div class="belt-col"><h4>🏆 栄誉ベルト</h4><div id="belt-honor"></div></div>
+    <div class="belt-col"><h4>🪦 不名誉ベルト</h4><div id="belt-dishonor"></div></div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+const _DN={'土岐':'TK_n','矢嶋':'YaJi','藤木':'FuJi','松林':'MaTsuB','鹿山':'KaYaM','岡崎':'OkaZ','大塚':'OtsuK','河井':'KaWa_i','本井':'MoTo_i'};
+function dn(n){return _DN[n]||n;}
+const MEMBER_ORDER = ['土岐','矢嶋','藤木','松林','鹿山','岡崎','大塚','河井','本井'];
+const COLORS = {'土岐':'#4a90d9','矢嶋':'#e74c3c','藤木':'#e67e22','松林':'#9b59b6','鹿山':'#95a5a6','岡崎':'#27ae60','大塚':'#c0392b','河井':'#f1c40f','本井':'#1abc9c'};
+
+const DATA = [
+  {name:'土岐',games:241,avgRank:2.3320,topRate:31.54,renRate:58.09,avoidRate:77.18,lastRate:22.82,plusRate:56.02,stdDev:49.22,avgPts1st:70.05,avgPts4th:-55.04,totalPts:1910,ptsPerGame:7.93,maxPts:133,minPts:-82,recent30AvgRank:2.6000,r1:76,r2:64,r3:46,r4:55},
+  {name:'藤木',games:50,avgRank:2.5600,topRate:28.00,renRate:44.00,avoidRate:72.00,lastRate:28.00,plusRate:44.00,stdDev:54.06,avgPts1st:75.43,avgPts4th:-58.71,totalPts:27,ptsPerGame:0.54,maxPts:130,minPts:-108,recent30AvgRank:2.5333,r1:14,r2:8,r3:14,r4:14},
+  {name:'鹿山',games:134,avgRank:2.2687,topRate:27.61,renRate:58.21,avoidRate:87.31,lastRate:12.69,plusRate:55.97,stdDev:41.98,avgPts1st:66.38,avgPts4th:-54.53,totalPts:1189,ptsPerGame:8.87,maxPts:120,minPts:-79,recent30AvgRank:2.0333,r1:37,r2:41,r3:39,r4:17},
+  {name:'河井',games:161,avgRank:2.7019,topRate:19.25,renRate:39.13,avoidRate:71.43,lastRate:28.57,plusRate:39.13,stdDev:44.22,avgPts1st:63.29,avgPts4th:-59.30,totalPts:-1498,ptsPerGame:-9.30,maxPts:97,minPts:-96,recent30AvgRank:2.5667,r1:31,r2:32,r3:52,r4:46},
+  {name:'松林',games:149,avgRank:2.4228,topRate:26.85,renRate:54.36,avoidRate:76.51,lastRate:23.49,plusRate:49.66,stdDev:46.18,avgPts1st:68.20,avgPts4th:-54.54,totalPts:478,ptsPerGame:3.21,maxPts:101,minPts:-78,recent30AvgRank:2.5333,r1:40,r2:41,r3:33,r4:35},
+  {name:'岡崎',games:222,avgRank:2.5180,topRate:24.32,renRate:50.90,avoidRate:72.97,lastRate:27.03,plusRate:48.65,stdDev:45.94,avgPts1st:66.19,avgPts4th:-55.88,totalPts:-295,ptsPerGame:-1.33,maxPts:102,minPts:-88,recent30AvgRank:2.9667,r1:54,r2:59,r3:49,r4:60},
+  {name:'大塚',games:234,avgRank:2.6667,topRate:20.09,renRate:42.74,avoidRate:70.51,lastRate:29.49,plusRate:41.88,stdDev:45.41,avgPts1st:66.89,avgPts4th:-56.46,totalPts:-1594,ptsPerGame:-6.81,maxPts:143,minPts:-102,recent30AvgRank:2.6000,r1:47,r2:53,r3:65,r4:69},
+  {name:'矢嶋',games:194,avgRank:2.5619,topRate:23.20,renRate:47.94,avoidRate:72.68,lastRate:27.32,plusRate:47.42,stdDev:45.02,avgPts1st:64.58,avgPts4th:-55.19,totalPts:-468,ptsPerGame:-2.41,maxPts:98,minPts:-97,recent30AvgRank:2.5667,r1:45,r2:48,r3:48,r4:53},
+  {name:'本井',games:71,avgRank:2.3944,topRate:28.17,renRate:53.52,avoidRate:78.87,lastRate:21.13,plusRate:46.48,stdDev:46.18,avgPts1st:68.25,avgPts4th:-54.20,totalPts:251,ptsPerGame:3.54,maxPts:92,minPts:-77,recent30AvgRank:2.1000,r1:20,r2:18,r3:18,r4:15},
+]; 
+const TREND = [
+  {date:'2025/02/07', '土岐':0, '藤木':0, '鹿山':0, '河井':0, '松林':132, '岡崎':-66, '大塚':-75, '矢嶋':9, '本井':0},
+  {date:'2025/02/13', '土岐':0, '藤木':0, '鹿山':0, '河井':-103, '松林':132, '岡崎':-102, '大塚':-21, '矢嶋':94, '本井':0},
+  {date:'2025/02/18', '土岐':0, '藤木':0, '鹿山':0, '河井':-129, '松林':132, '岡崎':35, '大塚':-133, '矢嶋':95, '本井':0},
+  {date:'2025/03/01', '土岐':0, '藤木':0, '鹿山':142, '河井':-129, '松林':292, '岡崎':35, '大塚':-372, '矢嶋':32, '本井':0},
+  {date:'2025/03/07', '土岐':137, '藤木':0, '鹿山':142, '河井':-129, '松林':292, '岡崎':-105, '大塚':-351, '矢嶋':32, '本井':-18},
+  {date:'2025/03/20', '土岐':178, '藤木':0, '鹿山':220, '河井':-119, '松林':234, '岡崎':-176, '大塚':-351, '矢嶋':32, '本井':-18},
+  {date:'2025/03/22', '土岐':189, '藤木':0, '鹿山':220, '河井':-119, '松林':57, '岡崎':-176, '大塚':-219, '矢嶋':66, '本井':-18},
+  {date:'2025/03/29', '土岐':189, '藤木':0, '鹿山':220, '河井':-448, '松林':57, '岡崎':37, '大塚':-80, '矢嶋':43, '本井':-18},
+  {date:'2025/04/02', '土岐':189, '藤木':0, '鹿山':220, '河井':-411, '松林':57, '岡崎':-22, '大塚':-33, '矢嶋':18, '本井':-18},
+  {date:'2025/04/07', '土岐':189, '藤木':0, '鹿山':220, '河井':-315, '松林':57, '岡崎':-28, '大塚':-29, '矢嶋':-76, '本井':-18},
+  {date:'2025/04/17', '土岐':189, '藤木':0, '鹿山':220, '河井':-233, '松林':57, '岡崎':57, '大塚':-150, '矢嶋':-122, '本井':-18},
+  {date:'2025/04/22', '土岐':189, '藤木':0, '鹿山':220, '河井':-291, '松林':57, '岡崎':66, '大塚':-83, '矢嶋':-140, '本井':-18},
+  {date:'2025/04/28', '土岐':251, '藤木':73, '鹿山':220, '河井':-211, '松林':57, '岡崎':73, '大塚':-305, '矢嶋':-140, '本井':-18},
+  {date:'2025/04/29', '土岐':152, '藤木':73, '鹿山':356, '河井':-211, '松林':88, '岡崎':73, '大塚':-303, '矢嶋':-210, '本井':-18},
+  {date:'2025/05/04', '土岐':307, '藤木':73, '鹿山':356, '河井':-211, '松林':164, '岡崎':71, '大塚':-584, '矢嶋':-210, '本井':34},
+  {date:'2025/05/09', '土岐':562, '藤木':73, '鹿山':356, '河井':-211, '松林':164, '岡崎':52, '大塚':-772, '矢嶋':-258, '本井':34},
+  {date:'2025/05/15', '土岐':647, '藤木':73, '鹿山':356, '河井':-301, '松林':164, '岡崎':52, '大塚':-597, '矢嶋':-428, '本井':34},
+  {date:'2025/05/23', '土岐':571, '藤木':147, '鹿山':356, '河井':-318, '松林':183, '岡崎':52, '大塚':-597, '矢嶋':-428, '本井':34},
+  {date:'2025/05/30', '土岐':571, '藤木':147, '鹿山':356, '河井':-450, '松林':183, '岡崎':46, '大塚':-603, '矢嶋':-284, '本井':34},
+  {date:'2025/06/05', '土岐':571, '藤木':147, '鹿山':356, '河井':-308, '松林':183, '岡崎':23, '大塚':-720, '矢嶋':-286, '本井':34},
+  {date:'2025/06/07', '土岐':563, '藤木':147, '鹿山':522, '河井':-308, '松林':217, '岡崎':17, '大塚':-906, '矢嶋':-286, '本井':34},
+  {date:'2025/06/14', '土岐':563, '藤木':147, '鹿山':592, '河井':-373, '松林':327, '岡崎':109, '大塚':-906, '矢嶋':-493, '本井':34},
+  {date:'2025/06/19', '土岐':778, '藤木':147, '鹿山':662, '河井':-373, '松林':327, '岡崎':-22, '大塚':-1060, '矢嶋':-493, '本井':34},
+  {date:'2025/07/03', '土岐':784, '藤木':147, '鹿山':662, '河井':-392, '松林':327, '岡崎':7, '大塚':-1076, '矢嶋':-493, '本井':34},
+  {date:'2025/07/15', '土岐':784, '藤木':147, '鹿山':662, '河井':-517, '松林':327, '岡崎':65, '大塚':-941, '矢嶋':-561, '本井':34},
+  {date:'2025/07/19', '土岐':784, '藤木':147, '鹿山':600, '河井':-678, '松林':327, '岡崎':161, '大塚':-941, '矢嶋':-434, '本井':34},
+  {date:'2025/09/21', '土岐':730, '藤木':147, '鹿山':644, '河井':-678, '松林':337, '岡崎':225, '大塚':-941, '矢嶋':-498, '本井':34},
+  {date:'2025/10/10', '土岐':605, '藤木':147, '鹿山':644, '河井':-678, '松林':433, '岡崎':225, '大塚':-920, '矢嶋':-490, '本井':34},
+  {date:'2025/11/01', '土岐':822, '藤木':-66, '鹿山':769, '河井':-678, '松林':433, '岡崎':306, '大塚':-1130, '矢嶋':-490, '本井':34},
+  {date:'2025/11/12', '土岐':920, '藤木':-66, '鹿山':769, '河井':-758, '松林':433, '岡崎':334, '大塚':-1130, '矢嶋':-536, '本井':34},
+  {date:'2026/01/09', '土岐':969, '藤木':-66, '鹿山':793, '河井':-758, '松林':433, '岡崎':264, '大塚':-1130, '矢嶋':-536, '本井':31},
+  {date:'2026/01/31', '土岐':1145, '藤木':133, '鹿山':776, '河井':-987, '松林':304, '岡崎':494, '大塚':-1362, '矢嶋':-418, '本井':-85},
+  {date:'2026/02/10', '土岐':1145, '藤木':133, '鹿山':776, '河井':-979, '松林':304, '岡崎':521, '大塚':-1220, '矢嶋':-595, '本井':-85},
+  {date:'2026/02/20', '土岐':1144, '藤木':133, '鹿山':776, '河井':-1078, '松林':304, '岡崎':625, '大塚':-1224, '矢嶋':-595, '本井':-85},
+  {date:'2026/02/21', '土岐':1577, '藤木':133, '鹿山':776, '河井':-1315, '松林':392, '岡崎':473, '大塚':-1224, '矢嶋':-595, '本井':-217},
+  {date:'2026/03/06', '土岐':1630, '藤木':-82, '鹿山':776, '河井':-1315, '松林':392, '岡崎':473, '大塚':-1224, '矢嶋':-480, '本井':-170},
+  {date:'2026/03/07', '土岐':1923, '藤木':-82, '鹿山':776, '河井':-1315, '松林':413, '岡崎':435, '大塚':-1500, '矢嶋':-480, '本井':-170},
+  {date:'2026/04/02', '土岐':1801, '藤木':-82, '鹿山':776, '河井':-1315, '松林':413, '岡崎':474, '大塚':-1388, '矢嶋':-509, '本井':-170},
+  {date:'2026/04/06', '土岐':1837, '藤木':-82, '鹿山':603, '河井':-1315, '松林':528, '岡崎':496, '大塚':-1388, '矢嶋':-509, '本井':-170},
+  {date:'2026/04/22', '土岐':1840, '藤木':-82, '鹿山':603, '河井':-1315, '松林':589, '岡崎':336, '大塚':-1292, '矢嶋':-509, '本井':-170},
+  {date:'2026/05/16', '土岐':1903, '藤木':-82, '鹿山':812, '河井':-1315, '松林':422, '岡崎':336, '大塚':-1292, '矢嶋':-705, '本井':-79},
+  {date:'2026/05/20', '土岐':1684, '藤木':-7, '鹿山':812, '河井':-1247, '松林':422, '岡崎':336, '大塚':-1216, '矢嶋':-705, '本井':-79},
+  {date:'2026/05/28', '土岐':1959, '藤木':-7, '鹿山':812, '河井':-1249, '松林':422, '岡崎':130, '大塚':-1216, '矢嶋':-772, '本井':-79},
+  {date:'2026/06/03', '土岐':2171, '藤木':43, '鹿山':812, '河井':-1347, '松林':422, '岡崎':130, '大塚':-1380, '矢嶋':-772, '本井':-79},
+  {date:'2026/06/13', '土岐':2114, '藤木':43, '鹿山':583, '河井':-1347, '松林':422, '岡崎':130, '大塚':-1257, '矢嶋':-609, '本井':-79},
+  {date:'2026/06/24', '土岐':2027, '藤木':43, '鹿山':583, '河井':-1347, '松林':422, '岡崎':215, '大塚':-1271, '矢嶋':-593, '本井':-79},
+  {date:'2026/07/18', '土岐':2132, '藤木':43, '鹿山':583, '河井':-1400, '松林':452, '岡崎':303, '大塚':-1441, '矢嶋':-593, '本井':-79},
+  {date:'2026/07/29', '土岐':2069, '藤木':43, '鹿山':583, '河井':-1400, '松林':437, '岡崎':303, '大塚':-1456, '矢嶋':-500, '本井':-79},
+  {date:'2026/07/30', '土岐':2069, '藤木':43, '鹿山':583, '河井':-1415, '松林':437, '岡崎':202, '大塚':-1428, '矢嶋':-412, '本井':-79},
+  {date:'2026/08/01', '土岐':1971, '藤木':5, '鹿山':634, '河井':-1316, '松林':471, '岡崎':-43, '大塚':-1304, '矢嶋':-530, '本井':112},
+  {date:'2026/08/22', '土岐':1863, '藤木':5, '鹿山':947, '河井':-1316, '松林':471, '岡崎':-43, '大塚':-1494, '矢嶋':-545, '本井':112},
+  {date:'2026/09/04', '土岐':1889, '藤木':5, '鹿山':947, '河井':-1424, '松林':471, '岡崎':-43, '大塚':-1458, '矢嶋':-499, '本井':112},
+  {date:'2026/09/11', '土岐':1889, '藤木':5, '鹿山':947, '河井':-1498, '松林':471, '岡崎':-43, '大塚':-1594, '矢嶋':-427, '本井':250},
+  {date:'2026/09/19', '土岐':1898, '藤木':5, '鹿山':1189, '河井':-1498, '松林':471, '岡崎':-295, '大塚':-1594, '矢嶋':-427, '本井':251},
+  {date:'2026/09/26', '土岐':1910, '藤木':27, '鹿山':1189, '河井':-1498, '松林':478, '岡崎':-295, '大塚':-1594, '矢嶋':-468, '本井':251},
+];
+const MATCHUP = {
+  '土岐':{'藤木':[36,-3.6],'鹿山':[93,-3.1],'河井':[71,7.1],'松林':[104,-3.1],'岡崎':[132,4.0],'大塚':[143,-1.4],'矢嶋':[95,-5.3],'本井':[49,8.1]},
+  '藤木':{'土岐':[36,1.0],'鹿山':[14,-2.2],'河井':[23,5.6],'松林':[14,16.5],'岡崎':[15,-1.4],'大塚':[25,-1.3],'矢嶋':[14,-7.8],'本井':[9,-18.3]},
+  '鹿山':{'土岐':[93,0.6],'藤木':[14,3.0],'河井':[27,0.9],'松林':[60,-0.6],'岡崎':[67,-3.7],'大塚':[51,1.6],'矢嶋':[63,-3.1],'本井':[27,9.0]},
+  '河井':{'土岐':[71,-1.3],'藤木':[23,4.6],'鹿山':[27,0.7],'松林':[38,5.0],'岡崎':[105,-1.7],'大塚':[105,1.8],'矢嶋':[95,-1.4],'本井':[19,-5.6]},
+  '松林':{'土岐':[104,-3.0],'藤木':[14,-11.7],'鹿山':[60,-4.2],'河井':[38,4.9],'岡崎':[69,6.4],'大塚':[78,2.2],'矢嶋':[58,1.6],'本井':[26,-4.9]},
+  '岡崎':{'土岐':[132,-3.4],'藤木':[15,-4.2],'鹿山':[67,-4.6],'河井':[105,4.0],'松林':[69,-5.6],'大塚':[139,4.0],'矢嶋':[98,7.7],'本井':[41,-11.3]},
+  '大塚':{'土岐':[143,-0.9],'藤木':[25,-4.4],'鹿山':[51,-3.1],'河井':[105,3.7],'松林':[78,-4.7],'岡崎':[139,-0.1],'矢嶋':[139,4.7],'本井':[22,-9.0]},
+  '矢嶋':{'土岐':[95,-1.6],'藤木':[14,5.3],'鹿山':[63,-1.2],'河井':[95,-2.3],'松林':[58,0.0],'岡崎':[98,0.8],'大塚':[139,1.7],'本井':[20,1.7]},
+  '本井':{'土岐':[49,-2.7],'藤木':[9,16.0],'鹿山':[27,-6.4],'河井':[19,1.1],'松林':[26,-5.4],'岡崎':[41,-3.8],'大塚':[22,4.3],'矢嶋':[20,12.9]},
+};
+const DETAIL_RANKS = {
+  '土岐':{totalPts:1,ptsPerGame:2,topRate:1,renRate:2,avoidRate:3,plusRate:1,stdDev:8,avgPts1st:2,avgRank:2,games:1},
+  '藤木':{totalPts:5,ptsPerGame:5,topRate:3,renRate:7,avoidRate:7,plusRate:7,stdDev:9,avgPts1st:1,avgRank:6,games:9},
+  '鹿山':{totalPts:2,ptsPerGame:1,topRate:4,renRate:1,avoidRate:1,plusRate:2,stdDev:1,avgPts1st:6,avgRank:1,games:7},
+  '河井':{totalPts:8,ptsPerGame:9,topRate:9,renRate:9,avoidRate:8,plusRate:9,stdDev:2,avgPts1st:9,avgRank:9,games:5},
+  '松林':{totalPts:3,ptsPerGame:4,topRate:5,renRate:3,avoidRate:4,plusRate:3,stdDev:7,avgPts1st:4,avgRank:4,games:6},
+  '岡崎':{totalPts:6,ptsPerGame:6,topRate:6,renRate:5,avoidRate:5,plusRate:4,stdDev:5,avgPts1st:7,avgRank:5,games:3},
+  '大塚':{totalPts:9,ptsPerGame:8,topRate:8,renRate:8,avoidRate:9,plusRate:8,stdDev:4,avgPts1st:5,avgRank:8,games:2},
+  '矢嶋':{totalPts:7,ptsPerGame:7,topRate:7,renRate:6,avoidRate:6,plusRate:5,stdDev:3,avgPts1st:8,avgRank:7,games:4},
+  '本井':{totalPts:4,ptsPerGame:3,topRate:2,renRate:4,avoidRate:2,plusRate:6,stdDev:6,avgPts1st:3,avgRank:3,games:8}
+};
+const RADAR_RANKS={
+  '土岐':[1, 2, 3, 1, 8, 2],
+  '藤木':[3, 7, 7, 7, 9, 5],
+  '鹿山':[4, 1, 1, 2, 1, 1],
+  '河井':[9, 9, 8, 9, 2, 9],
+  '松林':[5, 3, 4, 3, 7, 4],
+  '岡崎':[6, 5, 5, 4, 5, 6],
+  '大塚':[8, 8, 9, 8, 4, 8],
+  '矢嶋':[7, 6, 6, 5, 3, 7],
+  '本井':[2, 4, 2, 6, 6, 3],
+};
+const PTS_RANK = {'土岐':1,'藤木':5,'鹿山':2,'河井':8,'松林':3,'岡崎':6,'大塚':9,'矢嶋':7,'本井':4};
+
+// ---- MEDALS ----
+function buildMedals(){
+  const sorted=[...DATA].sort((a,b)=>b.totalPts-a.totalPts);
+  const medals=[
+    {cls:'gold',  icon:'🥇',rank:'1位'},
+    {cls:'silver',icon:'🥈',rank:'2位'},
+    {cls:'bronze',icon:'🥉',rank:'3位'},
+  ];
+  const grid=document.getElementById('medal-grid');
+  medals.forEach((med,i)=>{
+    const d=sorted[i];
+    grid.innerHTML+=`<div class="medal-card ${med.cls}">
+      <div class="medal-icon">${med.icon}</div>
+      <div class="medal-name">${dn(d.name)}</div>
+      <div class="medal-pts">通算 ${d.totalPts>0?'+':''}${d.totalPts} pts（${d.games}半荘）</div>
+    </div>`;
+  });
+}
+
+// ---- LINE CHART ----
+function buildLineChart(){
+  const ctx=document.getElementById('line-chart').getContext('2d');
+  // X軸ラベル間引き（41日分→10本程度）
+  const step=Math.ceil(TREND.length/10);
+  new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:TREND.map(t=>t.date),
+      datasets:MEMBER_ORDER.map(m=>{
+        return {
+          label:dn(m),
+          data:TREND.map(t=>t[m]??null),
+          borderColor:COLORS[m],
+          backgroundColor:COLORS[m]+'22',
+          borderWidth:2,
+          pointRadius:0,
+          pointHoverRadius:4,
+          tension:0.3,
+          spanGaps:true,
+        };
+      })
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false}},
+      scales:{
+        x:{ticks:{maxTicksLimit:12,font:{size:10},maxRotation:45},grid:{display:false}},
+        y:{ticks:{font:{size:10}},grid:{color:'#f0f0f0'}}
+      }
+    }
+  });
+}
+
+// ---- BAR CHART ----
+let barChart=null;
+function switchBar(key,label,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('bar-label').textContent=label;
+  const sorted=[...DATA].sort((a,b)=>key==='avgRank'?a[key]-b[key]:b[key]-a[key]);
+  const ctx=document.getElementById('bar-chart').getContext('2d');
+  if(barChart) barChart.destroy();
+  barChart=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:sorted.map(d=>dn(d.name)),
+      datasets:[{
+        data:sorted.map(d=>d[key]),
+        backgroundColor:sorted.map(d=>COLORS[d.name]+'cc'),
+        borderColor:sorted.map(d=>COLORS[d.name]),
+        borderWidth:1,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.parsed.y}}},
+      scales:{x:{ticks:{font:{size:11}},grid:{display:false}},y:{ticks:{font:{size:10}},grid:{color:'#f0f0f0'}}}
+    }
+  });
+}
+
+// ---- DETAIL TABLE ----
+function renderTable(sortKey,btn){
+  document.querySelectorAll('#detail-tbody').forEach(()=>{});
+  const btns=document.querySelectorAll('.chart-card:last-child .tab-btn');
+  btns.forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  let sorted;
+  if(sortKey==='member') sorted=[...DATA].sort((a,b)=>MEMBER_ORDER.indexOf(a.name)-MEMBER_ORDER.indexOf(b.name));
+  else if(sortKey==='avgRank') sorted=[...DATA].sort((a,b)=>a[sortKey]-b[sortKey]);
+  else sorted=[...DATA].sort((a,b)=>b[sortKey]-a[sortKey]);
+  const tbody=document.getElementById('detail-tbody');
+  tbody.innerHTML='';
+  sorted.forEach((d,i)=>{
+    const dr=DETAIL_RANKS[d.name]||{};
+    function rc(rank){return rank===1?'rank-1':rank<=3?'rank-good':rank>=8?'rank-bad':'';}
+    const ptsCls=d.totalPts>0?'rank-good':d.totalPts<0?'rank-bad':'';
+    const pgCls=d.ptsPerGame>0?'rank-good':d.ptsPerGame<0?'rank-bad':'';
+    const a1=d.avgPts1st!==null?d.avgPts1st.toFixed(1):'-';
+    const a4=d.avgPts4th!==null?d.avgPts4th.toFixed(1):'-';
+    tbody.innerHTML+=`<tr>
+      <td class="center" style="font-weight:700;">${i+1}</td>
+      <td class="left" style="font-weight:700;color:${COLORS[d.name]};">${dn(d.name)}</td>
+      <td class="sep ${rc(dr.games)}">${d.games}</td>
+      <td class="${rc(dr.avgRank)}">${d.avgRank.toFixed(2)}</td>
+      <td class="sep ${rc(dr.topRate)}">${d.topRate.toFixed(1)}%</td>
+      <td class="${rc(dr.renRate)}">${d.renRate.toFixed(1)}%</td>
+      <td class="${rc(dr.avoidRate)}">${d.avoidRate.toFixed(1)}%</td>
+      <td class="${rc(9-dr.avoidRate+1)}">${d.lastRate.toFixed(1)}%</td>
+      <td class="${rc(dr.plusRate)}">${d.plusRate.toFixed(1)}%</td>
+      <td class="sep ${rc(dr.stdDev)}">${d.stdDev.toFixed(1)}</td>
+      <td class="${rc(dr.avgPts1st)}">${a1}</td>
+      <td>${a4}</td>
+      <td class="sep">${d.recent30AvgRank.toFixed(2)}</td>
+      <td class="sep ${ptsCls}" style="font-weight:700;">${d.totalPts>0?'+':''}${d.totalPts}</td>
+      <td class="${pgCls}">${d.ptsPerGame>0?'+':''}${d.ptsPerGame.toFixed(1)}</td>
+      <td style="color:#1a7c3e;">${d.maxPts>0?'+':''}${d.maxPts}</td>
+      <td style="color:#c00000;">${d.minPts}</td>
+      <td class="sep">${d.r1}</td><td>${d.r2}</td><td>${d.r3}</td><td>${d.r4}</td>
+    </tr>`;
+  });
+}
+
+// ---- SUMMARY TABLE ----
+function buildSummaryTable(){
+  const ORDER=['土岐','藤木','鹿山','河井','松林','岡崎','大塚','矢嶋','本井'];
+  const S={
+    th_label:'padding:5px 8px;border:1px solid #b0b0b0;background:#d9d9d9;font-weight:700;font-size:11px;text-align:left;white-space:nowrap;',
+    th_member:'padding:5px 6px;border:1px solid #b0b0b0;background:#dce6f1;font-weight:700;font-size:11px;text-align:center;white-space:nowrap;',
+    td_base:'padding:4px 7px;border:1px solid #c8c8c8;text-align:center;white-space:nowrap;font-size:11px;',
+    td_label:'padding:4px 8px;border:1px solid #c8c8c8;font-weight:600;font-size:11px;white-space:nowrap;background:#f2f2f2;text-align:left;',
+  };
+  const thead=document.getElementById('summary-thead');
+  let hRow='<tr><th style="'+S.th_label+'">WGメンバー</th>';
+  ORDER.forEach(m=>{ hRow+='<th style="'+S.th_member+'">'+dn(m)+'</th>'; });
+  thead.innerHTML=hRow+'</tr>';
+  const allData=ORDER.map(m=>DATA.find(x=>x.name===m));
+  const get=(key)=>allData.map(d=>d?d[key]:0);
+  function getRank(val,arr,hb){
+    const s=[...new Set(arr)].sort((a,b)=>hb?b-a:a-b);
+    return s.indexOf(val)+1;
+  }
+  function arrowHtml(val,arr,hb){
+    const n=[...new Set(arr)].length,r=getRank(val,arr,hb);
+    if(r===1) return '<span style="color:#1a7c3e;font-size:10px;margin-right:2px;">▲</span>';
+    if(r===n) return '<span style="color:#c00000;font-size:10px;margin-right:2px;">▼</span>';
+    return '<span style="color:#7f7f7f;font-size:10px;margin-right:2px;">➡</span>';
+  }
+  function blueBg(val,max,l){
+    if(val===0) return 'background:#fff;';
+    const lv=Math.round(l-(val/Math.max(max,1))*30);
+    return 'background:hsl(213,72%,'+lv+'%);color:#fff;font-weight:600;';
+  }
+  function redBg(val,max){
+    if(val===0) return 'background:#fff;';
+    const lv=Math.round(90-(val/Math.max(max,1))*25);
+    return 'background:hsl(0,70%,'+lv+'%);color:#fff;font-weight:600;';
+  }
+  function ptsIcon(v){
+    if(v>100) return '<span style="color:#1a7c3e;">🍀</span> ';
+    if(v>0)   return '<span style="color:#1a7c3e;">✅</span> ';
+    if(v===0) return '<span style="color:#bf8f00;">❗</span> ';
+    return '<span style="color:#c00000;">❌</span> ';
+  }
+  const rows=[
+    {label:'半荘数',render:(d)=>{
+      const arr=get('games'),mx=Math.max(...arr);
+      return '<td style="'+S.td_base+(d.games===mx?'background:#fff2cc;font-weight:700;':'')+'">'+d.games+'</td>';
+    }},
+    {label:'平均順位',render:(d)=>{
+      const arr=get('avgRank'),r=getRank(d.avgRank,arr,false),n=[...new Set(arr)].length;
+      return '<td style="'+S.td_base+(r===1?'background:#c6efce;':r===n?'background:#ffc7ce;':'')+'">'+d.avgRank.toFixed(2)+'</td>';
+    }},
+    {label:'1st',render:(d)=>{const arr=get('r1'),mx=Math.max(...arr);return '<td style="'+S.td_base+blueBg(d.r1,mx,78)+'">'+d.r1+'回</td>';}},
+    {label:'2nd',render:(d)=>{const arr=get('r2'),mx=Math.max(...arr);return '<td style="'+S.td_base+blueBg(d.r2,mx,82)+'">'+d.r2+'回</td>';}},
+    {label:'3rd',render:(d)=>{const arr=get('r3'),mx=Math.max(...arr);return '<td style="'+S.td_base+blueBg(d.r3,mx,86)+'">'+d.r3+'回</td>';}},
+    {label:'4th',render:(d)=>{const arr=get('r4'),mx=Math.max(...arr);return '<td style="'+S.td_base+redBg(d.r4,mx)+'">'+d.r4+'回</td>';}},
+    {label:'Top率',render:(d)=>{const arr=get('topRate');return '<td style="'+S.td_base+'">'+arrowHtml(d.topRate,arr,true)+d.topRate.toFixed(1)+'%</td>';}},
+    {label:'連帯率',render:(d)=>{const arr=get('renRate');return '<td style="'+S.td_base+'">'+arrowHtml(d.renRate,arr,true)+d.renRate.toFixed(1)+'%</td>';}},
+    {label:'4着回避率',render:(d)=>{const arr=get('avoidRate');return '<td style="'+S.td_base+'">'+arrowHtml(d.avoidRate,arr,true)+d.avoidRate.toFixed(1)+'%</td>';}},
+    {label:'Max Pts',render:(d)=>{const col=d.maxPts>=0?'#1a7c3e':'#c00000';return '<td style="'+S.td_base+'color:'+col+';font-weight:600;">'+(d.maxPts>0?'+':'')+d.maxPts+' p</td>';}},
+    {label:'Min Pts',render:(d)=>{const col=d.minPts>=0?'#1a7c3e':'#c00000';return '<td style="'+S.td_base+'color:'+col+';font-weight:600;">'+(d.minPts>0?'+':'')+d.minPts+' p</td>';}},
+    {label:'累計 Pts',render:(d)=>{
+      const col=d.totalPts>=0?'#1a7c3e':'#c00000',bg=d.totalPts>=0?'background:#eff7ef;':'background:#fff0f0;';
+      return '<td style="'+S.td_base+bg+'color:'+col+';font-weight:700;">'+ptsIcon(d.totalPts)+(d.totalPts>0?'+':'')+d.totalPts+' p</td>';
+    }},
+    {label:'Pts/G',render:(d)=>{const arr=get('ptsPerGame'),col=d.ptsPerGame>=0?'#1a7c3e':'#c00000';return '<td style="'+S.td_base+'color:'+col+';">'+arrowHtml(d.ptsPerGame,arr,true)+(d.ptsPerGame>0?'+':'')+d.ptsPerGame.toFixed(1)+'</td>';}},
+  ];
+  const tbody=document.getElementById('summary-tbody');
+  rows.forEach(row=>{
+    let html='<tr><td style="'+S.td_label+'">'+row.label+'</td>';
+    allData.forEach(d=>{ html+=d?row.render(d):'<td style="'+S.td_base+'">-</td>'; });
+    tbody.innerHTML+=html+'</tr>';
+  });
+}
+
+buildMedals();
+buildLineChart();
+renderTable('totalPts',null);
+switchBar('totalPts','累計Pts比較',document.querySelector('.tab-btn.active'));
+buildSummaryTable();
+
+const BELTS={"honor": [{"icon": "🏆", "name": "最長連続トップ", "tiers": [{"t": "金", "h": ["TK_n", "KaYaM", "MaTsuB", "OkaZ", "YaJi", "MoTo_i"], "v": "3連続", "d": null}, {"t": "銀", "h": ["FuJi", "KaWa_i", "OtsuK"], "v": "2連続", "d": null}]}, {"icon": "🤝", "name": "最長連続連帯", "tiers": [{"t": "金", "h": ["TK_n", "MaTsuB"], "v": "9連続", "d": null}, {"t": "銀", "h": ["OkaZ"], "v": "8連続", "d": "2026/02/21"}]}, {"icon": "🛟", "name": "最長連続ラス回避", "tiers": [{"t": "金", "h": ["KaYaM"], "v": "25連続", "d": "2026/09/19"}, {"t": "銀", "h": ["TK_n"], "v": "21連続", "d": "2026/03/07"}]}, {"icon": "🔥", "name": "MAXPts（1半荘 歴代最高）", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "+143", "d": "2026/02/10"}, {"t": "銀", "h": ["TK_n"], "v": "+133", "d": "2026/02/21"}]}, {"icon": "🚀", "name": "一日最高合計", "tiers": [{"t": "金", "h": ["TK_n"], "v": "+433", "d": "2026/02/21"}, {"t": "銀", "h": ["KaYaM"], "v": "+313", "d": "2026/08/22"}]}, {"icon": "🎌", "name": "皆勤王（通算出場）", "tiers": [{"t": "金", "h": ["TK_n"], "v": "241半荘", "d": null}, {"t": "銀", "h": ["OtsuK"], "v": "234半荘", "d": null}]}], "dishonor": [{"icon": "💀", "name": "最長連続ラス", "tiers": [{"t": "金", "h": ["KaWa_i"], "v": "6連続", "d": "2025/03/29"}, {"t": "銀", "h": ["MaTsuB"], "v": "5連続", "d": "2026/05/16"}]}, {"icon": "🪦", "name": "ワーストPts（1半荘 歴代最低）", "tiers": [{"t": "金", "h": ["FuJi"], "v": "-108", "d": "2026/03/06"}, {"t": "銀", "h": ["OtsuK"], "v": "-102", "d": "2026/03/07"}]}, {"icon": "🌊", "name": "一日最低合計", "tiers": [{"t": "金", "h": ["KaWa_i"], "v": "-329", "d": "2025/03/29"}, {"t": "銀", "h": ["OtsuK"], "v": "-281", "d": "2025/05/04"}]}, {"icon": "⛏️", "name": "通算ラス王", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "69回", "d": null}, {"t": "銀", "h": ["OkaZ"], "v": "60回", "d": null}]}], "col": {"TK_n": "#4a90d9", "YaJi": "#e74c3c", "FuJi": "#e67e22", "MaTsuB": "#9b59b6", "KaYaM": "#95a5a6", "OkaZ": "#27ae60", "OtsuK": "#c0392b", "KaWa_i": "#f1c40f", "MoTo_i": "#1abc9c"}};
+function buildBelts(){
+  const C=BELTS.col;
+  const render=(list,el)=>{
+    document.getElementById(el).innerHTML = list.map(b=>{
+      const rows=b.tiers.map(t=>{
+        const chips=t.h.map(n=>'<span class="belt-h" style="background:'+(C[n]||'#666')+'">'+n+'</span>').join(' ');
+        const dt=t.d?'<span class="belt-d">樹立 '+t.d+'</span>':'';
+        return '<div class="belt-row"><span class="belt-tier '+(t.t==='金'?'kin':'gin')+'">'+t.t+'</span>'+chips+'<span class="belt-v">'+t.v+'</span>'+dt+'</div>';
+      }).join('');
+      return '<div class="belt"><div class="belt-name">'+b.icon+' '+b.name+'</div>'+rows+'</div>';
+    }).join('');
+  };
+  render(BELTS.honor,'belt-honor');
+  render(BELTS.dishonor,'belt-dishonor');
+}
+buildBelts();
+
+</script>
+</body>
+</html>
