@@ -64,7 +64,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;color:#333
   <div>
     <span class="header-title">🀄 統計学WG</span>
     <span class="season-tag">TOTAL</span>
-    <span class="dash-meta">381半荘 ／ 58活動日 ／ Season2+3通算 ／ 最終更新 2026/10/29</span>
+    <span class="dash-meta">392半荘 ／ 59活動日 ／ Season2+3通算 ／ 最終更新 2026/10/31</span>
   </div>
   <div class="nav-btns">
     <a class="nav-btn" href="mahjong_dashboard.html">← Season3</a>
@@ -89,7 +89,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;color:#333
 <div class="chart-card">
   <div class="chart-title">
     <span>📈 累計ポイント推移（Season2+3 通算）</span>
-    <span style="font-size:11px;color:#888;">2025/02〜2026/10・全58活動日</span>
+    <span style="font-size:11px;color:#888;">2025/02〜2026/10・全59活動日</span>
   </div>
   <div style="height:300px;position:relative;"><canvas id="line-chart"></canvas></div>
 </div>
@@ -168,12 +168,12 @@ const COLORS = {'土岐':'#4a90d9','矢嶋':'#e74c3c','藤木':'#e67e22','松林
 const DATA = [
   {name:'土岐',games:251,avgRank:2.3386,topRate:31.47,renRate:57.77,avoidRate:76.89,lastRate:23.11,plusRate:55.78,stdDev:49.13,avgPts1st:69.70,avgPts4th:-55.05,totalPts:1922,ptsPerGame:7.66,maxPts:133,minPts:-82,recent30AvgRank:2.4667,r1:79,r2:66,r3:48,r4:58},
   {name:'藤木',games:53,avgRank:2.5472,topRate:28.30,renRate:45.28,avoidRate:71.70,lastRate:28.30,plusRate:45.28,stdDev:53.69,avgPts1st:73.93,avgPts4th:-58.80,totalPts:35,ptsPerGame:0.66,maxPts:130,minPts:-108,recent30AvgRank:2.5667,r1:15,r2:9,r3:14,r4:15},
-  {name:'鹿山',games:144,avgRank:2.2639,topRate:27.78,renRate:58.33,avoidRate:87.50,lastRate:12.50,plusRate:56.25,stdDev:41.99,avgPts1st:66.80,avgPts4th:-54.56,totalPts:1363,ptsPerGame:9.47,maxPts:120,minPts:-79,recent30AvgRank:1.9667,r1:40,r2:44,r3:42,r4:18},
-  {name:'河井',games:168,avgRank:2.6905,topRate:19.64,renRate:39.88,avoidRate:71.43,lastRate:28.57,plusRate:39.88,stdDev:44.21,avgPts1st:63.33,avgPts4th:-58.60,totalPts:-1449,ptsPerGame:-8.62,maxPts:97,minPts:-96,recent30AvgRank:2.5333,r1:33,r2:34,r3:53,r4:48},
-  {name:'松林',games:159,avgRank:2.4025,topRate:27.67,renRate:55.35,avoidRate:76.73,lastRate:23.27,plusRate:50.94,stdDev:46.19,avgPts1st:67.64,avgPts4th:-54.62,totalPts:630,ptsPerGame:3.96,maxPts:101,minPts:-78,recent30AvgRank:2.3333,r1:44,r2:44,r3:34,r4:37},
-  {name:'岡崎',games:229,avgRank:2.5240,topRate:24.02,renRate:50.66,avoidRate:72.93,lastRate:27.07,plusRate:48.47,stdDev:45.94,avgPts1st:66.67,avgPts4th:-55.74,totalPts:-329,ptsPerGame:-1.44,maxPts:102,minPts:-88,recent30AvgRank:3.0000,r1:55,r2:61,r3:51,r4:62},
+  {name:'鹿山',games:153,avgRank:2.2549,topRate:28.10,renRate:58.17,avoidRate:88.24,lastRate:11.76,plusRate:55.56,stdDev:41.60,avgPts1st:66.28,avgPts4th:-54.56,totalPts:1489,ptsPerGame:9.73,maxPts:120,minPts:-79,recent30AvgRank:2.1000,r1:43,r2:46,r3:46,r4:18},
+  {name:'河井',games:178,avgRank:2.6910,topRate:19.10,renRate:39.89,avoidRate:71.91,lastRate:28.09,plusRate:39.89,stdDev:43.63,avgPts1st:63.26,avgPts4th:-58.34,totalPts:-1567,ptsPerGame:-8.80,maxPts:97,minPts:-96,recent30AvgRank:2.7000,r1:34,r2:37,r3:57,r4:50},
+  {name:'松林',games:169,avgRank:2.3846,topRate:27.81,renRate:56.80,avoidRate:76.92,lastRate:23.08,plusRate:52.66,stdDev:46.26,avgPts1st:68.09,avgPts4th:-54.62,totalPts:806,ptsPerGame:4.77,maxPts:101,minPts:-78,recent30AvgRank:2.2333,r1:47,r2:49,r3:34,r4:39},
+  {name:'岡崎',games:235,avgRank:2.5277,topRate:23.83,renRate:50.21,avoidRate:73.19,lastRate:26.81,plusRate:48.09,stdDev:45.79,avgPts1st:66.91,avgPts4th:-55.56,totalPts:-338,ptsPerGame:-1.44,maxPts:102,minPts:-88,recent30AvgRank:2.9667,r1:56,r2:62,r3:54,r4:63},
   {name:'大塚',games:248,avgRank:2.6935,topRate:18.95,renRate:41.13,avoidRate:70.56,lastRate:29.44,plusRate:40.32,stdDev:44.84,avgPts1st:66.89,avgPts4th:-56.92,totalPts:-2032,ptsPerGame:-8.19,maxPts:143,minPts:-102,recent30AvgRank:2.9667,r1:47,r2:55,r3:73,r4:73},
-  {name:'矢嶋',games:201,avgRank:2.5473,topRate:23.88,renRate:48.76,avoidRate:72.64,lastRate:27.36,plusRate:48.26,stdDev:45.27,avgPts1st:64.31,avgPts4th:-55.35,totalPts:-391,ptsPerGame:-1.95,maxPts:98,minPts:-97,recent30AvgRank:2.4667,r1:48,r2:50,r3:48,r4:55},
+  {name:'矢嶋',games:210,avgRank:2.5667,topRate:24.29,renRate:48.10,avoidRate:70.95,lastRate:29.05,plusRate:47.62,stdDev:46.00,avgPts1st:64.12,avgPts4th:-55.77,totalPts:-566,ptsPerGame:-2.70,maxPts:98,minPts:-97,recent30AvgRank:2.4667,r1:51,r2:50,r3:48,r4:61},
   {name:'本井',games:71,avgRank:2.3944,topRate:28.17,renRate:53.52,avoidRate:78.87,lastRate:21.13,plusRate:46.48,stdDev:46.18,avgPts1st:68.25,avgPts4th:-54.20,totalPts:251,ptsPerGame:3.54,maxPts:92,minPts:-77,recent30AvgRank:2.1000,r1:20,r2:18,r3:18,r4:15},
 ]; 
 const TREND = [
@@ -235,38 +235,39 @@ const TREND = [
   {date:'2026/10/17', '土岐':1922, '藤木':27, '鹿山':1363, '河井':-1498, '松林':630, '岡崎':-295, '大塚':-1932, '矢嶋':-468, '本井':251},
   {date:'2026/10/27', '土岐':1922, '藤木':35, '鹿山':1363, '河井':-1434, '松林':630, '岡崎':-389, '大塚':-1932, '矢嶋':-446, '本井':251},
   {date:'2026/10/29', '土岐':1922, '藤木':35, '鹿山':1363, '河井':-1449, '松林':630, '岡崎':-329, '大塚':-2032, '矢嶋':-391, '本井':251},
+  {date:'2026/10/31', '土岐':1922, '藤木':35, '鹿山':1489, '河井':-1567, '松林':806, '岡崎':-338, '大塚':-2032, '矢嶋':-566, '本井':251},
 ];
 const MATCHUP = {
   '土岐':{'藤木':[36,-3.4],'鹿山':[103,-3.2],'河井':[71,7.4],'松林':[114,-3.1],'岡崎':[132,4.3],'大塚':[153,-1.5],'矢嶋':[95,-5.0],'本井':[49,8.3]},
   '藤木':{'土岐':[36,0.9],'鹿山':[14,-2.3],'河井':[26,5.2],'松林':[14,16.4],'岡崎':[18,-1.0],'大塚':[25,-1.4],'矢嶋':[17,-6.5],'本井':[9,-18.4]},
-  '鹿山':{'土岐':[103,0.8],'藤木':[14,2.6],'河井':[27,0.4],'松林':[70,0.0],'岡崎':[67,-4.3],'大塚':[61,2.1],'矢嶋':[63,-3.7],'本井':[27,8.5]},
-  '河井':{'土岐':[71,-2.0],'藤木':[26,6.6],'鹿山':[27,0.1],'松林':[38,4.4],'岡崎':[112,-1.3],'大塚':[109,1.3],'矢嶋':[102,-0.9],'本井':[19,-6.1]},
-  '松林':{'土岐':[114,-2.5],'藤木':[14,-12.2],'鹿山':[70,-2.7],'河井':[38,4.3],'岡崎':[69,5.7],'大塚':[88,2.6],'矢嶋':[58,1.0],'本井':[26,-5.5]},
-  '岡崎':{'土岐':[132,-3.3],'藤木':[18,-7.4],'鹿山':[67,-4.5],'河井':[112,3.6],'松林':[69,-5.5],'大塚':[143,4.4],'矢嶋':[105,7.1],'本井':[41,-11.2]},
+  '鹿山':{'土岐':[103,0.5],'藤木':[14,2.4],'河井':[35,1.8],'松林':[78,-0.3],'岡崎':[71,-3.5],'大塚':[61,1.8],'矢嶋':[70,-3.6],'本井':[27,8.2]},
+  '河井':{'土岐':[71,-1.8],'藤木':[26,6.7],'鹿山':[35,-1.8],'松林':[47,2.9],'岡崎':[117,-1.0],'大塚':[109,1.5],'矢嶋':[110,-0.5],'本井':[19,-6.0]},
+  '松林':{'土岐':[114,-3.2],'藤木':[14,-12.8],'鹿山':[78,-1.9],'河井':[47,5.3],'岡崎':[74,5.3],'大塚':[88,1.8],'矢嶋':[66,1.7],'本井':[26,-6.2]},
+  '岡崎':{'土岐':[132,-3.3],'藤木':[18,-7.4],'鹿山':[71,-5.1],'河井':[117,3.8],'松林':[74,-5.0],'大塚':[143,4.4],'矢嶋':[109,6.9],'本井':[41,-11.2]},
   '大塚':{'土岐':[153,-1.2],'藤木':[25,-3.2],'鹿山':[61,-5.4],'河井':[109,4.2],'松林':[88,-5.8],'岡崎':[143,0.7],'矢嶋':[143,5.4],'本井':[22,-7.9]},
-  '矢嶋':{'土岐':[95,-2.1],'藤木':[17,5.5],'鹿山':[63,-1.6],'河井':[102,-1.8],'松林':[58,-0.4],'岡崎':[105,1.2],'大塚':[143,1.7],'本井':[20,1.4]},
+  '矢嶋':{'土岐':[95,-1.4],'藤木':[17,6.1],'鹿山':[70,-1.2],'河井':[110,-2.8],'松林':[66,-1.2],'岡崎':[109,0.8],'大塚':[143,2.4],'本井':[20,2.0]},
   '本井':{'土岐':[49,-2.7],'藤木':[9,16.0],'鹿山':[27,-6.4],'河井':[19,1.1],'松林':[26,-5.4],'岡崎':[41,-3.8],'大塚':[22,4.3],'矢嶋':[20,12.9]},
 };
 const DETAIL_RANKS = {
-  '土岐':{totalPts:1,ptsPerGame:2,topRate:1,renRate:2,avoidRate:3,plusRate:2,stdDev:8,avgPts1st:2,avgRank:2,games:1},
+  '土岐':{totalPts:1,ptsPerGame:2,topRate:1,renRate:2,avoidRate:4,plusRate:1,stdDev:8,avgPts1st:2,avgRank:2,games:1},
   '藤木':{totalPts:5,ptsPerGame:5,topRate:2,renRate:7,avoidRate:7,plusRate:7,stdDev:9,avgPts1st:1,avgRank:6,games:9},
-  '鹿山':{totalPts:2,ptsPerGame:1,topRate:4,renRate:1,avoidRate:1,plusRate:1,stdDev:1,avgPts1st:6,avgRank:1,games:7},
-  '河井':{totalPts:8,ptsPerGame:9,topRate:8,renRate:9,avoidRate:8,plusRate:9,stdDev:2,avgPts1st:9,avgRank:8,games:5},
-  '松林':{totalPts:3,ptsPerGame:3,topRate:5,renRate:3,avoidRate:4,plusRate:3,stdDev:7,avgPts1st:4,avgRank:4,games:6},
-  '岡崎':{totalPts:6,ptsPerGame:6,topRate:6,renRate:5,avoidRate:5,plusRate:4,stdDev:5,avgPts1st:7,avgRank:5,games:3},
-  '大塚':{totalPts:9,ptsPerGame:8,topRate:9,renRate:8,avoidRate:9,plusRate:8,stdDev:3,avgPts1st:5,avgRank:9,games:2},
-  '矢嶋':{totalPts:7,ptsPerGame:7,topRate:7,renRate:6,avoidRate:6,plusRate:5,stdDev:4,avgPts1st:8,avgRank:7,games:4},
-  '本井':{totalPts:4,ptsPerGame:4,topRate:3,renRate:4,avoidRate:2,plusRate:6,stdDev:6,avgPts1st:3,avgRank:3,games:8}
+  '鹿山':{totalPts:2,ptsPerGame:1,topRate:4,renRate:1,avoidRate:1,plusRate:2,stdDev:1,avgPts1st:7,avgRank:1,games:7},
+  '河井':{totalPts:8,ptsPerGame:9,topRate:8,renRate:9,avoidRate:6,plusRate:9,stdDev:2,avgPts1st:9,avgRank:8,games:5},
+  '松林':{totalPts:3,ptsPerGame:3,topRate:5,renRate:3,avoidRate:3,plusRate:3,stdDev:7,avgPts1st:4,avgRank:3,games:6},
+  '岡崎':{totalPts:6,ptsPerGame:6,topRate:7,renRate:5,avoidRate:5,plusRate:4,stdDev:4,avgPts1st:5,avgRank:5,games:3},
+  '大塚':{totalPts:9,ptsPerGame:8,topRate:9,renRate:8,avoidRate:9,plusRate:8,stdDev:3,avgPts1st:6,avgRank:9,games:2},
+  '矢嶋':{totalPts:7,ptsPerGame:7,topRate:6,renRate:6,avoidRate:8,plusRate:5,stdDev:5,avgPts1st:8,avgRank:7,games:4},
+  '本井':{totalPts:4,ptsPerGame:4,topRate:3,renRate:4,avoidRate:2,plusRate:6,stdDev:6,avgPts1st:3,avgRank:4,games:8}
 };
 const RADAR_RANKS={
-  '土岐': [1, 2, 3, 2, 8, 2],
+  '土岐': [1, 2, 4, 1, 8, 2],
   '藤木': [2, 7, 7, 7, 9, 5],
-  '鹿山': [4, 1, 1, 1, 1, 1],
-  '河井': [8, 9, 8, 9, 2, 9],
-  '松林': [5, 3, 4, 3, 7, 3],
-  '岡崎': [6, 5, 5, 4, 5, 6],
+  '鹿山': [4, 1, 1, 2, 1, 1],
+  '河井': [8, 9, 6, 9, 2, 9],
+  '松林': [5, 3, 3, 3, 7, 3],
+  '岡崎': [7, 5, 5, 4, 4, 6],
   '大塚': [9, 8, 9, 8, 3, 8],
-  '矢嶋': [7, 6, 6, 5, 4, 7],
+  '矢嶋': [6, 6, 8, 5, 5, 7],
   '本井': [3, 4, 2, 6, 6, 4],
 };
 const PTS_RANK = {'土岐':1,'藤木':5,'鹿山':2,'河井':8,'松林':3,'岡崎':6,'大塚':9,'矢嶋':7,'本井':4};
@@ -473,7 +474,7 @@ renderTable('totalPts',null);
 switchBar('totalPts','累計Pts比較',document.querySelector('.tab-btn.active'));
 buildSummaryTable();
 
-const BELTS={"honor": [{"icon": "🏆", "name": "最長連続トップ", "tiers": [{"t": "金", "h": ["TK_n", "KaYaM", "MaTsuB", "OkaZ", "YaJi", "MoTo_i"], "v": "3連続", "d": null}, {"t": "銀", "h": ["FuJi", "KaWa_i", "OtsuK"], "v": "2連続", "d": null}]}, {"icon": "🤝", "name": "最長連続連帯", "tiers": [{"t": "金", "h": ["TK_n", "MaTsuB"], "v": "9連続", "d": null}, {"t": "銀", "h": ["OkaZ"], "v": "8連続", "d": "2026/02/21"}]}, {"icon": "🛟", "name": "最長連続ラス回避", "tiers": [{"t": "金", "h": ["KaYaM"], "v": "25連続", "d": "2026/09/19"}, {"t": "銀", "h": ["TK_n"], "v": "21連続", "d": "2026/03/07"}]}, {"icon": "🔥", "name": "MAXPts（1半荘 歴代最高）", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "+143", "d": "2026/02/10"}, {"t": "銀", "h": ["TK_n"], "v": "+133", "d": "2026/02/21"}]}, {"icon": "🚀", "name": "一日最高合計", "tiers": [{"t": "金", "h": ["TK_n"], "v": "+433", "d": "2026/02/21"}, {"t": "銀", "h": ["KaYaM"], "v": "+313", "d": "2026/08/22"}]}, {"icon": "🎌", "name": "皆勤王（通算出場）", "tiers": [{"t": "金", "h": ["TK_n"], "v": "251半荘", "d": null}, {"t": "銀", "h": ["OtsuK"], "v": "248半荘", "d": null}]}], "dishonor": [{"icon": "💀", "name": "最長連続ラス", "tiers": [{"t": "金", "h": ["KaWa_i"], "v": "6連続", "d": "2025/03/29"}, {"t": "銀", "h": ["MaTsuB"], "v": "5連続", "d": "2026/05/16"}]}, {"icon": "🪦", "name": "ワーストPts（1半荘 歴代最低）", "tiers": [{"t": "金", "h": ["FuJi"], "v": "-108", "d": "2026/03/06"}, {"t": "銀", "h": ["OtsuK"], "v": "-102", "d": "2026/03/07"}]}, {"icon": "🌊", "name": "一日最低合計", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "-338", "d": "2026/10/17"}, {"t": "銀", "h": ["KaWa_i"], "v": "-329", "d": "2025/03/29"}]}, {"icon": "⛏️", "name": "通算ラス王", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "73回", "d": null}, {"t": "銀", "h": ["OkaZ"], "v": "62回", "d": null}]}], "col": {"TK_n": "#4a90d9", "YaJi": "#e74c3c", "FuJi": "#e67e22", "MaTsuB": "#9b59b6", "KaYaM": "#95a5a6", "OkaZ": "#27ae60", "OtsuK": "#c0392b", "KaWa_i": "#f1c40f", "MoTo_i": "#1abc9c"}};
+const BELTS={"honor": [{"icon": "🏆", "name": "最長連続トップ", "tiers": [{"t": "金", "h": ["TK_n", "KaYaM", "MaTsuB", "OkaZ", "YaJi", "MoTo_i"], "v": "3連続", "d": null}, {"t": "銀", "h": ["FuJi", "KaWa_i", "OtsuK"], "v": "2連続", "d": null}]}, {"icon": "🤝", "name": "最長連続連帯", "tiers": [{"t": "金", "h": ["TK_n", "MaTsuB"], "v": "9連続", "d": null}, {"t": "銀", "h": ["OkaZ"], "v": "8連続", "d": "2026/02/21"}]}, {"icon": "🛟", "name": "最長連続ラス回避", "tiers": [{"t": "金", "h": ["KaYaM"], "v": "25連続", "d": "2026/09/19"}, {"t": "銀", "h": ["TK_n"], "v": "21連続", "d": "2026/03/07"}]}, {"icon": "🔥", "name": "MAXPts（1半荘 歴代最高）", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "+143", "d": "2026/02/10"}, {"t": "銀", "h": ["TK_n"], "v": "+133", "d": "2026/02/21"}]}, {"icon": "🚀", "name": "一日最高合計", "tiers": [{"t": "金", "h": ["TK_n"], "v": "+433", "d": "2026/02/21"}, {"t": "銀", "h": ["KaYaM"], "v": "+313", "d": "2026/08/22"}]}, {"icon": "🎌", "name": "皆勤王（通算出場）", "tiers": [{"t": "金", "h": ["TK_n"], "v": "251半荘", "d": null}, {"t": "銀", "h": ["OtsuK"], "v": "248半荘", "d": null}]}], "dishonor": [{"icon": "💀", "name": "最長連続ラス", "tiers": [{"t": "金", "h": ["KaWa_i"], "v": "6連続", "d": "2025/03/29"}, {"t": "銀", "h": ["MaTsuB"], "v": "5連続", "d": "2026/05/16"}]}, {"icon": "🪦", "name": "ワーストPts（1半荘 歴代最低）", "tiers": [{"t": "金", "h": ["FuJi"], "v": "-108", "d": "2026/03/06"}, {"t": "銀", "h": ["OtsuK"], "v": "-102", "d": "2026/03/07"}]}, {"icon": "🌊", "name": "一日最低合計", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "-338", "d": "2026/10/17"}, {"t": "銀", "h": ["KaWa_i"], "v": "-329", "d": "2025/03/29"}]}, {"icon": "⛏️", "name": "通算ラス王", "tiers": [{"t": "金", "h": ["OtsuK"], "v": "73回", "d": null}, {"t": "銀", "h": ["OkaZ"], "v": "63回", "d": null}]}], "col": {"TK_n": "#4a90d9", "YaJi": "#e74c3c", "FuJi": "#e67e22", "MaTsuB": "#9b59b6", "KaYaM": "#95a5a6", "OkaZ": "#27ae60", "OtsuK": "#c0392b", "KaWa_i": "#f1c40f", "MoTo_i": "#1abc9c"}};
 function buildBelts(){
   const C=BELTS.col;
   const render=(list,el)=>{
